@@ -1,0 +1,199 @@
+{
+  "front-version": "2.19.1",
+  "version": 3,
+  "nodes": [
+    {
+      "type": "Project",
+      "id": "f13c14bb-d146-4863-8124-47e0afab8217",
+      "lastModified": "2019-03-09T20:30:11.727-05:00",
+      "name": "cobra-ws"
+    },
+    {
+      "type": "Service",
+      "id": "eabf2861-7175-4054-b346-cdde350e8e99",
+      "lastModified": "2019-03-05T14:12:42.813-05:00",
+      "name": "Service 1",
+      "parentId": "f13c14bb-d146-4863-8124-47e0afab8217"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{  \n  \"categoriaproyecto\": -1\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/cobra-ws/indicadores-globales"
+      },
+      "id": "e0925869-3fa4-47fb-abfb-7c5befffcb75",
+      "lastModified": "2019-03-09T20:29:41.442-05:00",
+      "name": "indicadores-globales",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "metaInfo": {
+        "ownerId": "google-oauth2|106983485700686914686"
+      },
+      "parentId": "eabf2861-7175-4054-b346-cdde350e8e99"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n  \"codigousuario\" : 4,\n  \"longitud\" : -75.5177941,\n  \"latitud\" : 5.0686047\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/cobra-ws/mis-favoritos"
+      },
+      "id": "b237e271-1ca1-4bb7-9898-687814d5ddee",
+      "lastModified": "2019-03-06T17:03:35.900-05:00",
+      "name": "mis-favoritos",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "metaInfo": {
+        "ownerId": "google-oauth2|106983485700686914686"
+      },
+      "parentId": "eabf2861-7175-4054-b346-cdde350e8e99"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n  \"codigousuario\": 0,\n  \"filtroproyectos\": {\n    \"categoriaproyecto\": 0,\n    \"nombreproyecto\": \"\"\n  },\n  \"longitud\" : -75.5177941,\n  \"latitud\" : 5.0686047\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/cobra-ws/vista-lista"
+      },
+      "id": "4310de5f-6ca1-439c-9b5d-3f88681cda5d",
+      "lastModified": "2019-03-08T17:36:18.289-05:00",
+      "name": "vista-lista",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "metaInfo": {
+        "ownerId": "google-oauth2|106983485700686914686"
+      },
+      "parentId": "eabf2861-7175-4054-b346-cdde350e8e99"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n  \"codigousuario\": 0,\n  \"filtroproyectos\": {\n    \"categoriaproyecto\": 0,\n    \"nombreproyecto\": \"\"\n  },\n  \"longitud\" : -75.5177941,\n  \"latitud\" : 5.0686047\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/cobra-ws/vista-mapa"
+      },
+      "id": "599d6ce0-de8a-4543-b904-8ef9234377b9",
+      "lastModified": "2019-03-09T20:30:11.727-05:00",
+      "name": "vista-mapa",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "metaInfo": {
+        "ownerId": "google-oauth2|106983485700686914686"
+      },
+      "parentId": "eabf2861-7175-4054-b346-cdde350e8e99"
+    }
+  ]
+}
