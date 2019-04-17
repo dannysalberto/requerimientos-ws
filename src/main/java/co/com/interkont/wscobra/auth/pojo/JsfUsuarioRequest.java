@@ -1,9 +1,14 @@
-package co.com.interkont.wscobra.api.request;
+package co.com.interkont.wscobra.auth.pojo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel("JsfUsuarioRequest (Request login de usuario)")
 public class JsfUsuarioRequest {
 
+	@ApiModelProperty(value="username, del usuario que está realizando login")
 	private String usuario;
-	
+	@ApiModelProperty(value="Contraseña del usuario que está realizando login")	
 	private String contrasena;
 
 	public String getUsuario() {

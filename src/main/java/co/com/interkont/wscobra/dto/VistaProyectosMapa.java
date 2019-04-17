@@ -29,29 +29,23 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "VistaProyectosMapa.findByAll", 
     			query = "SELECT v "
     				  + "FROM VistaProyectosMapa v "
-    				  + "ORDER BY (acos(sin(radians(latitud)) * sin(radians(:latitud)) + cos(radians(latitud)) * cos(radians(:latitud)) * cos(radians(longitud) - radians(:longitud))) * 6371)"),
+    				  + "ORDER BY (acos(sin(radians(latitudproyecto)) * sin(radians(:latitudusuario)) + cos(radians(latitudproyecto)) * cos(radians(:latitudusuario)) * cos(radians(longitudproyecto) - radians(:longitudusuario))) * 6371)"),
     @NamedQuery(name = "VistaProyectosMapa.findByNombreproyecto", 
     			query = "SELECT v "
 					  + "FROM VistaProyectosMapa v "
-			          + "WHERE v.nombreproyecto LIKE CONCAT('%',:nombreproyecto,'%') "
-			          + "ORDER BY (acos(sin(radians(latitud)) * sin(radians(:latitud)) + cos(radians(latitud)) * cos(radians(:latitud)) * cos(radians(longitud) - radians(:longitud))) * 6371)"),
+			          + "WHERE LOWER(v.nombreproyecto) LIKE LOWER(CONCAT('%',:nombreproyecto,'%')) "
+			          + "ORDER BY (acos(sin(radians(latitudproyecto)) * sin(radians(:latitudusuario)) + cos(radians(latitudproyecto)) * cos(radians(:latitudusuario)) * cos(radians(longitudproyecto) - radians(:longitudusuario))) * 6371)"),
 	@NamedQuery(name = "VistaProyectosMapa.findByCodigocategoria", 
 		 		query = "SELECT v "
 	 				  + "FROM VistaProyectosMapa v "
 	 				  + "WHERE v.codigocategoria = :codigocategoria "
-	 				  + "ORDER BY (acos(sin(radians(latitud)) * sin(radians(:latitud)) + cos(radians(latitud)) * cos(radians(:latitud)) * cos(radians(longitud) - radians(:longitud))) * 6371)"),
-    @NamedQuery(name = "VistaProyectosMapa.findById", query = "SELECT v FROM VistaProyectosMapa v WHERE v.id = :id"),
+	 				 + "ORDER BY (acos(sin(radians(latitudproyecto)) * sin(radians(:latitudusuario)) + cos(radians(latitudproyecto)) * cos(radians(:latitudusuario)) * cos(radians(longitudproyecto) - radians(:longitudusuario))) * 6371)"),
+	@NamedQuery(name = "VistaProyectosMapa.findById", query = "SELECT v FROM VistaProyectosMapa v WHERE v.id = :id"),
     @NamedQuery(name = "VistaProyectosMapa.findByCodigoproyecto", query = "SELECT v FROM VistaProyectosMapa v WHERE v.codigoproyecto = :codigoproyecto"),
-    @NamedQuery(name = "VistaProyectosMapa.findByImagenproyecto", query = "SELECT v FROM VistaProyectosMapa v WHERE v.imagenproyecto = :imagenproyecto"),
     @NamedQuery(name = "VistaProyectosMapa.findByValorproyecto", query = "SELECT v FROM VistaProyectosMapa v WHERE v.valorproyecto = :valorproyecto"),
     @NamedQuery(name = "VistaProyectosMapa.findByAvanceproyecto", query = "SELECT v FROM VistaProyectosMapa v WHERE v.avanceproyecto = :avanceproyecto"),
-    @NamedQuery(name = "VistaProyectosMapa.findBySemaforoproyecto", query = "SELECT v FROM VistaProyectosMapa v WHERE v.semaforoproyecto = :semaforoproyecto"),
-    @NamedQuery(name = "VistaProyectosMapa.findByLatitud", query = "SELECT v FROM VistaProyectosMapa v WHERE v.latitud = :latitud"),
-    @NamedQuery(name = "VistaProyectosMapa.findByLongitud", query = "SELECT v FROM VistaProyectosMapa v WHERE v.longitud = :longitud"),
-    @NamedQuery(name = "VistaProyectosMapa.findByColorcategoria", query = "SELECT v FROM VistaProyectosMapa v WHERE v.colorcategoria = :colorcategoria"),
-    @NamedQuery(name = "VistaProyectosMapa.findByImagencategoria", query = "SELECT v FROM VistaProyectosMapa v WHERE v.imagencategoria = :imagencategoria"),
-    @NamedQuery(name = "VistaProyectosMapa.findByNombrecategoria", query = "SELECT v FROM VistaProyectosMapa v WHERE v.nombrecategoria = :nombrecategoria"),
-    @NamedQuery(name = "VistaProyectosMapa.findByEstadoproyecto", query = "SELECT v FROM VistaProyectosMapa v WHERE v.estadoproyecto = :estadoproyecto")})
+    @NamedQuery(name = "VistaProyectosMapa.findBySemaforoproyecto", query = "SELECT v FROM VistaProyectosMapa v WHERE v.semaforoproyecto = :semaforoproyecto")
+    })
 public class VistaProyectosMapa implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -60,7 +54,7 @@ public class VistaProyectosMapa implements Serializable {
     @Column(nullable = false)
     private Integer id;
     private Integer codigoproyecto;
-    @Column(length = 2147483647)
+    @Column(length = 100)
     private String nombreproyecto;
     @Column(length = 200)
     private String imagenproyecto;
@@ -72,18 +66,20 @@ public class VistaProyectosMapa implements Serializable {
     private String semaforoproyecto;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(precision = 20, scale = 14)
-    private BigDecimal latitud;
+    private BigDecimal latitudproyecto;
     @Column(precision = 20, scale = 14)
-    private BigDecimal longitud;
+    private BigDecimal longitudproyecto;
     private Integer codigocategoria;
-    @Column(length = 10)
+    @Column(length = 100)
     private String colorcategoria;
     @Column(length = 100)
     private String imagencategoria;
-    @Column(length = 2147483647)
+    @Column(length = 100)
     private String nombrecategoria;
-    @Column(length = 50)
+    @Column(length = 100)
     private String estadoproyecto;
+    @Column(length = 100)
+    private String localidadproyecto;
 
     public VistaProyectosMapa() {
     }
@@ -143,23 +139,7 @@ public class VistaProyectosMapa implements Serializable {
     public void setSemaforoproyecto(String semaforoproyecto) {
         this.semaforoproyecto = semaforoproyecto;
     }
-
-    public BigDecimal getLatitud() {
-        return latitud;
-    }
-
-    public void setLatitud(BigDecimal latitud) {
-        this.latitud = latitud;
-    }
-
-    public BigDecimal getLongitud() {
-        return longitud;
-    }
-
-    public void setLongitud(BigDecimal longitud) {
-        this.longitud = longitud;
-    }
-
+    
     public Integer getCodigocategoria() {
         return codigocategoria;
     }
@@ -198,6 +178,55 @@ public class VistaProyectosMapa implements Serializable {
 
     public void setEstadoproyecto(String estadoproyecto) {
         this.estadoproyecto = estadoproyecto;
+    }
+
+	public BigDecimal getLatitudproyecto() {
+		return latitudproyecto;
+	}
+
+	public void setLatitudproyecto(BigDecimal latitudproyecto) {
+		this.latitudproyecto = latitudproyecto;
+	}
+
+	public BigDecimal getLongitudproyecto() {
+		return longitudproyecto;
+	}
+
+	public void setLongitudproyecto(BigDecimal longitudproyecto) {
+		this.longitudproyecto = longitudproyecto;
+	}
+
+	public String getLocalidadproyecto() {
+		return localidadproyecto;
+	}
+
+	public void setLocalidadproyecto(String localidadproyecto) {
+		this.localidadproyecto = localidadproyecto;
+	}
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof VistaProyectosMapa)) {
+            return false;
+        }
+        VistaProyectosMapa other = (VistaProyectosMapa) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "co.com.interkont.wscobra.dto.JsfUsuario[ usuId=" + id + " ]";
     }
     
 }

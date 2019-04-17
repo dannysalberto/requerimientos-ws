@@ -3,19 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.com.interkont.wscobra.dto;
+package co.com.interkont.wscobra.auth.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,9 +20,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
+
+/***
+ * 
+ * Entitidad de la tabla autenticacion.jsf_usuario
  *
- * @author jhonatan
  */
 @Entity
 @Table(name = "jsf_usuario", catalog = "cobrauepruebas", schema = "autenticacion")
@@ -70,12 +69,7 @@ public class JsfUsuario implements Serializable {
     @Column(name = "ultimo_ingreso")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ultimoIngreso;
-    @JoinColumn(name = "intcodigotipousuario", referencedColumnName = "intcodigotipousuario", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Tipousuario intcodigotipousuario;
-    @JoinColumn(name = "usu_ter_cdigo", referencedColumnName = "intcodigo")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Tercero usuTerCdigo;
+    
 
     public JsfUsuario() {
     }
@@ -108,7 +102,7 @@ public class JsfUsuario implements Serializable {
     }
 
     public String getUsuPasswd() {
-        return usuPasswd;
+    	return usuPasswd;
     }
 
     public void setUsuPasswd(String usuPasswd) {
@@ -161,22 +155,6 @@ public class JsfUsuario implements Serializable {
 
     public void setUltimoIngreso(Date ultimoIngreso) {
         this.ultimoIngreso = ultimoIngreso;
-    }
-
-    public Tipousuario getIntcodigotipousuario() {
-        return intcodigotipousuario;
-    }
-
-    public void setIntcodigotipousuario(Tipousuario intcodigotipousuario) {
-        this.intcodigotipousuario = intcodigotipousuario;
-    }
-
-    public Tercero getUsuTerCdigo() {
-        return usuTerCdigo;
-    }
-
-    public void setUsuTerCdigo(Tercero usuTerCdigo) {
-        this.usuTerCdigo = usuTerCdigo;
     }
 
     @Override

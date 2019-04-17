@@ -13,8 +13,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import co.com.interkont.wscobra.dto.VistaIndicadoresGlobales;
+import co.com.interkont.wscobra.service.IndicadoresEncuestasService;
 import co.com.interkont.wscobra.service.IndicadoresGlobalesService;
+import co.com.interkont.wscobra.api.request.IndicadoresEncuestasRequest;
 import co.com.interkont.wscobra.api.request.IndicadoresGlobalesRequest;
+import co.com.interkont.wscobra.api.response.IndicadoresEncuestasResponse;
 import co.com.interkont.wscobra.api.response.IndicadoresGlobalesResponse;
 
 
@@ -28,6 +31,9 @@ public class IndicadoresApi {
 	
 	@Autowired
 	IndicadoresGlobalesService indicadoresGlobalesService;
+	
+	@Autowired
+	IndicadoresEncuestasService indicadoresEncuestasService;
 	
 	
 	@Autowired
@@ -49,6 +55,24 @@ public class IndicadoresApi {
 		}
 		
 		return indicadoresResponse;
+	}
+	
+	
+	@RequestMapping(value="/indicadores-resultados", method=RequestMethod.POST)
+	@ApiOperation(value = "Listado de los indicadores resultados Unión Europea", 
+				  notes = "Este servicio retorna con los consolidados de los indicadores del modulo de Encuenta UE.")
+	public List<IndicadoresEncuestasResponse> getIndicadoresResultados(){
+		
+		return indicadoresEncuestasService.getIndicadoresEncuestasGlobales();
+	}
+	
+
+	@RequestMapping(value="/indicadores-resultados-proyecto", method=RequestMethod.POST)
+	@ApiOperation(value = "Listado de los indicadores resultados de un proyecto de Unión Europea", 
+				  notes = "Este servicio retorna con los consolidados de los indicadores de un proyecto del modulo de Encuenta UE.")
+	public List<IndicadoresEncuestasResponse> getIndicadoresResultadosProyecto(@RequestBody IndicadoresEncuestasRequest indicadoresEncuestasRequest){
+		
+		return indicadoresEncuestasService.getIndicadoresEncuetasProyecto(indicadoresEncuestasRequest.getCodigoproyecto());
 	}
 
 }

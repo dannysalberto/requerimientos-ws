@@ -1,42 +1,80 @@
 package co.com.interkont.wscobra.auth;
 
+import static co.com.interkont.wscobra.auth.config.ConfiguracionConstantes.LOGIN_URL;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-import co.com.interkont.wscobra.service.JsfUsuarioService;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+
+//se activa la seguridad web
+//se hereda de WebSecurityConfigurerAdapter clase para configuracion de spring
 @Configuration
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter{
-	
-	@Autowired
-	@Qualifier("jsfUsuarioService")
-	private JsfUsuarioService jsfUsuarioService;
 
+	/**
+	 * se inyecta el servicio
+	 */
+	@Autowired	
+	private UserDetailsService userDetailsService;
+	
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {		
+		return DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder();
+	} 
+
+	
+	
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		/*
+		 * 1. Se desactiva el uso de cookies
+		 * 2. Se activa la configuración CORS con los valores por defecto
+		 * 3. Se desactiva el filtro CSRF
+		 * 4. Se indica que el login no requiere autenticación
+		 * 5. Se indica que el resto de URLs esten securizadas
+		 */
+		httpSecurity
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+			.cors().and()
+			.csrf().disable()
+			.authorizeRequests()
+				.antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
+				.antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
+			.anyRequest().authenticated().and()
+				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+				.addFilter(new JWTAuthorizationFilter(authenticationManager()));
+	}
+	
+	
+	/**
+	 * se sobre escribe este metodo de la clase WebSecurityConfigurerAdapter
+	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(jsfUsuarioService);
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
-
-	@Override
-	protected void configure(HttpSecurity http) throws Exception{
-		http.csrf().disable().authorizeRequests()
-        .antMatchers("/login","/swagger-ui.html" ).permitAll() //permitimos el acceso a /login a cualquiera
-        .anyRequest().authenticated() //cualquier otra peticion requiere autenticacion
-        .and()
-        // Las peticiones /login pasaran previamente por este filtro
-        .addFilterBefore(new LoginFilter("/login", authenticationManager()),
-                UsernamePasswordAuthenticationFilter.class)
-
-        // Las demás peticiones pasarán por este filtro para validar el token
-        .addFilterBefore(new JwtFilter(),
-                UsernamePasswordAuthenticationFilter.class);
+	
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		return source;
 	}
+	
 	
 }

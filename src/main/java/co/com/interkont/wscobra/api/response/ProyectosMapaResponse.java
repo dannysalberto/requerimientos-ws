@@ -23,9 +23,9 @@ public class ProyectosMapaResponse {
 	@ApiModelProperty(value = "Imagen de semaforo del proyecto u/o obra")
     private String semaforoproyecto;
 	@ApiModelProperty(value = "Coordenada de latitud del proyecto u/o obra")
-    private BigDecimal latitud;
+    private BigDecimal latitudproyecto;
 	@ApiModelProperty(value = "Coordenada de longitud del proyecto u/o obra")
-    private BigDecimal longitud;
+    private BigDecimal longitudproyecto;
 	@ApiModelProperty(value = "Código de la categoría u/o línea de negocio")
     private Integer codigocategoria;
 	@ApiModelProperty(value = "Color de la categoría u/o línea de negocio")
@@ -38,6 +38,8 @@ public class ProyectosMapaResponse {
     private String estadoproyecto;
 	@ApiModelProperty(value = "Distancía del usuario al proyecto u/o obra")
     private String distaciaproyecto;
+	@ApiModelProperty(value = "Municipio y departamento del proyecto u/o obra")
+	private String localidadproyecto;
 	
 	public Integer getCodigoproyecto() {
 		return codigoproyecto;
@@ -111,22 +113,6 @@ public class ProyectosMapaResponse {
 		this.semaforoproyecto = semaforoproyecto;
 	}
 
-    public BigDecimal getLatitud() {
-        return latitud;
-    }
-
-    public void setLatitud(BigDecimal latitud) {
-        this.latitud = latitud;
-    }
-
-    public BigDecimal getLongitud() {
-        return longitud;
-    }
-
-    public void setLongitud(BigDecimal longitud) {
-        this.longitud = longitud;
-    }
-
 	public String getImagenproyecto() {
 		return imagenproyecto;
 	}
@@ -151,6 +137,30 @@ public class ProyectosMapaResponse {
 		this.estadoproyecto = estadoproyecto;
 	}
 
-    
+	public BigDecimal getLatitudproyecto() {
+		return latitudproyecto;
+	}
+
+	public void setLatitudproyecto(BigDecimal latitudproyecto) {
+		this.latitudproyecto = latitudproyecto;
+	}
+
+	public BigDecimal getLongitudproyecto() {
+		return longitudproyecto;
+	}
+
+	public void setLongitudproyecto(BigDecimal longitudproyecto) {
+		this.longitudproyecto = longitudproyecto;
+	}
+
+	public String getLocalidadproyecto() {
+		return localidadproyecto;
+	}
+
+	public void setLocalidadproyecto(String localidadproyecto) {
+		this.localidadproyecto = localidadproyecto;
+	}
+
+	
     
 }

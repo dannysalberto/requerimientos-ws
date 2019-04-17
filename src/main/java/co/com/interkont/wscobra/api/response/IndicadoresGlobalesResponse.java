@@ -2,8 +2,6 @@ package co.com.interkont.wscobra.api.response;
 
 import java.math.BigDecimal;
 
-import org.springframework.format.annotation.NumberFormat;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -11,7 +9,6 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("DTO-RESPONSE Indicadores Globales Proyectos")
 public class IndicadoresGlobalesResponse {
 	
-	@NumberFormat(pattern = "#,###,###,###.##")
 	@ApiModelProperty(value = "Suma total de costo de proyectos u/o obras.")
 	private BigDecimal totalvalorproyectos;
 	
