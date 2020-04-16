@@ -6,7 +6,7 @@
       "type": "Project",
       "id": "f13c14bb-d146-4863-8124-47e0afab8217",
       "lastModified": "2019-03-09T20:30:11.727-05:00",
-      "name": "cobra-ws"
+      "name": "cobra-ws-condor"
     },
     {
       "type": "Service",
@@ -43,7 +43,7 @@
           "version": "V11"
         },
         "host": "localhost:8080",
-        "path": "/cobra-ws/indicadores-globales"
+        "path": "/cobra-ws-condor/indicadores-globales"
       },
       "id": "e0925869-3fa4-47fb-abfb-7c5befffcb75",
       "lastModified": "2019-03-09T20:29:41.442-05:00",
@@ -88,7 +88,7 @@
           "version": "V11"
         },
         "host": "localhost:8080",
-        "path": "/cobra-ws/mis-favoritos"
+        "path": "/cobra-ws-condor/mis-favoritos"
       },
       "id": "b237e271-1ca1-4bb7-9898-687814d5ddee",
       "lastModified": "2019-03-06T17:03:35.900-05:00",
@@ -133,7 +133,7 @@
           "version": "V11"
         },
         "host": "localhost:8080",
-        "path": "/cobra-ws/vista-lista"
+        "path": "/cobra-ws-condor/vista-lista"
       },
       "id": "4310de5f-6ca1-439c-9b5d-3f88681cda5d",
       "lastModified": "2019-03-08T17:36:18.289-05:00",
@@ -178,7 +178,7 @@
           "version": "V11"
         },
         "host": "localhost:8080",
-        "path": "/cobra-ws/vista-mapa"
+        "path": "/cobra-ws-condor/vista-mapa"
       },
       "id": "599d6ce0-de8a-4543-b904-8ef9234377b9",
       "lastModified": "2019-03-09T20:30:11.727-05:00",
