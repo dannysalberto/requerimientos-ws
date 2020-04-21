@@ -37,6 +37,8 @@ public class VistaProyectosLista implements Serializable {
     private String nombreproyecto;
     @Column(precision = 20, scale = 6)
     private BigDecimal valorproyecto;
+    @Column(precision = 20, scale = 6)
+    private BigDecimal valorejecutado;
     @Column(length = 250)
     private String semaforoproyecto;
     private Integer codigocategoria;
@@ -166,8 +168,22 @@ public class VistaProyectosLista implements Serializable {
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
+	
+	
 
-    @Override
+    public BigDecimal getValorejecutado() {
+		return valorejecutado;
+	}
+
+
+
+	public void setValorejecutado(BigDecimal valorejecutado) {
+		this.valorejecutado = valorejecutado;
+	}
+
+
+
+	@Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof VistaProyectosLista)) {

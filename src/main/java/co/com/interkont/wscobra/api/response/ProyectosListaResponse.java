@@ -11,13 +11,15 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("DTO-RESPONSE vista lista de proyectos")
 public class ProyectosListaResponse {
 	
-	@ApiModelProperty(value = "Código del proyecto u/o obra")
+	@ApiModelProperty(value = "Código del proyecto")
     private Integer codigoproyecto;
-	@ApiModelProperty(value = "Nombre del proyecto u/o obra")
+	@ApiModelProperty(value = "Nombre del proyecto")
 	private String nombreproyecto;
-	@ApiModelProperty(value = "Costo del proyecto u/o obra, en fortato de miles")
+	@ApiModelProperty(value = "Costo del proyecto")
     private BigDecimal valorproyecto;
-	@ApiModelProperty(value = "Nombre del color del semaforo del proyecto u/o obra (verde, amarillo, rojo)")
+	@ApiModelProperty(value = "Valor ejecutado del proyecto (Avance)")
+    private BigDecimal valorejecutado;
+	@ApiModelProperty(value = "Nombre del color del semaforo del proyecto (verde, amarillo, rojo)")
     private String semaforoproyecto;
 	@ApiModelProperty(value = "Código de la categoría u/o línea de negocio")
     private Integer codigocategoria;
@@ -81,5 +83,13 @@ public class ProyectosListaResponse {
 	public void setValorproyecto(BigDecimal valorproyecto) {
 		this.valorproyecto = valorproyecto;
 	}
-    
+
+	public BigDecimal getValorejecutado() {
+		return valorejecutado;
+	}
+
+	public void setValorejecutado(BigDecimal valorejecutado) {
+		this.valorejecutado = valorejecutado;
+	}
+	
 }

@@ -13,18 +13,20 @@ select
 	    ELSE obra.strnombreobra
 	END::character varying AS nombreproyecto,
 	obra.numvaltotobra valorproyecto,
+	obra.numvalejecobra valorejecutado,
 	split_part(split_part(f_proyecto_semaforo(obra.intcodigoobra),'/',4),'.',1)::character varying(250) semaforoproyecto,
 	obra.intlineanegocio codigocategoria,
 	obra.strdesclineanegocio nombrecategoria,
 	(select strvalorparametro from configuracion.configuracion_siente where strcodigoparametro='direccionIPContexto')
 	||(select strvalorparametro from configuracion.configuracion_siente where strcodigoparametro='nombreContextoSiente')
-	||obra.strurllogo::character varying(300) imagencategoria,
+	||obra.strurllogo imagencategoria,
 	obra.usu_login usuario
 from (
 	select 
 		obra.intcodigoobra,
 		obra.strnombreobra,
 		obra.numvaltotobra,
+		obra.numvalejecobra,
 		ln.intlineanegocio,
 		ln.strdesclineanegocio,
 		ln.strurllogo,
@@ -39,6 +41,7 @@ from (
 		obra.intcodigoobra,
 		obra.strnombreobra,
 		obra.numvaltotobra,
+		obra.numvalejecobra,
 		ln.intlineanegocio,
 		ln.strdesclineanegocio,
 		ln.strurllogo,
@@ -53,6 +56,7 @@ from (
 		obra.intcodigoobra,
 		obra.strnombreobra,
 		obra.numvaltotobra,
+		obra.numvalejecobra,
 		ln.intlineanegocio,
 		ln.strdesclineanegocio,
 		ln.strurllogo,
