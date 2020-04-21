@@ -25,8 +25,6 @@ public class ProyectosListaResponse {
     private String imagencategoria;
 	@ApiModelProperty(value = "Nombre de la categoría u/o línea de negocio")
     private String nombrecategoria;
-	@ApiModelProperty(value = "Usuario que consulta")
-	private String usuario;
 	
 	public Integer getCodigoproyecto() {
 		return codigoproyecto;
@@ -82,14 +80,6 @@ public class ProyectosListaResponse {
 
 	public void setValorproyecto(BigDecimal valorproyecto) {
 		this.valorproyecto = valorproyecto;
-	}
-
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
 	}
     
 }
