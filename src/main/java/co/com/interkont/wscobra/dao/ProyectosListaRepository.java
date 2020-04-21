@@ -1,6 +1,5 @@
 package co.com.interkont.wscobra.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,12 +11,6 @@ import co.com.interkont.wscobra.dto.VistaProyectosLista;
 public interface ProyectosListaRepository extends JpaRepository<VistaProyectosLista, Integer>{
 	
 	
-	public List<VistaProyectosLista> findByAll(BigDecimal latitudusuario, BigDecimal longitudusuario);
+	public List<VistaProyectosLista> findByUsuario(String usuario);
 	
-	
-	public List<VistaProyectosLista> findByNombreproyecto(BigDecimal latitudusuario, BigDecimal longitudusuario, String nombreproyecto);
-	
-	
-	public List<VistaProyectosLista> findByCodigocategoria(BigDecimal latitudusuario, BigDecimal longitudusuario, Integer codigocategoria);
-
 }

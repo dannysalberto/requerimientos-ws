@@ -17,20 +17,8 @@ public class ProyectosListaService {
 	ProyectosListaRepository proyectoslistaDAO;
 	
 	
-	public List<VistaProyectosLista> findByAll(ProyectosListaRequest proyectosListaRequest){
-		
-		
-		if(!proyectosListaRequest.getFiltroproyectos().getNombreproyecto().equals("")) {
-			return proyectoslistaDAO.findByNombreproyecto(proyectosListaRequest.getLatitud(), 
-														  proyectosListaRequest.getLongitud(), 
-														  proyectosListaRequest.getFiltroproyectos().getNombreproyecto());
-		}else if(proyectosListaRequest.getFiltroproyectos().getCategoriaproyecto() != 0) {
-			return proyectoslistaDAO.findByCodigocategoria(proyectosListaRequest.getLatitud(), 
-														   proyectosListaRequest.getLongitud(), 
-														   proyectosListaRequest.getFiltroproyectos().getCategoriaproyecto());
-		} 
-		
-		return proyectoslistaDAO.findByAll(proyectosListaRequest.getLatitud(), proyectosListaRequest.getLongitud());		
+	public List<VistaProyectosLista> findByUsuario(ProyectosListaRequest proyectosListaRequest){
+		return proyectoslistaDAO.findByUsuario(proyectosListaRequest.getUsuario());		
 	}	
 
 }
