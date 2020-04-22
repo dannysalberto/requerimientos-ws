@@ -1,4 +1,4 @@
-update configuracion.configuracion_siente set strvalorparametro='condor' where strcodigoparametro='nombreContextoSiente';
+﻿update configuracion.configuracion_siente set strvalorparametro='condor' where strcodigoparametro='nombreContextoSiente';
 --------------- se crea el esquema para las vistas de movil
 DROP SCHEMA IF EXISTS appmobile CASCADE;
 CREATE SCHEMA appmobile  AUTHORIZATION cobra;
@@ -20,6 +20,7 @@ select
 	(select strvalorparametro from configuracion.configuracion_siente where strcodigoparametro='direccionIPContexto')
 	||(select strvalorparametro from configuracion.configuracion_siente where strcodigoparametro='nombreContextoSiente')
 	||obra.strurllogo imagencategoria,
+	obra.strcolor,
 	obra.usu_login usuario
 from (
 	select 
@@ -30,6 +31,7 @@ from (
 		ln.intlineanegocio,
 		ln.strdesclineanegocio,
 		ln.strurllogo,
+		ln.strcolor,
 		usu.usu_login                    
 	from obra
 	inner join lineanegocio ln on ln.intlineanegocio = obra.lineanegocio
@@ -45,6 +47,7 @@ from (
 		ln.intlineanegocio,
 		ln.strdesclineanegocio,
 		ln.strurllogo,
+		ln.strcolor,
 		sup.usu_login                    
 	from obra
 	inner join lineanegocio ln on ln.intlineanegocio = obra.lineanegocio
@@ -60,6 +63,7 @@ from (
 		ln.intlineanegocio,
 		ln.strdesclineanegocio,
 		ln.strurllogo,
+		ln.strcolor,
 		contratista.usu_login                    
 	from obra
 	inner join lineanegocio ln on ln.intlineanegocio = obra.lineanegocio

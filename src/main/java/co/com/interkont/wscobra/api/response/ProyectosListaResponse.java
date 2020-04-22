@@ -25,6 +25,8 @@ public class ProyectosListaResponse {
     private Integer codigocategoria;
 	@ApiModelProperty(value = "Imagen de la categoría u/o línea de negocio")
     private String imagencategoria;
+	@ApiModelProperty(value = "Color de la categoría u/o línea de negocio")
+    private String colorcategoria;
 	@ApiModelProperty(value = "Nombre de la categoría u/o línea de negocio")
     private String nombrecategoria;
 	
@@ -90,6 +92,14 @@ public class ProyectosListaResponse {
 
 	public void setValorejecutado(BigDecimal valorejecutado) {
 		this.valorejecutado = valorejecutado;
+	}
+
+	public String getColorcategoria() {
+		return colorcategoria;
+	}
+
+	public void setColorcategoria(String colorcategoria) {
+		this.colorcategoria = colorcategoria;
 	}
 	
 }

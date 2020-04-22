@@ -45,6 +45,8 @@ public class VistaProyectosLista implements Serializable {
     @Column(length = 100)
     private String imagencategoria;
     @Column(length = 100)
+    private String colorcategoria;
+    @Column(length = 100)
     private String nombrecategoria;
     @Column(length = 255)
     private String usuario;
@@ -179,6 +181,18 @@ public class VistaProyectosLista implements Serializable {
 
 	public void setValorejecutado(BigDecimal valorejecutado) {
 		this.valorejecutado = valorejecutado;
+	}
+
+
+
+	public String getColorcategoria() {
+		return colorcategoria;
+	}
+
+
+
+	public void setColorcategoria(String colorcategoria) {
+		this.colorcategoria = colorcategoria;
 	}
 
 

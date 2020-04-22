@@ -20,7 +20,7 @@ public class ConfiguracionesApi {
 		ConfiguraciónResponse config = new ConfiguraciónResponse();
 		
 		config.setEndpoint("http://13.59.62.87:8080/cobra-ws-condor/");
-		config.setEndpointimagenes("http://18.224.218.156:8080/ue/");
+		config.setEndpointimagenes("http://13.59.62.87/condor/");
 		config.setFormatofecha("dd-MM-yyyy");
 		config.setKeygmaps("AIzaSyAyeHv9c380QhNLQr93abJZLXECSydJVMY");
 		config.setTipomoneda("$");
