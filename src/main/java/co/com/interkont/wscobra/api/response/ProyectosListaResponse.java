@@ -11,36 +11,24 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("DTO-RESPONSE vista lista de proyectos")
 public class ProyectosListaResponse {
 	
-	@ApiModelProperty(value = "Código del proyecto u/o obra")
+	@ApiModelProperty(value = "Código del proyecto")
     private Integer codigoproyecto;
-	@ApiModelProperty(value = "Nombre del proyecto u/o obra")
+	@ApiModelProperty(value = "Nombre del proyecto")
 	private String nombreproyecto;
-	@ApiModelProperty(value = "Imagen del proyecto u/o obra")
-    private String imagenproyecto;
-	@ApiModelProperty(value = "Costo del proyecto u/o obra, en fortato de miles")
-    private String valorproyecto;
-	@ApiModelProperty(value = "Porcentaje de avance del proyecto u/o obra")
-    private String avanceproyecto;
-	@ApiModelProperty(value = "Imagen de semaforo del proyecto u/o obra")
+	@ApiModelProperty(value = "Costo del proyecto")
+    private BigDecimal valorproyecto;
+	@ApiModelProperty(value = "Valor ejecutado del proyecto (Avance)")
+    private BigDecimal valorejecutado;
+	@ApiModelProperty(value = "Nombre del color del semaforo del proyecto (verde, amarillo, rojo)")
     private String semaforoproyecto;
-	@ApiModelProperty(value = "Coordenada de latitud del proyecto u/o obra")
-    private BigDecimal latitudproyecto;
-	@ApiModelProperty(value = "Coordenada de longitud del proyecto u/o obra")
-    private BigDecimal longitudproyecto;
 	@ApiModelProperty(value = "Código de la categoría u/o línea de negocio")
     private Integer codigocategoria;
-	@ApiModelProperty(value = "Color de la categoría u/o línea de negocio")
-    private String colorcategoria;
 	@ApiModelProperty(value = "Imagen de la categoría u/o línea de negocio")
     private String imagencategoria;
+	@ApiModelProperty(value = "Color de la categoría u/o línea de negocio")
+    private String colorcategoria;
 	@ApiModelProperty(value = "Nombre de la categoría u/o línea de negocio")
     private String nombrecategoria;
-	@ApiModelProperty(value = "Estado del proyecto u/o obra")
-    private String estadoproyecto;
-	@ApiModelProperty(value = "Distancía del usuario al proyecto u/o obra")
-    private String distaciaproyecto;
-	@ApiModelProperty(value = "Municipio y departamento del proyecto u/o obra")
-	private String localidadproyecto;
 	
 	public Integer getCodigoproyecto() {
 		return codigoproyecto;
@@ -49,15 +37,7 @@ public class ProyectosListaResponse {
 	public void setCodigoproyecto(Integer codigoproyecto) {
 		this.codigoproyecto = codigoproyecto;
 	}
-
-	public String getColorcategoria() {
-		return colorcategoria;
-	}
-
-	public void setColorcategoria(String colorcategoria) {
-		this.colorcategoria = colorcategoria;
-	}
-
+	
 	public String getImagencategoria() {
 		return imagencategoria;
 	}
@@ -81,45 +61,13 @@ public class ProyectosListaResponse {
 	public void setNombreproyecto(String nombreproyecto) {
 		this.nombreproyecto = nombreproyecto;
 	}
-
-	public String getDistaciaproyecto() {
-		return distaciaproyecto;
-	}
-
-	public void setDistaciaproyecto(String distaciaproyecto) {
-		this.distaciaproyecto = distaciaproyecto;
-	}
-
-	public String getValorproyecto() {
-		return valorproyecto;
-	}
-
-	public void setValorproyecto(String valorproyecto) {
-		this.valorproyecto = valorproyecto;
-	}
-
-	public String getAvanceproyecto() {
-		return avanceproyecto;
-	}
-
-	public void setAvanceproyecto(String avanceproyecto) {
-		this.avanceproyecto = avanceproyecto;
-	}
-
+	
 	public String getSemaforoproyecto() {
 		return semaforoproyecto;
 	}
 
 	public void setSemaforoproyecto(String semaforoproyecto) {
 		this.semaforoproyecto = semaforoproyecto;
-	}
-
-	public String getImagenproyecto() {
-		return imagenproyecto;
-	}
-
-	public void setImagenproyecto(String imagenproyecto) {
-		this.imagenproyecto = imagenproyecto;
 	}
 
 	public Integer getCodigocategoria() {
@@ -130,38 +78,28 @@ public class ProyectosListaResponse {
 		this.codigocategoria = codigocategoria;
 	}
 
-	public String getEstadoproyecto() {
-		return estadoproyecto;
+	public BigDecimal getValorproyecto() {
+		return valorproyecto;
 	}
 
-	public void setEstadoproyecto(String estadoproyecto) {
-		this.estadoproyecto = estadoproyecto;
+	public void setValorproyecto(BigDecimal valorproyecto) {
+		this.valorproyecto = valorproyecto;
 	}
 
-	public BigDecimal getLatitudproyecto() {
-		return latitudproyecto;
+	public BigDecimal getValorejecutado() {
+		return valorejecutado;
 	}
 
-	public void setLatitudproyecto(BigDecimal latitudproyecto) {
-		this.latitudproyecto = latitudproyecto;
+	public void setValorejecutado(BigDecimal valorejecutado) {
+		this.valorejecutado = valorejecutado;
 	}
 
-	public BigDecimal getLongitudproyecto() {
-		return longitudproyecto;
+	public String getColorcategoria() {
+		return colorcategoria;
 	}
 
-	public void setLongitudproyecto(BigDecimal longitudproyecto) {
-		this.longitudproyecto = longitudproyecto;
+	public void setColorcategoria(String colorcategoria) {
+		this.colorcategoria = colorcategoria;
 	}
-
-	public String getLocalidadproyecto() {
-		return localidadproyecto;
-	}
-
-	public void setLocalidadproyecto(String localidadproyecto) {
-		this.localidadproyecto = localidadproyecto;
-	}
-
 	
-    
 }
