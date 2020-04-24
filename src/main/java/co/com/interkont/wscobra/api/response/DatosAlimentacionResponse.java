@@ -159,5 +159,55 @@ public class DatosAlimentacionResponse {
 	public void setLimitePorcentajeAtraso(Double limitePorcentajeAtraso) {
 		this.limitePorcentajeAtraso = limitePorcentajeAtraso;
 	}
+
+	public List<PeriodoResponse> getPeriodos() {
+		return periodos;
+	}
+
+	public void setPeriodos(List<PeriodoResponse> periodos) {
+		this.periodos = periodos;
+	}
+
+	public List<ActividadResponse> getActividades() {
+		return actividades;
+	}
+
+	public void setActividades(List<ActividadResponse> actividades) {
+		this.actividades = actividades;
+	}
+
+	public List<IndicadorAlcanceResponse> getIndicadoresAlcance() {
+		return indicadoresAlcance;
+	}
+
+	public void setIndicadoresAlcance(List<IndicadorAlcanceResponse> indicadoresAlcance) {
+		this.indicadoresAlcance = indicadoresAlcance;
+	}
+
+	public List<AspectoEvaluarResponse> getApectosEvaluar() {
+		return apectosEvaluar;
+	}
+
+	public void setApectosEvaluar(List<AspectoEvaluarResponse> apectosEvaluar) {
+		this.apectosEvaluar = apectosEvaluar;
+	}
+
+	public List<TipoFactorAtrasoResponse> getTiposFactorAtraso() {
+		return tiposFactorAtraso;
+	}
+
+	public void setTiposFactorAtraso(List<TipoFactorAtrasoResponse> tiposFactorAtraso) {
+		this.tiposFactorAtraso = tiposFactorAtraso;
+	}
+
+	public List<FactorAtrasoResponse> getFactoresAtraso() {
+		return factoresAtraso;
+	}
+
+	public void setFactoresAtraso(List<FactorAtrasoResponse> factoresAtraso) {
+		this.factoresAtraso = factoresAtraso;
+	}
+	
+	
 	
 }
