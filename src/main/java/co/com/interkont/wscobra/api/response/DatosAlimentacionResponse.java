@@ -46,7 +46,9 @@ public class DatosAlimentacionResponse {
 		actividades.add(new ActividadResponse(3, "Actividad 3", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
 		
 		indicadoresAlcance = new ArrayList<>();
-		indicadoresAlcance.add(new IndicadorAlcanceResponse(1, "Indicador Alcance 1", "Ml", 10.0, 5.0, 50.0));
+		indicadoresAlcance.add(new IndicadorAlcanceResponse(1, "Indicador Alcance 1", "Ml", 10.0, 3.0, 30.0));
+		indicadoresAlcance.add(new IndicadorAlcanceResponse(2, "Indicador Alcance 2", "Ml", 10.0, 3.0, 30.0));
+		indicadoresAlcance.add(new IndicadorAlcanceResponse(3, "Indicador Alcance 3", "Ml", 10.0, 3.0, 30.0));
 		
 		apectosEvaluar= new ArrayList<>();
 		apectosEvaluar.add(new AspectoEvaluarResponse(1, "Administrativo"));
