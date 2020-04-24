@@ -19,6 +19,8 @@ public class ProyectosListaResponse {
     private BigDecimal valorproyecto;
 	@ApiModelProperty(value = "Valor ejecutado del proyecto (Avance)")
     private BigDecimal valorejecutado;
+	@ApiModelProperty(value = "porcentaje en el que debería ir el proyecto")
+	private Double porcentajeProyectado;
 	@ApiModelProperty(value = "Nombre del color del semaforo del proyecto (verde, amarillo, rojo)")
     private String semaforoproyecto;
 	@ApiModelProperty(value = "Código de la categoría u/o línea de negocio")
@@ -30,12 +32,21 @@ public class ProyectosListaResponse {
 	@ApiModelProperty(value = "Nombre de la categoría u/o línea de negocio")
     private String nombrecategoria;
 	@ApiModelProperty(value = "Objeto del proyecto")
-	/*mock*/private String objeto="Estudios, diseños y construcción de centros de integración ciudadana cic, grupo 1 - región paciﬁco de colombia";
+	private String objeto;
 	@ApiModelProperty(value = "Contratista del contrato de tipo ejecución")
-	/*mock*/private String contratista="Arqueada SAS";
+	private String contratista;
 	@ApiModelProperty(value = "Indica si el proyecto tiene alimentaciones pendientes de aprobación por el supervisor")
-	/*mock*/private Boolean pendienteAprobacion = false;
+	private Boolean pendienteAprobacion;
 	
+	
+	
+	public ProyectosListaResponse() {
+		/*mock*/objeto="Estudios, diseños y construcción de centros de integración ciudadana cic, grupo 1 - región paciﬁco de colombia";
+		/*mock*/contratista="Arqueada SAS";
+		/*mock*/pendienteAprobacion = false;
+		/*mock*/porcentajeProyectado = 67.0;
+	}
+
 	public Integer getCodigoproyecto() {
 		return codigoproyecto;
 	}
@@ -131,5 +142,12 @@ public class ProyectosListaResponse {
 	public void setPendienteAprobacion(Boolean pendienteAprobacion) {
 		this.pendienteAprobacion = pendienteAprobacion;
 	}
-	
+
+	public Double getPorcentajeProyectado() {
+		return porcentajeProyectado;
+	}
+
+	public void setPorcentajeProyectado(Double porcentajeProyectado) {
+		this.porcentajeProyectado = porcentajeProyectado;
+	}
 }
