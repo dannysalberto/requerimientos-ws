@@ -16,16 +16,19 @@ public class PeriodoResponse {
 	private Date fechaIniPeriodo;
 	@ApiModelProperty(value = "Fecha final del periodo")
 	private Date fechaFinPeriodo;
+	@ApiModelProperty(value = "Porcentaje en el que debería ir el proyecto para este periodo")
+	private Double porcentajeProyectado;
 	
 	public PeriodoResponse() {
 	}
 	
 	
-	public PeriodoResponse(Integer periodoid, Date fechaIniPeriodo, Date fechaFinPeriodo) {
+	public PeriodoResponse(Integer periodoid, Date fechaIniPeriodo, Date fechaFinPeriodo, Double porcentajeProyectado) {
 		super();
 		this.periodoId = periodoid;
 		this.fechaIniPeriodo = fechaIniPeriodo;
 		this.fechaFinPeriodo = fechaFinPeriodo;
+		this.porcentajeProyectado = porcentajeProyectado; 
 	}
 
 
@@ -56,6 +59,16 @@ public class PeriodoResponse {
 
 	public void setFechaFinPeriodo(Date fechaFinPeriodo) {
 		this.fechaFinPeriodo = fechaFinPeriodo;
+	}
+
+
+	public Double getPorcentajeProyectado() {
+		return porcentajeProyectado;
+	}
+
+
+	public void setPorcentajeProyectado(Double porcentajeProyectado) {
+		this.porcentajeProyectado = porcentajeProyectado;
 	}
 	
 }
