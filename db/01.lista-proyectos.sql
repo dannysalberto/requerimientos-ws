@@ -4,6 +4,7 @@ DROP SCHEMA IF EXISTS appmobile CASCADE;
 CREATE SCHEMA appmobile  AUTHORIZATION cobra;
 
 ---------------------------------------- VIEW LISTA DE PROYECTOS
+DROP VIEW IF EXISTS appmobile.vista_proyectos_lista;
 CREATE OR REPLACE VIEW appmobile.vista_proyectos_lista AS 
 select 
 	row_number() OVER (ORDER BY obra.intcodigoobra)::integer AS id, 
@@ -19,8 +20,8 @@ select
 	obra.strdesclineanegocio nombrecategoria,
 	(select strvalorparametro from configuracion.configuracion_siente where strcodigoparametro='direccionIPContexto')
 	||(select strvalorparametro from configuracion.configuracion_siente where strcodigoparametro='nombreContextoSiente')
-	||obra.strurllogo imagencategoria,
-	obra.strcolor,
+	||split_part(obra.strurllogo,'.svg',1)||'.png' imagencategoria,
+	obra.strcolor colorcategoria,
 	obra.usu_login usuario
 from (
 	select 
