@@ -14,7 +14,7 @@ select
 	actividadobra.numvalorejecutao valor_ejecutado,
 	(case when actividadobra.floatcantplanifao = 0.0 then 0.0 
 	else 100 * actividadobra.floatcantidadejecutao / actividadobra.floatcantplanifao
-	end)::numeric(20,6) porcentaje_avance
+	end)::float porcentaje_avance
 	
 from 
 	actividadobra;
