@@ -39,7 +39,7 @@ public class DatosAlimentacionResponse {
 		c.add(java.util.Calendar.DATE, 1);
 		Date fechaIni2 = c.getTime();
 		c.add(java.util.Calendar.DATE, 7);
-		periodos.add(new PeriodoResponse(1, fechaIni2, c.getTime(), 100.0));
+		periodos.add(new PeriodoResponse(2, fechaIni2, c.getTime(), 100.0));
 		actividades= new ArrayList<>();
 		actividades.add(new ActividadResponse(1, "Actividad 1", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
 		actividades.add(new ActividadResponse(2, "Actividad 2", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
