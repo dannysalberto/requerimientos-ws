@@ -13,6 +13,8 @@ public class AlimentacionRequest {
 	@NotNull
 	@ApiModelProperty(value = "Código del proyecto")
     private Integer codigoproyecto;
+	@ApiModelProperty(value = "Usuario que realiza la alimnetación del proyecto")
+    private String usuario;
 	@ApiModelProperty(value = "Descripción de la alimnetación del proyecto")
     private String descripcion;
 	@NotNull
@@ -30,11 +32,18 @@ public class AlimentacionRequest {
     private List<IndicadorAlcanceRequest> indicadoresAlcance;
 	@ApiModelProperty(value = "Listado de imagenes de la alimnetación del proyecto")
     private List<ImagenRequest> imagenesComplementarias;
+
 	public Integer getCodigoproyecto() {
 		return codigoproyecto;
 	}
 	public void setCodigoproyecto(Integer codigoproyecto) {
 		this.codigoproyecto = codigoproyecto;
+	}	
+	public String getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 	public String getDescripcion() {
 		return descripcion;
