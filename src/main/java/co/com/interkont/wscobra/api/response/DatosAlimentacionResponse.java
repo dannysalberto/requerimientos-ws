@@ -1,6 +1,5 @@
 package co.com.interkont.wscobra.api.response;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,9 +40,9 @@ public class DatosAlimentacionResponse {
 		c.add(java.util.Calendar.DATE, 7);
 		periodos.add(new PeriodoResponse(2, fechaIni2, c.getTime(), 100.0));
 		actividades= new ArrayList<>();
-		actividades.add(new ActividadResponse(1, "Actividad 1", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
-		actividades.add(new ActividadResponse(2, "Actividad 2", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
-		actividades.add(new ActividadResponse(3, "Actividad 3", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
+//		actividades.add(new ActividadResponse(1l, "Actividad 1", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
+//		actividades.add(new ActividadResponse(2l, "Actividad 2", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
+//		actividades.add(new ActividadResponse(3l, "Actividad 3", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
 		
 		indicadoresAlcance = new ArrayList<>();
 		indicadoresAlcance.add(new IndicadorAlcanceResponse(1, "Indicador Alcance 1", "Ml", 10.0, 3.0, 30.0));

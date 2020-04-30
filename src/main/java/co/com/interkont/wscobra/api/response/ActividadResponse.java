@@ -1,7 +1,6 @@
 package co.com.interkont.wscobra.api.response;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class ActividadResponse {
 	
 	@ApiModelProperty(value = "identificador de la actividad")
-	private Integer actividadId;
+	private Long actividadId;
 	@ApiModelProperty(value = "Descripción de la actividad")
 	private String descripcionActividad;
 	@ApiModelProperty(value = "Unidad de medida de la actividad")
@@ -33,7 +32,7 @@ public class ActividadResponse {
 	public ActividadResponse() {
 	}
 
-	public ActividadResponse(Integer actividadId, String descripcionActividad, String unidadMedida,
+	public ActividadResponse(Long actividadId, String descripcionActividad, String unidadMedida,
 			BigDecimal valorUnitario, Double cantidadProgramada, Double cantidadEjecutada, BigDecimal valorProgramado,
 			BigDecimal valorEjecutado, Double porcentajeAvance) {
 		super();
@@ -48,11 +47,11 @@ public class ActividadResponse {
 		this.porcentajeAvance = porcentajeAvance;
 	}
 
-	public Integer getActividadId() {
+	public Long getActividadId() {
 		return actividadId;
 	}
 
-	public void setActividadId(Integer actividadId) {
+	public void setActividadId(Long actividadId) {
 		this.actividadId = actividadId;
 	}
 
