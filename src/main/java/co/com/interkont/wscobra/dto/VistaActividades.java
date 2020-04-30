@@ -7,6 +7,7 @@ package co.com.interkont.wscobra.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +33,8 @@ public class VistaActividades implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
+    @Column(nullable = false)
+    private Integer actividadId;
     private Integer codigoProyecto;
     @Column(length = 100)
     private String descripcionActividad;
@@ -172,6 +175,18 @@ public class VistaActividades implements Serializable {
 
 	public void setPorcentajeAvance(Double porcentajeAvance) {
 		this.porcentajeAvance = porcentajeAvance;
+	}
+
+	
+
+	public Integer getActividadId() {
+		return actividadId;
+	}
+
+
+
+	public void setActividadId(Integer actividadId) {
+		this.actividadId = actividadId;
 	}
 
 
