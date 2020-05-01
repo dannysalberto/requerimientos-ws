@@ -1,7 +1,5 @@
 package co.com.interkont.wscobra.api.response;
 
-import java.util.Date;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,9 +11,9 @@ public class PeriodoResponse {
 	@ApiModelProperty(value = "identificador del periodo")
 	private Integer periodoId;
 	@ApiModelProperty(value = "Fecha inicial del periodo")
-	private Date fechaIniPeriodo;
+	private String fechaIniPeriodo;
 	@ApiModelProperty(value = "Fecha final del periodo")
-	private Date fechaFinPeriodo;
+	private String fechaFinPeriodo;
 	@ApiModelProperty(value = "Porcentaje en el que debería ir el proyecto para este periodo")
 	private Double porcentajeProyectado;
 	
@@ -23,7 +21,7 @@ public class PeriodoResponse {
 	}
 	
 	
-	public PeriodoResponse(Integer periodoid, Date fechaIniPeriodo, Date fechaFinPeriodo, Double porcentajeProyectado) {
+	public PeriodoResponse(Integer periodoid, String fechaIniPeriodo, String fechaFinPeriodo, Double porcentajeProyectado) {
 		super();
 		this.periodoId = periodoid;
 		this.fechaIniPeriodo = fechaIniPeriodo;
@@ -42,22 +40,22 @@ public class PeriodoResponse {
 	}
 
 
-	public Date getFechaIniPeriodo() {
+	public String getFechaIniPeriodo() {
 		return fechaIniPeriodo;
 	}
 
 
-	public void setFechaIniPeriodo(Date fechaIniPeriodo) {
+	public void setFechaIniPeriodo(String fechaIniPeriodo) {
 		this.fechaIniPeriodo = fechaIniPeriodo;
 	}
 
 
-	public Date getFechaFinPeriodo() {
+	public String getFechaFinPeriodo() {
 		return fechaFinPeriodo;
 	}
 
 
-	public void setFechaFinPeriodo(Date fechaFinPeriodo) {
+	public void setFechaFinPeriodo(String fechaFinPeriodo) {
 		this.fechaFinPeriodo = fechaFinPeriodo;
 	}
 
