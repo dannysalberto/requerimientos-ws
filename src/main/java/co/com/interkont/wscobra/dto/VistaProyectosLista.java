@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Jhon Eduard Ortiz
  */
 @Entity
-@Table(name = "vista_proyectos_lista", catalog = "cobracondor", schema = "appmobile")
+@Table(name = "vista_proyectos", catalog = "cobracondor", schema = "appmobile")
 @XmlRootElement
 public class VistaProyectosLista implements Serializable {
     private static final long serialVersionUID = 1L;

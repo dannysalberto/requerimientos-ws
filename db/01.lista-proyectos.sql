@@ -4,8 +4,8 @@ DROP SCHEMA IF EXISTS appmobile CASCADE;
 CREATE SCHEMA appmobile  AUTHORIZATION cobra;
 
 ---------------------------------------- VIEW LISTA DE PROYECTOS
-DROP VIEW IF EXISTS appmobile.vista_proyectos_lista;
-CREATE OR REPLACE VIEW appmobile.vista_proyectos_lista AS 
+DROP VIEW IF EXISTS appmobile.vista_proyectos;
+CREATE OR REPLACE VIEW appmobile.vista_proyectos AS 
 select 
 	row_number() OVER (ORDER BY obra.intcodigoobra)::integer AS id, 
 	obra.intcodigoobra codigoproyecto,
@@ -75,5 +75,5 @@ from (
 	where obra.intestadoobra=1
 ) obra;
 
-ALTER TABLE appmobile.vista_proyectos_lista OWNER TO cobra;
+ALTER TABLE appmobile.vista_proyectos OWNER TO cobra;
 ------------------------------------------------------------------
