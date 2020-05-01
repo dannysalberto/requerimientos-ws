@@ -31,14 +31,8 @@ public class DatosAlimentacionResponse {
 		limitePorcentajeAtraso=7.0;
 		periodos= new ArrayList<>();
 		Date fechaIni1 = new Date();
-		java.util.Calendar c = java.util.Calendar.getInstance();
-		c.setTime(fechaIni1);
-		c.add(java.util.Calendar.DATE, 7);
-		periodos.add(new PeriodoResponse(1, fechaIni1, c.getTime(),50.0));
-		c.add(java.util.Calendar.DATE, 1);
-		Date fechaIni2 = c.getTime();
-		c.add(java.util.Calendar.DATE, 7);
-		periodos.add(new PeriodoResponse(2, fechaIni2, c.getTime(), 100.0));
+		periodos.add(new PeriodoResponse(1, "14.Feb.19", "13.Mar.19",50.0));
+		periodos.add(new PeriodoResponse(2, "14.Mar.19", "13.Abr.19", 100.0));
 		actividades= new ArrayList<>();
 //		actividades.add(new ActividadResponse(1l, "Actividad 1", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
 //		actividades.add(new ActividadResponse(2l, "Actividad 2", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
