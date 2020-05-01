@@ -41,7 +41,6 @@ import co.com.interkont.wscobra.service.ActividadesService;
      consumes="application/json")
 
 public class DatosAlimentacionApi {
-	/*
 	@Autowired
 	ActividadesService actividadesService;
 	
