@@ -15,7 +15,7 @@ public class DatosAlimentacionResponse {
 			+ "\nNota: El porcentajeProyectado se refiere al correspondiente al periodo seleccionado para la alimentación.")
     private Double limitePorcentajeAtraso;
 	@ApiModelProperty(value = "Si ((100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtraso) y (100 - 100 * porcentajeAvance / porcentajeProyectado) <= limitePorcentajeAtrasoAmarillo)) entonces el semáforo será Amarillo; "
-			+ "Si (100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtrasoAmarillo entonces el semáforo de alimentación será Rojo. "
+			+ "\nSi (100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtrasoAmarillo entonces el semáforo de alimentación será Rojo. "
 			+ "\nSemáforo: 0 <= Verde <= limitePorcentajeAtraso < Amarillo <= limitePorcentajeAtrasoAmarillo < Rojo "
 			+ "\nNotas: "
 			+ "\n1. El porcentajeProyectado se refiere correspondiente al periodo seleccionado para la alimentación. ")
