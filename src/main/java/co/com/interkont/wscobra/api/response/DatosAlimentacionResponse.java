@@ -11,14 +11,14 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("DTO-RESPONSE Datos necesarios para efectuar una alimentación")
 public class DatosAlimentacionResponse {
 	@ApiModelProperty(value = "Si (100 - 100 * porcentajeAvance / porcentajeProyectado) <= limitePorcentajeAtraso entonces el semáforo de alimentación será Verde; "
-			+ "Si (100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtraso entonces está atrasado y se debe mostrar la funcionalidad de factores de atraso. "
-			+ "Nota: El porcentajeProyectado se refiere al correspondiente al periodo seleccionado para la alimentación.")
+			+ "\nSi (100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtraso entonces está atrasado y se debe mostrar la funcionalidad de factores de atraso. "
+			+ "\nNota: El porcentajeProyectado se refiere al correspondiente al periodo seleccionado para la alimentación.")
     private Double limitePorcentajeAtraso;
 	@ApiModelProperty(value = "Si ((100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtraso) y (100 - 100 * porcentajeAvance / porcentajeProyectado) <= limitePorcentajeAtrasoAmarillo)) entonces el semáforo será Amarillo; "
 			+ "Si (100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtrasoAmarillo entonces el semáforo de alimentación será Rojo. "
-			+ "Semáforo: 0 <= Verde <= limitePorcentajeAtraso < Amarillo <= limitePorcentajeAtrasoAmarillo < Rojo"
-			+ "Notas: "
-			+ "1. El porcentajeProyectado se refiere correspondiente al periodo seleccionado para la alimentación. ")
+			+ "\nSemáforo: 0 <= Verde <= limitePorcentajeAtraso < Amarillo <= limitePorcentajeAtrasoAmarillo < Rojo "
+			+ "\nNotas: "
+			+ "\n1. El porcentajeProyectado se refiere correspondiente al periodo seleccionado para la alimentación. ")
     private Double limitePorcentajeAtrasoAmarillo;
 	@ApiModelProperty(value = "Listado de periodos")
 	private List<PeriodoResponse> periodos;
