@@ -1,7 +1,6 @@
 package co.com.interkont.wscobra.api.response;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
@@ -11,9 +10,14 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("DTO-RESPONSE Datos necesarios para efectuar una alimentación")
 public class DatosAlimentacionResponse {
-	
-	@ApiModelProperty(value = "Si (100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtraso  entonces está atrasado")
+	@ApiModelProperty(value = "Si (100 - 100 * porcentajeAvance / porcentajeProyectado) <= limitePorcentajeAtraso entonces el semáforo de alimentación será Verde; "
+			+ "Si (100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtraso entonces está atrasado y se debe mostrar la funcionalidad de factores de atraso. "
+			+ "Nota: El porcentajeProyectado se refiere al correspondiente al periodo seleccionado para la alimentación.")
     private Double limitePorcentajeAtraso;
+	@ApiModelProperty(value = "Si ((100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtraso) y (100 - 100 * porcentajeAvance / porcentajeProyectado) <= limitePorcentajeAtrasoAmarillo)) entonces el semáforo será Amarillo; "
+			+ "Si (100 - 100 * porcentajeAvance / porcentajeProyectado) > limitePorcentajeAtrasoAmarillo entonces el semáforo de alimentación será Rojo. "
+			+ "Notas: 1. El porcentajeProyectado se refiere correspondiente al periodo seleccionado para la alimentación.")
+    private Double limitePorcentajeAtrasoAmarillo;
 	@ApiModelProperty(value = "Listado de periodos")
 	private List<PeriodoResponse> periodos;
 	@ApiModelProperty(value = "Listado de actividades")
@@ -29,8 +33,8 @@ public class DatosAlimentacionResponse {
 	
 	public void mock() {
 		limitePorcentajeAtraso=7.0;
+		limitePorcentajeAtrasoAmarillo=20.0;
 		periodos= new ArrayList<>();
-		Date fechaIni1 = new Date();
 		periodos.add(new PeriodoResponse(1, "14.Feb.19", "13.Mar.19",50.0));
 		periodos.add(new PeriodoResponse(2, "14.Mar.19", "13.Abr.19", 100.0));
 		actividades= new ArrayList<>();
@@ -202,7 +206,12 @@ public class DatosAlimentacionResponse {
 	public void setFactoresAtraso(List<FactorAtrasoResponse> factoresAtraso) {
 		this.factoresAtraso = factoresAtraso;
 	}
-	
-	
-	
+
+	public Double getLimitePorcentajeAtrasoAmarillo() {
+		return limitePorcentajeAtrasoAmarillo;
+	}
+
+	public void setLimitePorcentajeAtrasoAmarillo(Double limitePorcentajeAtrasoAmarillo) {
+		this.limitePorcentajeAtrasoAmarillo = limitePorcentajeAtrasoAmarillo;
+	}
 }
