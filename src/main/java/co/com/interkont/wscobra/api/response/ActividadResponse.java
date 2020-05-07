@@ -28,6 +28,12 @@ public class ActividadResponse {
 	private BigDecimal valorEjecutado;
 	@ApiModelProperty(value = "Porcentaje de avance de la actividad")
 	private Double porcentajeAvance;
+	@ApiModelProperty(value = "Cantidad ejecutada de la actividad antes de iniciar la alimentación")
+	private Double cantidadEjecutadaInicial;
+	@ApiModelProperty(value = "Valor ejecutado de la actividad antes de iniciar la alimentación")
+	private BigDecimal valorEjecutadoInicial;
+	@ApiModelProperty(value = "Porcentaje de avance de la actividad antes de iniciar la alimentación")
+	private Double porcentajeAvanceInicial;
 	
 	public ActividadResponse() {
 	}
@@ -45,6 +51,10 @@ public class ActividadResponse {
 		this.valorProgramado = valorProgramado;
 		this.valorEjecutado = valorEjecutado;
 		this.porcentajeAvance = porcentajeAvance;
+		
+		this.cantidadEjecutadaInicial = cantidadEjecutada;
+		this.valorEjecutadoInicial = valorEjecutado;
+		this.porcentajeAvanceInicial = porcentajeAvance;
 	}
 
 	public Long getActividadId() {
@@ -117,6 +127,30 @@ public class ActividadResponse {
 
 	public void setPorcentajeAvance(Double porcentajeAvance) {
 		this.porcentajeAvance = porcentajeAvance;
+	}
+
+	public Double getCantidadEjecutadaInicial() {
+		return cantidadEjecutadaInicial;
+	}
+
+	public void setCantidadEjecutadaInicial(Double cantidadEjecutadaInicial) {
+		this.cantidadEjecutadaInicial = cantidadEjecutadaInicial;
+	}
+
+	public BigDecimal getValorEjecutadoInicial() {
+		return valorEjecutadoInicial;
+	}
+
+	public void setValorEjecutadoInicial(BigDecimal valorEjecutadoInicial) {
+		this.valorEjecutadoInicial = valorEjecutadoInicial;
+	}
+
+	public Double getPorcentajeAvanceInicial() {
+		return porcentajeAvanceInicial;
+	}
+
+	public void setPorcentajeAvanceInicial(Double porcentajeAvanceInicial) {
+		this.porcentajeAvanceInicial = porcentajeAvanceInicial;
 	}
 	
 }
