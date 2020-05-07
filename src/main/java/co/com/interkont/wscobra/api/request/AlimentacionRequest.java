@@ -13,6 +13,8 @@ public class AlimentacionRequest {
 	@NotNull
 	@ApiModelProperty(value = "Código del proyecto")
     private Integer codigoproyecto;
+	@ApiModelProperty(value = "Código del periodo de alimentación")
+    private Integer periodoId;
 	@ApiModelProperty(value = "Usuario que realiza la alimnetación del proyecto")
     private String usuario;
 	@ApiModelProperty(value = "Descripción de la alimnetación del proyecto")
@@ -87,6 +89,11 @@ public class AlimentacionRequest {
 	public void setImagenesComplementarias(List<ImagenRequest> imagenesComplementarias) {
 		this.imagenesComplementarias = imagenesComplementarias;
 	}
-	
+	public Integer getPeriodoId() {
+		return periodoId;
+	}
+	public void setPeriodoId(Integer periodoId) {
+		this.periodoId = periodoId;
+	}
 	
 }
