@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("AlimentacionResponse DTO-RESPONSE Mensaje de respuesta después de una alimentación")
 public class AlimentacionResponse {
 
-	@ApiModelProperty(value = "Estado de la acutalización:(1=Exitoso) || (0=Error)")
+	@ApiModelProperty(value = "Estado de la acutalización:(0=Exitoso) || (1=Error)")
     private Integer status;
 	@ApiModelProperty(value = "Listado de mensajes")
 	private List<MensajeResponse> mensajes;
