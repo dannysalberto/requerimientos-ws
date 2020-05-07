@@ -103,6 +103,7 @@ public class ActividadResponse {
 
 	public void setCantidadEjecutada(Double cantidadEjecutada) {
 		this.cantidadEjecutada = cantidadEjecutada;
+		this.cantidadEjecutadaInicial = cantidadEjecutada;
 	}
 
 	public BigDecimal getValorProgramado() {
@@ -119,6 +120,7 @@ public class ActividadResponse {
 
 	public void setValorEjecutado(BigDecimal valorEjecutado) {
 		this.valorEjecutado = valorEjecutado;
+		this.valorEjecutadoInicial = valorEjecutado;
 	}
 
 	public Double getPorcentajeAvance() {
@@ -127,6 +129,7 @@ public class ActividadResponse {
 
 	public void setPorcentajeAvance(Double porcentajeAvance) {
 		this.porcentajeAvance = porcentajeAvance;
+		this.porcentajeAvanceInicial = porcentajeAvance;
 	}
 
 	public Double getCantidadEjecutadaInicial() {
