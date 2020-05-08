@@ -1,8 +1,5 @@
 package co.com.interkont.wscobra.api.response;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -23,6 +20,10 @@ public class IndicadorAlcanceResponse {
 	private Double cantidadEjecutada;
 	@ApiModelProperty(value = "Porcentaje de avance de la actividad")
 	private Double porcentajeAvance;
+	@ApiModelProperty(value = "Cantidad ejecutada de la actividad antes de iniciar la alimentación")
+	private Double cantidadEjecutadaInicial;
+	@ApiModelProperty(value = "Porcentaje de avance de la actividad antes de iniciar la alimentación")
+	private Double porcentajeAvanceInicial;
 	
 	public IndicadorAlcanceResponse() {
 	}
@@ -36,6 +37,8 @@ public class IndicadorAlcanceResponse {
 		this.cantidadProgramada = cantidadProgramada;
 		this.cantidadEjecutada = cantidadEjecutada;
 		this.porcentajeAvance = porcentajeAvance;
+		this.cantidadEjecutadaInicial = cantidadEjecutada;
+		this.porcentajeAvanceInicial = porcentajeAvance;
 	}
 
 
@@ -87,5 +90,23 @@ public class IndicadorAlcanceResponse {
 	public void setPorcentajeAvance(Double porcentajeAvance) {
 		this.porcentajeAvance = porcentajeAvance;
 	}
+
+	public Double getCantidadEjecutadaInicial() {
+		return cantidadEjecutadaInicial;
+	}
+
+	public void setCantidadEjecutadaInicial(Double cantidadEjecutadaInicial) {
+		this.cantidadEjecutadaInicial = cantidadEjecutadaInicial;
+	}
+
+	public Double getPorcentajeAvanceInicial() {
+		return porcentajeAvanceInicial;
+	}
+
+	public void setPorcentajeAvanceInicial(Double porcentajeAvanceInicial) {
+		this.porcentajeAvanceInicial = porcentajeAvanceInicial;
+	}
+	
+	
 	
 }
