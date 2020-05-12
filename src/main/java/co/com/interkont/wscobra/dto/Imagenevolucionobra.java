@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import co.com.interkont.wscobra.auth.pojo.JsfUsuario;
 
@@ -74,7 +75,8 @@ public class Imagenevolucionobra  implements java.io.Serializable {
     }
    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name="imagenevolucionobraGenericGenerator" , strategy="increment")
+    @GeneratedValue(generator="imagenevolucionobraGenericGenerator")
     @Column(name="intidimagen", unique=true, nullable=false)
     public int getIntidimagen() {
         return this.intidimagen;
