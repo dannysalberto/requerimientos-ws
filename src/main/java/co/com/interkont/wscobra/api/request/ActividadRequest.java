@@ -1,7 +1,5 @@
 package co.com.interkont.wscobra.api.request;
 
-import java.math.BigDecimal;
-
 import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
@@ -14,7 +12,7 @@ public class ActividadRequest {
 	@ApiModelProperty(value = "identificador de la actividad")
 	private Integer actividadId;	
 	@ApiModelProperty(value = "Cantidad ejecutado de la actividad")
-	private BigDecimal cantidadEjecutada;
+	private Double cantidadEjecutada;
 	
 	public Integer getActividadId() {
 		return actividadId;
@@ -22,12 +20,10 @@ public class ActividadRequest {
 	public void setActividadId(Integer actividadId) {
 		this.actividadId = actividadId;
 	}
-	public BigDecimal getCantidadEjecutada() {
+	public Double getCantidadEjecutada() {
 		return cantidadEjecutada;
 	}
-	public void setCantidadEjecutada(BigDecimal cantidadEjecutada) {
+	public void setCantidadEjecutada(Double cantidadEjecutada) {
 		this.cantidadEjecutada = cantidadEjecutada;
 	}
-	
-	
 }

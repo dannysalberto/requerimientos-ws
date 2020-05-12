@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("AspectosEvaluarRequest DTO-REQUEST (Objeto para el request de un aspecto a evaluar)")
-public class AspectosEvaluarRequest {
+public class AspectoEvaluarRequest {
 	
 	@NotNull
 	@ApiModelProperty(value = "Identificador del aspecto a evaluar")

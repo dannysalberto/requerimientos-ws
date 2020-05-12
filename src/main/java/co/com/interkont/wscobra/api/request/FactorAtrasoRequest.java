@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("FactoresAtrasoRequest DTO-REQUEST (Objeto para el request de un factor de atraso)")
-public class FactoresAtrasoRequest {
+public class FactorAtrasoRequest {
 
 	@NotNull
 	@ApiModelProperty(value = "Identificador del factor de atraso")

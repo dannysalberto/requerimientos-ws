@@ -26,9 +26,9 @@ public class AlimentacionRequest {
 	@ApiModelProperty(value = "Listado de actividades de la alimnetación del proyecto")
     private List<ActividadRequest> actividades;	
 	@ApiModelProperty(value = "Listado de ascpectos a evaluar de la alimnetación del proyecto")
-    private List<AspectosEvaluarRequest> aspectosEvaluar;
+    private List<AspectoEvaluarRequest> aspectosEvaluar;
 	@ApiModelProperty(value = "Listado de factores de atraso de la alimnetación del proyecto")
-    private List<FactoresAtrasoRequest> factoresAtraso;
+    private List<FactorAtrasoRequest> factoresAtraso;
 	@NotNull
 	@ApiModelProperty(value = "Listado de indicadores de alcance de la alimnetación del proyecto")
     private List<IndicadorAlcanceRequest> indicadoresAlcance;
@@ -65,16 +65,16 @@ public class AlimentacionRequest {
 	public void setActividades(List<ActividadRequest> actividades) {
 		this.actividades = actividades;
 	}
-	public List<AspectosEvaluarRequest> getAspectosEvaluar() {
+	public List<AspectoEvaluarRequest> getAspectosEvaluar() {
 		return aspectosEvaluar;
 	}
-	public void setAspectosEvaluar(List<AspectosEvaluarRequest> aspectosEvaluar) {
+	public void setAspectosEvaluar(List<AspectoEvaluarRequest> aspectosEvaluar) {
 		this.aspectosEvaluar = aspectosEvaluar;
 	}
-	public List<FactoresAtrasoRequest> getFactoresAtraso() {
+	public List<FactorAtrasoRequest> getFactoresAtraso() {
 		return factoresAtraso;
 	}
-	public void setFactoresAtraso(List<FactoresAtrasoRequest> factoresAtraso) {
+	public void setFactoresAtraso(List<FactorAtrasoRequest> factoresAtraso) {
 		this.factoresAtraso = factoresAtraso;
 	}
 	public List<IndicadorAlcanceRequest> getIndicadoresAlcance() {

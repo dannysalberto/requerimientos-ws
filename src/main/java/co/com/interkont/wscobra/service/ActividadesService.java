@@ -18,6 +18,10 @@ public class ActividadesService {
 	
 	public List<VistaActividades> findByCodigoProyecto(Integer codigoProyecto){
 		return actividadesDAO.findByCodigoProyecto(codigoProyecto);		
-	}	
+	}
+	
+	public VistaActividades findById(Integer id){
+		return actividadesDAO.findById(id).get();		
+	}
 
 }

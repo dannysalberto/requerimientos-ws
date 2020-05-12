@@ -14,11 +14,11 @@ import co.com.interkont.wscobra.dto.VistaProyectosLista;
 public class ProyectosListaService {
 	
 	@Autowired
-	ProyectosListaRepository proyectoslistaDAO;
+	ProyectosListaRepository proyectosListaRepository;
 	
 	
 	public List<VistaProyectosLista> findByUsuario(ProyectosListaRequest proyectosListaRequest){
-		return proyectoslistaDAO.findByUsuario(proyectosListaRequest.getUsuario());		
+		return proyectosListaRepository.findByUsuario(proyectosListaRequest.getUsuario());		
 	}	
 
 }

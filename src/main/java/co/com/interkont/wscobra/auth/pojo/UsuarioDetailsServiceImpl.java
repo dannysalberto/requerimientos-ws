@@ -11,17 +11,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import co.com.interkont.wscobra.service.JsfUsuariosService;
+
 @Service
 public class UsuarioDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private JsfUsuarioRepository jsfUsuarioDAO;
+	private JsfUsuariosService jsfUsuariosService;
 
 
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		JsfUsuario usuario = jsfUsuarioDAO.findByUsuLogin(username);
+		JsfUsuario usuario = jsfUsuariosService.findByUsuLogin(username);
 		if (usuario == null) {
 			throw new UsernameNotFoundException(username);
 		}
