@@ -121,7 +121,8 @@ public class DatosAlimentacionApi {
 			alimentacion.setJsfUsuarioByIntusuAlimenta(jsfUsuariosService.findByUsuLogin(alimentacionRequest.getUsuario()));
 			alimentacion.setObra(new Obra(alimentacionRequest.getCodigoproyecto()));
 			alimentacion.setTextcomentario(alimentacionRequest.getDescripcion());
-			
+			//TODO Probablemente sea necesario calcular el siguiente dato para efectuar la alimentación
+			alimentacion.setNumtotalproyacu(BigDecimal.ZERO);
 			BigDecimal valorEjecutadoAlimentacion = BigDecimal.ZERO;
 			for (ActividadRequest actividadRequest: alimentacionRequest.getActividades()) {
 				VistaActividades vistaActividades = actividadesService.findByActividadId(actividadRequest.getActividadId());
