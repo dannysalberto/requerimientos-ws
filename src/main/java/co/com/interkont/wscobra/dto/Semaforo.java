@@ -35,9 +35,16 @@ public class Semaforo  implements java.io.Serializable {
 
     public Semaforo() {
     }
+    
+    public Semaforo(int intidsemaforo) {
+		super();
+		this.intidsemaforo = intidsemaforo;
+	}
 
-	
-    public Semaforo(int intidsemaforo, int intporini, int intporfin, String strimagen, boolean booleanatraso, int intidalarma) {
+
+
+
+	public Semaforo(int intidsemaforo, int intporini, int intporfin, String strimagen, boolean booleanatraso, int intidalarma) {
         this.intidsemaforo = intidsemaforo;
         this.intporini = intporini;
         this.intporfin = intporfin;

@@ -45,6 +45,7 @@ import co.com.interkont.wscobra.dto.Relacionalimentacionactividad;
 import co.com.interkont.wscobra.dto.Relacionalimentacionfactoratraso;
 import co.com.interkont.wscobra.dto.RelacionalimentacionfactoratrasoId;
 import co.com.interkont.wscobra.dto.Relacionindicadordetalleobra;
+import co.com.interkont.wscobra.dto.Semaforo;
 /**
  * imports RESPONSE
  */
@@ -123,6 +124,8 @@ public class DatosAlimentacionApi {
 			alimentacion.setTextcomentario(alimentacionRequest.getDescripcion());
 			//TODO Probablemente sea necesario calcular el siguiente dato para efectuar la alimentación
 			alimentacion.setNumtotalproyacu(BigDecimal.ZERO);
+			//TODO Implementar lógica del semáforo
+			alimentacion.setSemaforo(new Semaforo(1));
 			BigDecimal valorEjecutadoAlimentacion = BigDecimal.ZERO;
 			for (ActividadRequest actividadRequest: alimentacionRequest.getActividades()) {
 				VistaActividades vistaActividades = actividadesService.findByActividadId(actividadRequest.getActividadId());
