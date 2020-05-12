@@ -13,4 +13,6 @@ public interface ActividadesRepository extends JpaRepository<VistaActividades, I
 	
 	public List<VistaActividades> findByCodigoProyecto(Integer codigoProyecto);
 	
+	public VistaActividades findByActividadId(Long id);
+	
 }

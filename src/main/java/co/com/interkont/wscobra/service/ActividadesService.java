@@ -13,15 +13,15 @@ import co.com.interkont.wscobra.dto.VistaActividades;
 public class ActividadesService {
 	
 	@Autowired
-	ActividadesRepository actividadesDAO;
+	ActividadesRepository actividadesRepository;
 	
 	
 	public List<VistaActividades> findByCodigoProyecto(Integer codigoProyecto){
-		return actividadesDAO.findByCodigoProyecto(codigoProyecto);		
+		return actividadesRepository.findByCodigoProyecto(codigoProyecto);		
 	}
 	
-	public VistaActividades findById(Integer id){
-		return actividadesDAO.findById(id).get();		
+	public VistaActividades findByActividadId(Long id){
+		return actividadesRepository.findByActividadId(id);		
 	}
 
 }

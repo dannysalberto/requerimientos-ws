@@ -10,14 +10,14 @@ public class ActividadRequest {
 
 	@NotNull
 	@ApiModelProperty(value = "identificador de la actividad")
-	private Integer actividadId;	
+	private Long actividadId;	
 	@ApiModelProperty(value = "Cantidad ejecutado de la actividad")
 	private Double cantidadEjecutada;
 	
-	public Integer getActividadId() {
+	public Long getActividadId() {
 		return actividadId;
 	}
-	public void setActividadId(Integer actividadId) {
+	public void setActividadId(Long actividadId) {
 		this.actividadId = actividadId;
 	}
 	public Double getCantidadEjecutada() {

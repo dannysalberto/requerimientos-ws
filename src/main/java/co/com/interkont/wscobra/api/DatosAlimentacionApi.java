@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.logging.log4j.Logger;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -125,7 +124,7 @@ public class DatosAlimentacionApi {
 			
 			BigDecimal valorEjecutadoAlimentacion = BigDecimal.ZERO;
 			for (ActividadRequest actividadRequest: alimentacionRequest.getActividades()) {
-				VistaActividades vistaActividades = actividadesService.findById(actividadRequest.getActividadId());
+				VistaActividades vistaActividades = actividadesService.findByActividadId(actividadRequest.getActividadId());
 				Relacionalimentacionactividad relacionalimentacionactividad = new Relacionalimentacionactividad();
 				relacionalimentacionactividad.setAlimentacion(alimentacion);
 				relacionalimentacionactividad.setFloatcantejec(actividadRequest.getCantidadEjecutada());
