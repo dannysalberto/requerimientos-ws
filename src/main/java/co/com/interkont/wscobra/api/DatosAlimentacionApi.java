@@ -107,76 +107,81 @@ public class DatosAlimentacionApi {
 	@RequestMapping(value="/guardar-alimentacion", method=RequestMethod.POST)
 	@ApiOperation(value = "Guardar alimentación de un proyecto.")
 	public AlimentacionResponse getGuardarAlimentacion(@RequestBody AlimentacionRequest alimentacionRequest){
-		Obra obra = obrasService.findById(alimentacionRequest.getCodigoproyecto());
-		List<Relacionindicadordetalleobra> relacionindicadordetalleobras = relacionesindicadordetalleobraService.findByObra(obra);
-		Alimentacion alimentacion = new Alimentacion();
-		
-		alimentacion.setAprobado(false);
-		alimentacion.setDatefecha(periodosService.findById(alimentacionRequest.getPeriodoId()).getDatefecfinperiodo());
-		alimentacion.setDatefechaalimen(new Date());
-		alimentacion.setJsfUsuarioByIntusuAlimenta(jsfUsuariosService.findByUsuLogin(alimentacionRequest.getUsuario()));
-		alimentacion.setObra(new Obra(alimentacionRequest.getCodigoproyecto()));
-		alimentacion.setTextcomentario(alimentacionRequest.getDescripcion());
-		
-		BigDecimal valorEjecutadoAlimentacion = BigDecimal.ZERO;
-		for (ActividadRequest actividadRequest: alimentacionRequest.getActividades()) {
-			VistaActividades vistaActividades = actividadesService.findById(actividadRequest.getActividadId());
-			Relacionalimentacionactividad relacionalimentacionactividad = new Relacionalimentacionactividad();
-			relacionalimentacionactividad.setAlimentacion(alimentacion);
-			relacionalimentacionactividad.setFloatcantejec(actividadRequest.getCantidadEjecutada());
-			relacionalimentacionactividad.setActividadobra(new Actividadobra(actividadRequest.getActividadId()));
-			BigDecimal valorEjecutado = vistaActividades.getValorUnitario().multiply(BigDecimal.valueOf(actividadRequest.getCantidadEjecutada()));
-			relacionalimentacionactividad.setNumvalejec(vistaActividades.getValorEjecutado().add(valorEjecutado));
-			valorEjecutadoAlimentacion = valorEjecutadoAlimentacion.add(valorEjecutado);
-			alimentacion.getRelacionalimentacionactividads().add(relacionalimentacionactividad);
-		}
-		alimentacion.setNumtotalejec(valorEjecutadoAlimentacion);
-		alimentacion.setNumtotalejecacu(obra.getNumvalejecobra().add(valorEjecutadoAlimentacion));
-		
-		for (AspectoEvaluarRequest aspectoEvaluarRequest: alimentacionRequest.getAspectosEvaluar()) {
-			Alimentacioncualificacion alimentacioncualificacion = new Alimentacioncualificacion();
-			alimentacioncualificacion.setAlimentacion(alimentacion);
-			alimentacioncualificacion.setIntidtipocualificacion(aspectoEvaluarRequest.getAspectoEvaluarId());
-			alimentacioncualificacion.setStrdificultad(aspectoEvaluarRequest.getDificultadesAspectoEvaluar());
-			alimentacioncualificacion.setStrlogro(aspectoEvaluarRequest.getLogrosAspectoEvaluar());
-			alimentacion.getAlimentacioncualificacions().add(alimentacioncualificacion);
-		}
-		
-		for (FactorAtrasoRequest factorAtrasoRequest : alimentacionRequest.getFactoresAtraso()) {
-			Relacionalimentacionfactoratraso relacionalimentacionfactoratraso = new Relacionalimentacionfactoratraso();
-			relacionalimentacionfactoratraso.setId(new RelacionalimentacionfactoratrasoId(factorAtrasoRequest.getFactorAtrasoId(),alimentacion.getIntidalimenta()));
-			relacionalimentacionfactoratraso.setAlimentacion(alimentacion);
-		}
-		
-		for (IndicadorAlcanceRequest indicadorAlcanceRequest : alimentacionRequest.getIndicadoresAlcance()) {
-			for (Relacionindicadordetalleobra relacionindicadordetalleobra: relacionindicadordetalleobras) {
-				if (relacionindicadordetalleobra.getIntidindicadortipodet() == indicadorAlcanceRequest.getIndicadorAlcanceId()) {
-					relacionindicadordetalleobra.setStrvalorejecutado(relacionindicadordetalleobra.getStrvalorejecutado().add(indicadorAlcanceRequest.getCantidadEjecucion()));
+		AlimentacionResponse response = new AlimentacionResponse();
+		try {
+			Obra obra = obrasService.findById(alimentacionRequest.getCodigoproyecto());
+			List<Relacionindicadordetalleobra> relacionindicadordetalleobras = relacionesindicadordetalleobraService.findByObra(obra);
+			Alimentacion alimentacion = new Alimentacion();
+			
+			alimentacion.setAprobado(false);
+			alimentacion.setDatefecha(periodosService.findById(alimentacionRequest.getPeriodoId()).getDatefecfinperiodo());
+			alimentacion.setDatefechaalimen(new Date());
+			alimentacion.setJsfUsuarioByIntusuAlimenta(jsfUsuariosService.findByUsuLogin(alimentacionRequest.getUsuario()));
+			alimentacion.setObra(new Obra(alimentacionRequest.getCodigoproyecto()));
+			alimentacion.setTextcomentario(alimentacionRequest.getDescripcion());
+			
+			BigDecimal valorEjecutadoAlimentacion = BigDecimal.ZERO;
+			for (ActividadRequest actividadRequest: alimentacionRequest.getActividades()) {
+				VistaActividades vistaActividades = actividadesService.findById(actividadRequest.getActividadId());
+				Relacionalimentacionactividad relacionalimentacionactividad = new Relacionalimentacionactividad();
+				relacionalimentacionactividad.setAlimentacion(alimentacion);
+				relacionalimentacionactividad.setFloatcantejec(actividadRequest.getCantidadEjecutada());
+				relacionalimentacionactividad.setActividadobra(new Actividadobra(actividadRequest.getActividadId()));
+				BigDecimal valorEjecutado = vistaActividades.getValorUnitario().multiply(BigDecimal.valueOf(actividadRequest.getCantidadEjecutada()));
+				relacionalimentacionactividad.setNumvalejec(vistaActividades.getValorEjecutado().add(valorEjecutado));
+				valorEjecutadoAlimentacion = valorEjecutadoAlimentacion.add(valorEjecutado);
+				alimentacion.getRelacionalimentacionactividads().add(relacionalimentacionactividad);
+			}
+			alimentacion.setNumtotalejec(valorEjecutadoAlimentacion);
+			alimentacion.setNumtotalejecacu(obra.getNumvalejecobra().add(valorEjecutadoAlimentacion));
+			
+			for (AspectoEvaluarRequest aspectoEvaluarRequest: alimentacionRequest.getAspectosEvaluar()) {
+				Alimentacioncualificacion alimentacioncualificacion = new Alimentacioncualificacion();
+				alimentacioncualificacion.setAlimentacion(alimentacion);
+				alimentacioncualificacion.setIntidtipocualificacion(aspectoEvaluarRequest.getAspectoEvaluarId());
+				alimentacioncualificacion.setStrdificultad(aspectoEvaluarRequest.getDificultadesAspectoEvaluar());
+				alimentacioncualificacion.setStrlogro(aspectoEvaluarRequest.getLogrosAspectoEvaluar());
+				alimentacion.getAlimentacioncualificacions().add(alimentacioncualificacion);
+			}
+			
+			for (FactorAtrasoRequest factorAtrasoRequest : alimentacionRequest.getFactoresAtraso()) {
+				Relacionalimentacionfactoratraso relacionalimentacionfactoratraso = new Relacionalimentacionfactoratraso();
+				relacionalimentacionfactoratraso.setId(new RelacionalimentacionfactoratrasoId(factorAtrasoRequest.getFactorAtrasoId(),alimentacion.getIntidalimenta()));
+				relacionalimentacionfactoratraso.setAlimentacion(alimentacion);
+			}
+			
+			for (IndicadorAlcanceRequest indicadorAlcanceRequest : alimentacionRequest.getIndicadoresAlcance()) {
+				for (Relacionindicadordetalleobra relacionindicadordetalleobra: relacionindicadordetalleobras) {
+					if (relacionindicadordetalleobra.getIntidindicadortipodet() == indicadorAlcanceRequest.getIndicadorAlcanceId()) {
+						relacionindicadordetalleobra.setStrvalorejecutado(relacionindicadordetalleobra.getStrvalorejecutado().add(indicadorAlcanceRequest.getCantidadEjecucion()));
+					}
 				}
 			}
-		}
-		
-		for (ImagenRequest imagenRequest : alimentacionRequest.getImagenesComplementarias()) {
-			Imagenevolucionobra imagenevolucionobra = new Imagenevolucionobra();
 			
-		}
-		
-		alimentacionesService.save(alimentacion);
-		relacionesindicadordetalleobraService.saveAll(relacionindicadordetalleobras);
-		
-		
-		AlimentacionResponse response = new AlimentacionResponse();
-		if(alimentacionRequest.getCodigoproyecto() == -1) {
-			response.setStatus(0);
+			for (ImagenRequest imagenRequest : alimentacionRequest.getImagenesComplementarias()) {
+				Imagenevolucionobra imagenevolucionobra = new Imagenevolucionobra();
+				
+			}
+			
+			alimentacionesService.save(alimentacion);
+			relacionesindicadordetalleobraService.saveAll(relacionindicadordetalleobras);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(1);
 			List<MensajeResponse> mensajes = new ArrayList<MensajeResponse>();
 			mensajes.add(new MensajeResponse("Este periodo ya fue raportado"));
 			mensajes.add(new MensajeResponse("Debes justificar el factor de atraso"));
-			mensajes.add(new MensajeResponse("Debes subir al menos una foto"));			
+			mensajes.add(new MensajeResponse("Debes subir al menos una foto"));
+			mensajes.add(new MensajeResponse(e.getMessage()));
 			response.setMensajes(mensajes);
 			return response;
 		}
-		
-		response.setStatus(1);
+		response.setStatus(0);
+		List<MensajeResponse> mensajes = new ArrayList<MensajeResponse>();
+		mensajes.add(new MensajeResponse("¡Felicitaciones!"));
+		mensajes.add(new MensajeResponse("Tu proyecto ha sido actualizado exitosamente."));
+		response.setMensajes(mensajes);
 		return response;
 	}
 	
