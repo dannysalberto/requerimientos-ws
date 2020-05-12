@@ -46,7 +46,7 @@ public class JsfUsuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "usu_id", nullable = false)
-    private Integer usuId;
+    private Long usuId;
     @Basic(optional = false)
     @Column(name = "usu_login", nullable = false, length = 255)
     private String usuLogin;
@@ -74,22 +74,22 @@ public class JsfUsuario implements Serializable {
     public JsfUsuario() {
     }
 
-    public JsfUsuario(Integer usuId) {
+    public JsfUsuario(Long usuId) {
         this.usuId = usuId;
     }
 
-    public JsfUsuario(Integer usuId, String usuLogin, boolean relacioncontrato, boolean ldap) {
+    public JsfUsuario(Long usuId, String usuLogin, boolean relacioncontrato, boolean ldap) {
         this.usuId = usuId;
         this.usuLogin = usuLogin;
         this.relacioncontrato = relacioncontrato;
         this.ldap = ldap;
     }
 
-    public Integer getUsuId() {
+    public Long getUsuId() {
         return usuId;
     }
 
-    public void setUsuId(Integer usuId) {
+    public void setUsuId(Long usuId) {
         this.usuId = usuId;
     }
 
