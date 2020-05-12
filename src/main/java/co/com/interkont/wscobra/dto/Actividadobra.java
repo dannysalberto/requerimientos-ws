@@ -128,7 +128,7 @@ public class Actividadobra  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="intcedula", nullable=false, columnDefinition="bigint")
+    @JoinColumn(name="intcedula", nullable=false, columnDefinition="int8")
     public JsfUsuario getJsfUsuario() {
         return this.jsfUsuario;
     }
