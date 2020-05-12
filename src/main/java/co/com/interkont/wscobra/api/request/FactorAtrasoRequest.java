@@ -19,7 +19,10 @@ public class FactorAtrasoRequest {
 	public void setFactorAtrasoId(Integer factorAtrasoId) {
 		this.factorAtrasoId = factorAtrasoId;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "FactorAtrasoRequest [factorAtrasoId=" + factorAtrasoId + "]";
+	}
 	
 }

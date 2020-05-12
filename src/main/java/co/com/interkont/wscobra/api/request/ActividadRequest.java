@@ -26,4 +26,11 @@ public class ActividadRequest {
 	public void setCantidadEjecutada(Double cantidadEjecutada) {
 		this.cantidadEjecutada = cantidadEjecutada;
 	}
+	
+	@Override
+	public String toString() {
+		return "ActividadRequest [actividadId=" + actividadId + ", cantidadEjecutada=" + cantidadEjecutada + "]";
+	}
+	
+	
 }

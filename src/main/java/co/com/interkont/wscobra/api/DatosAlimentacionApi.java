@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.Logger;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -107,7 +108,9 @@ public class DatosAlimentacionApi {
 	@RequestMapping(value="/guardar-alimentacion", method=RequestMethod.POST)
 	@ApiOperation(value = "Guardar alimentación de un proyecto.")
 	public AlimentacionResponse getGuardarAlimentacion(@RequestBody AlimentacionRequest alimentacionRequest){
+		System.out.println(alimentacionRequest);
 		AlimentacionResponse response = new AlimentacionResponse();
+		
 		try {
 			Obra obra = obrasService.findById(alimentacionRequest.getCodigoproyecto());
 			List<Relacionindicadordetalleobra> relacionindicadordetalleobras = relacionesindicadordetalleobraService.findByObra(obra);

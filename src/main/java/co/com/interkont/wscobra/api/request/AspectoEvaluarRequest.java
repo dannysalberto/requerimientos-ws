@@ -34,6 +34,12 @@ public class AspectoEvaluarRequest {
 	public void setDificultadesAspectoEvaluar(String dificultadesAspectoEvaluar) {
 		this.dificultadesAspectoEvaluar = dificultadesAspectoEvaluar;
 	}
+	
+	@Override
+	public String toString() {
+		return "AspectoEvaluarRequest [aspectoEvaluarId=" + aspectoEvaluarId + ", logrosAspectoEvaluar="
+				+ logrosAspectoEvaluar + ", dificultadesAspectoEvaluar=" + dificultadesAspectoEvaluar + "]";
+	}
 
 	
 }

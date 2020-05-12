@@ -96,4 +96,13 @@ public class AlimentacionRequest {
 		this.periodoId = periodoId;
 	}
 	
+	@Override
+	public String toString() {
+		return "AlimentacionRequest [codigoproyecto=" + codigoproyecto + ", periodoId=" + periodoId + ", usuario="
+				+ usuario + ", descripcion=" + descripcion + ", fotoPrincipal=" + fotoPrincipal + ", actividades="
+				+ actividades + ", aspectosEvaluar=" + aspectosEvaluar + ", factoresAtraso=" + factoresAtraso
+				+ ", indicadoresAlcance=" + indicadoresAlcance + ", imagenesComplementarias=" + imagenesComplementarias
+				+ "]";
+	}
+	
 }

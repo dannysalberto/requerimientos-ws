@@ -33,7 +33,11 @@ public class IndicadorAlcanceRequest {
 	public void setCantidadEjecucion(BigDecimal cantidadEjecucion) {
 		this.cantidadEjecucion = cantidadEjecucion;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "IndicadorAlcanceRequest [indicadorAlcanceId=" + indicadorAlcanceId + ", cantidadEjecucion="
+				+ cantidadEjecucion + "]";
+	}
 	
 }
