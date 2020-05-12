@@ -180,6 +180,7 @@ public class DatosAlimentacionApi {
 			mensajes.add(new MensajeResponse("Debes justificar el factor de atraso"));
 			mensajes.add(new MensajeResponse("Debes subir al menos una foto"));
 			mensajes.add(new MensajeResponse(e.getMessage()));
+			mensajes.add(new MensajeResponse(alimentacionRequest.toString()));
 			response.setMensajes(mensajes);
 			return response;
 		}
