@@ -22,18 +22,6 @@ import co.com.interkont.wscobra.api.request.ImagenRequest;
 import co.com.interkont.wscobra.api.request.IndicadorAlcanceRequest;
 import co.com.interkont.wscobra.api.response.ActividadResponse;
 import co.com.interkont.wscobra.api.response.AlimentacionResponse;
-import co.com.interkont.wscobra.api.response.AspectoEvaluarResponse;
-
-/**
- * imports DTO
- */
-
-/**
- * imports SERVICE
- */
-/**
- * imports REQUEST
- */
 import co.com.interkont.wscobra.api.response.DatosAlimentacionResponse;
 import co.com.interkont.wscobra.api.response.MensajeResponse;
 import co.com.interkont.wscobra.dto.Actividadobra;
@@ -55,6 +43,7 @@ import co.com.interkont.wscobra.service.AlimentacionesService;
 import co.com.interkont.wscobra.service.JsfUsuariosService;
 import co.com.interkont.wscobra.service.ObrasService;
 import co.com.interkont.wscobra.service.PeriodosService;
+import co.com.interkont.wscobra.service.RelacionesalimentacionfactoratrasoService;
 import co.com.interkont.wscobra.service.RelacionesindicadordetalleobraService;
 
 
@@ -81,6 +70,9 @@ public class DatosAlimentacionApi {
 	
 	@Autowired
 	RelacionesindicadordetalleobraService relacionesindicadordetalleobraService;
+	
+	@Autowired
+	RelacionesalimentacionfactoratrasoService relacionesalimentacionfactoratrasoService;
 	
 	@Autowired
 	Mapper mapper;
@@ -114,6 +106,7 @@ public class DatosAlimentacionApi {
 		try {
 			Obra obra = obrasService.findById(alimentacionRequest.getCodigoproyecto());
 			List<Relacionindicadordetalleobra> relacionindicadordetalleobras = relacionesindicadordetalleobraService.findByObra(obra);
+			List<Relacionalimentacionfactoratraso> relacionesalimentacionfactoratraso = new ArrayList<>();
 			Alimentacion alimentacion = new Alimentacion();
 			
 			alimentacion.setAprobado(false);
@@ -150,12 +143,6 @@ public class DatosAlimentacionApi {
 				alimentacion.getAlimentacioncualificacions().add(alimentacioncualificacion);
 			}
 			
-			for (FactorAtrasoRequest factorAtrasoRequest : alimentacionRequest.getFactoresAtraso()) {
-				Relacionalimentacionfactoratraso relacionalimentacionfactoratraso = new Relacionalimentacionfactoratraso();
-				relacionalimentacionfactoratraso.setId(new RelacionalimentacionfactoratrasoId(factorAtrasoRequest.getFactorAtrasoId(),alimentacion.getIntidalimenta()));
-				relacionalimentacionfactoratraso.setAlimentacion(alimentacion);
-			}
-			
 			for (IndicadorAlcanceRequest indicadorAlcanceRequest : alimentacionRequest.getIndicadoresAlcance()) {
 				for (Relacionindicadordetalleobra relacionindicadordetalleobra: relacionindicadordetalleobras) {
 					if (relacionindicadordetalleobra.getIntidindicadortipodet() == indicadorAlcanceRequest.getIndicadorAlcanceId()) {
@@ -170,6 +157,13 @@ public class DatosAlimentacionApi {
 			}
 			
 			alimentacionesService.save(alimentacion);
+			
+			for (FactorAtrasoRequest factorAtrasoRequest : alimentacionRequest.getFactoresAtraso()) {
+				Relacionalimentacionfactoratraso relacionalimentacionfactoratraso = new Relacionalimentacionfactoratraso();
+				relacionalimentacionfactoratraso.setId(new RelacionalimentacionfactoratrasoId(factorAtrasoRequest.getFactorAtrasoId(),alimentacion.getIntidalimenta()));
+				relacionalimentacionfactoratraso.setAlimentacion(alimentacion);
+			}
+			relacionesalimentacionfactoratrasoService.saveAll(relacionesalimentacionfactoratraso);
 			relacionesindicadordetalleobraService.saveAll(relacionindicadordetalleobras);
 			
 		} catch (Exception e) {
