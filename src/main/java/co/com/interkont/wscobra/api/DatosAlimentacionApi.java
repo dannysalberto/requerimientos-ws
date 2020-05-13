@@ -69,6 +69,14 @@ public class DatosAlimentacionApi {
      * Separador del subfijo de tiempo
      */
     public static final String SEPARADOR_TIEMPO = "_";
+    
+    /**
+     * URL de la carpeta de imágenes de alimentacion
+     */
+    public static final String URL_CARPETA_OBRAS_VIGENTES = "/resources/Documentos/ObrasVigentes";
+    
+    public static final String CARPETA_IMGS_ALIMENTACION = "ImgsAlimentacion";
+    
 	@Autowired
 	ActividadesService actividadesService;
 	
@@ -176,7 +184,7 @@ public class DatosAlimentacionApi {
 			imagenevolucionobra.setObra(obra);
 			imagenevolucionobra.setStrnombre("Foto Principal Alimentación");
 			imagenevolucionobra.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
-			imagenevolucionobra.setStrubicacion("/resources/Documentos/ObrasVigentes/"+obra.getIntcodigoobra()+"/ImgsAlimentacion/"+alimentacionRequest.getFotoPrincipal().getNombre()+SEPARADOR_TIEMPO+subfijoTiempoDateFormat.format(alimentacion.getDatefecha())+alimentacionRequest.getFotoPrincipal().getTipo());
+			imagenevolucionobra.setStrubicacion(URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+CARPETA_IMGS_ALIMENTACION+"/"+alimentacionRequest.getFotoPrincipal().getNombre()+SEPARADOR_TIEMPO+subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
 			
 			alimentacion.setImagenevolucionobra(imagenevolucionobra);
 			
