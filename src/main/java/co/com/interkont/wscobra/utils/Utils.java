@@ -75,9 +75,7 @@ public class Utils {
 	public static void saveFileBase64(String file, String pathFile)
 			throws IOException {
 		File fileIni = new File(pathFile);
-		if (!fileIni.exists()) {
-			fileIni.mkdirs();
-		}
+		fileIni.mkdirs();
 		byte[] fotoPrincipal = Base64.decodeBase64(file);
 		Path path = Paths.get(pathFile);
 		Files.write(path, fotoPrincipal);
