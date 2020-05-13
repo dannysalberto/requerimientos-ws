@@ -25,11 +25,14 @@ import co.com.interkont.wscobra.api.response.ActividadResponse;
  * imports REQUEST
  */
 import co.com.interkont.wscobra.api.response.DatosAlimentacionResponse;
+import co.com.interkont.wscobra.api.response.PeriodoResponse;
 /**
  * imports RESPONSE
  */
 import co.com.interkont.wscobra.dto.VistaActividades;
+import co.com.interkont.wscobra.dto.VistaPeriodosObra;
 import co.com.interkont.wscobra.service.ActividadesService;
+import co.com.interkont.wscobra.service.PeriodosObraService;
 
 
 
@@ -40,6 +43,8 @@ import co.com.interkont.wscobra.service.ActividadesService;
 public class DatosAlimentacionApi {
 	@Autowired
 	ActividadesService actividadesService;
+	@Autowired
+	PeriodosObraService periodosObraService;
 	
 	@Autowired
 	Mapper mapper;
@@ -51,15 +56,22 @@ public class DatosAlimentacionApi {
 		DatosAlimentacionResponse datosAlimentacionResponse = new DatosAlimentacionResponse();
 		
 		List<VistaActividades> actividades = actividadesService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
+		List<VistaPeriodosObra> periodos = periodosObraService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
 		
 		List<ActividadResponse> actividadesResponse = new ArrayList<ActividadResponse>();
+		List<PeriodoResponse> periodosResponse = new ArrayList<PeriodoResponse>();
 
 		for (VistaActividades actividad : actividades) {
 			ActividadResponse actividadResponse = mapper.map(actividad, ActividadResponse.class);
 			actividadesResponse.add(actividadResponse);
 		}
 		
+		periodos.forEach(periodo->{
+			periodosResponse.add(mapper.map(periodo, PeriodoResponse.class));
+		});
+		
 		datosAlimentacionResponse.setActividades(actividadesResponse);
+		datosAlimentacionResponse.setPeriodos(periodosResponse);
 		
 		return datosAlimentacionResponse;
 	}

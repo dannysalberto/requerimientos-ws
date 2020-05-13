@@ -1,5 +1,7 @@
 package co.com.interkont.wscobra.api.response;
 
+import java.math.BigDecimal;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -15,13 +17,13 @@ public class PeriodoResponse {
 	@ApiModelProperty(value = "Fecha final del periodo")
 	private String fechaFinPeriodo;
 	@ApiModelProperty(value = "Porcentaje en el que debería ir el proyecto para este periodo")
-	private Double porcentajeProyectado;
+	private BigDecimal porcentajeProyectado;
 	
 	public PeriodoResponse() {
 	}
 	
 	
-	public PeriodoResponse(Integer periodoid, String fechaIniPeriodo, String fechaFinPeriodo, Double porcentajeProyectado) {
+	public PeriodoResponse(Integer periodoid, String fechaIniPeriodo, String fechaFinPeriodo, BigDecimal porcentajeProyectado) {
 		super();
 		this.periodoId = periodoid;
 		this.fechaIniPeriodo = fechaIniPeriodo;
@@ -60,12 +62,12 @@ public class PeriodoResponse {
 	}
 
 
-	public Double getPorcentajeProyectado() {
+	public BigDecimal getPorcentajeProyectado() {
 		return porcentajeProyectado;
 	}
 
 
-	public void setPorcentajeProyectado(Double porcentajeProyectado) {
+	public void setPorcentajeProyectado(BigDecimal porcentajeProyectado) {
 		this.porcentajeProyectado = porcentajeProyectado;
 	}
 	
