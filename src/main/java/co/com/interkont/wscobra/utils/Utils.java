@@ -30,7 +30,7 @@ public class Utils {
     /**
      * Ruta de la carpeta del proyecto web
      */
-    public static final String PATH_CARPETA_PROYECTO_WEB = "/srv/tomcat/webapps/condor/";
+    public static final String PATH_CARPETA_PROYECTO_WEB = "/opt/tomcat8/apache-tomcat-8.5.34/webapps/cobra-ws-condor/";
     
     /**
      * URL de la carpeta de imágenes de alimentacion
