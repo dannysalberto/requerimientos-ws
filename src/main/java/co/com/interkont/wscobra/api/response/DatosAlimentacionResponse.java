@@ -37,18 +37,8 @@ public class DatosAlimentacionResponse {
 	public void mock() {
 		limitePorcentajeAtraso=7.0;
 		limitePorcentajeAtrasoAmarillo=20.0;
-		periodos= new ArrayList<>();
-		periodos.add(new PeriodoResponse(1, "14.Feb.19", "13.Mar.19",BigDecimal.ZERO));
-		periodos.add(new PeriodoResponse(2, "14.Mar.19", "13.Abr.19", BigDecimal.ONE));
-		actividades= new ArrayList<>();
-//		actividades.add(new ActividadResponse(1l, "Actividad 1", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
-//		actividades.add(new ActividadResponse(2l, "Actividad 2", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
-//		actividades.add(new ActividadResponse(3l, "Actividad 3", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
 		
-		indicadoresAlcance = new ArrayList<>();
-		indicadoresAlcance.add(new IndicadorAlcanceResponse(439877, "Indicador Alcance 1", "Ml", 160.0, 0.0, 0.0));
-		indicadoresAlcance.add(new IndicadorAlcanceResponse(439876, "Indicador Alcance 2", "Ml", 60.0, 0.0, 0.0));
-		indicadoresAlcance.add(new IndicadorAlcanceResponse(439875, "Indicador Alcance 3", "Ml", 50.0, 0.0, 0.0));
+		actividades= new ArrayList<>();
 		
 		apectosEvaluar= new ArrayList<>();
 		apectosEvaluar.add(new AspectoEvaluarResponse(1, "Administrativo"));

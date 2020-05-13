@@ -1,5 +1,7 @@
 package co.com.interkont.wscobra.api.response;
 
+import java.math.BigDecimal;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -15,21 +17,21 @@ public class IndicadorAlcanceResponse {
 	@ApiModelProperty(value = "Unidad de medida del indicador de alcance")
 	private String unidadMedida;
 	@ApiModelProperty(value = "Cantidad programada de la actividad")
-	private Double cantidadProgramada;
+	private BigDecimal cantidadProgramada;
 	@ApiModelProperty(value = "Cantidad ejecutada de la actividad")
-	private Double cantidadEjecutada;
+	private BigDecimal cantidadEjecutada;
 	@ApiModelProperty(value = "Porcentaje de avance de la actividad")
-	private Double porcentajeAvance;
+	private BigDecimal porcentajeAvance;
 	@ApiModelProperty(value = "Cantidad ejecutada de la actividad antes de iniciar la alimentación")
-	private Double cantidadEjecutadaInicial;
+	private BigDecimal cantidadEjecutadaInicial;
 	@ApiModelProperty(value = "Porcentaje de avance de la actividad antes de iniciar la alimentación")
-	private Double porcentajeAvanceInicial;
+	private BigDecimal porcentajeAvanceInicial;
 	
 	public IndicadorAlcanceResponse() {
 	}
 	
 	public IndicadorAlcanceResponse(Integer indicadorAlcanceId, String descripcionIndicadorAlcance, String unidadMedida,
-			Double cantidadProgramada, Double cantidadEjecutada, Double porcentajeAvance) {
+			BigDecimal cantidadProgramada, BigDecimal cantidadEjecutada, BigDecimal porcentajeAvance) {
 		super();
 		this.indicadorAlcanceId = indicadorAlcanceId;
 		this.descripcionIndicadorAlcance = descripcionIndicadorAlcance;
@@ -67,43 +69,43 @@ public class IndicadorAlcanceResponse {
 		this.unidadMedida = unidadMedida;
 	}
 
-	public Double getCantidadProgramada() {
+	public BigDecimal getCantidadProgramada() {
 		return cantidadProgramada;
 	}
 
-	public void setCantidadProgramada(Double cantidadProgramada) {
+	public void setCantidadProgramada(BigDecimal cantidadProgramada) {
 		this.cantidadProgramada = cantidadProgramada;
 	}
 
-	public Double getCantidadEjecutada() {
+	public BigDecimal getCantidadEjecutada() {
 		return cantidadEjecutada;
 	}
 
-	public void setCantidadEjecutada(Double cantidadEjecutada) {
+	public void setCantidadEjecutada(BigDecimal cantidadEjecutada) {
 		this.cantidadEjecutada = cantidadEjecutada;
 	}
 
-	public Double getPorcentajeAvance() {
+	public BigDecimal getPorcentajeAvance() {
 		return porcentajeAvance;
 	}
 
-	public void setPorcentajeAvance(Double porcentajeAvance) {
+	public void setPorcentajeAvance(BigDecimal porcentajeAvance) {
 		this.porcentajeAvance = porcentajeAvance;
 	}
 
-	public Double getCantidadEjecutadaInicial() {
+	public BigDecimal getCantidadEjecutadaInicial() {
 		return cantidadEjecutadaInicial;
 	}
 
-	public void setCantidadEjecutadaInicial(Double cantidadEjecutadaInicial) {
+	public void setCantidadEjecutadaInicial(BigDecimal cantidadEjecutadaInicial) {
 		this.cantidadEjecutadaInicial = cantidadEjecutadaInicial;
 	}
 
-	public Double getPorcentajeAvanceInicial() {
+	public BigDecimal getPorcentajeAvanceInicial() {
 		return porcentajeAvanceInicial;
 	}
 
-	public void setPorcentajeAvanceInicial(Double porcentajeAvanceInicial) {
+	public void setPorcentajeAvanceInicial(BigDecimal porcentajeAvanceInicial) {
 		this.porcentajeAvanceInicial = porcentajeAvanceInicial;
 	}
 	

@@ -3,6 +3,7 @@ package co.com.interkont.wscobra.api;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.dozer.Mapper;
@@ -23,6 +24,7 @@ import co.com.interkont.wscobra.api.request.IndicadorAlcanceRequest;
 import co.com.interkont.wscobra.api.response.ActividadResponse;
 import co.com.interkont.wscobra.api.response.AlimentacionResponse;
 import co.com.interkont.wscobra.api.response.DatosAlimentacionResponse;
+import co.com.interkont.wscobra.api.response.IndicadorAlcanceResponse;
 import co.com.interkont.wscobra.api.response.MensajeResponse;
 import co.com.interkont.wscobra.dto.Actividadobra;
 import co.com.interkont.wscobra.dto.Alimentacion;
@@ -39,10 +41,12 @@ import co.com.interkont.wscobra.api.response.PeriodoResponse;
  * imports RESPONSE
  */
 import co.com.interkont.wscobra.dto.VistaActividades;
+import co.com.interkont.wscobra.dto.VistaIndicadoresObra;
 import co.com.interkont.wscobra.dto.VistaPeriodosObra;
 import co.com.interkont.wscobra.service.ActividadesService;
 import co.com.interkont.wscobra.service.AlimentacionesService;
 import co.com.interkont.wscobra.service.ImagenesevolucionobraService;
+import co.com.interkont.wscobra.service.IndicadoresObraService;
 import co.com.interkont.wscobra.service.JsfUsuariosService;
 import co.com.interkont.wscobra.service.ObrasService;
 import co.com.interkont.wscobra.service.PeriodosService;
@@ -87,6 +91,9 @@ public class DatosAlimentacionApi {
 	RelacionesalimentacionfactoratrasoService relacionesalimentacionfactoratrasoService;
 	
 	@Autowired
+	IndicadoresObraService indicadoresObraService;
+	
+	@Autowired
 	Mapper mapper;
 	
 	
@@ -97,9 +104,11 @@ public class DatosAlimentacionApi {
 		
 		List<VistaActividades> actividades = actividadesService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
 		List<VistaPeriodosObra> periodos = periodosObraService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
+		List<VistaIndicadoresObra> indicadores = indicadoresObraService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
 		
 		List<ActividadResponse> actividadesResponse = new ArrayList<ActividadResponse>();
 		List<PeriodoResponse> periodosResponse = new ArrayList<PeriodoResponse>();
+		List<IndicadorAlcanceResponse> indicadoresResponse = new ArrayList<IndicadorAlcanceResponse>();
 
 		for (VistaActividades actividad : actividades) {
 			ActividadResponse actividadResponse = mapper.map(actividad, ActividadResponse.class);
@@ -111,8 +120,14 @@ public class DatosAlimentacionApi {
 			periodosResponse.add(periodoResponse);
 		}
 		
+		for (VistaIndicadoresObra indicador : indicadores) {
+			IndicadorAlcanceResponse indicadorResponse = new IndicadorAlcanceResponse(indicador.getId(),indicador.getDescripcionindicadoralcance(), indicador.getUnidadmedida(), indicador.getCantidadprogramada(),indicador.getCantidadejecutada(), indicador.getPorcentajeavance());
+			indicadoresResponse.add(indicadorResponse);
+		}
+		
 		datosAlimentacionResponse.setActividades(actividadesResponse);
 		datosAlimentacionResponse.setPeriodos(periodosResponse);
+		datosAlimentacionResponse.setIndicadoresAlcance(indicadoresResponse);
 		
 		return datosAlimentacionResponse;
 	}
