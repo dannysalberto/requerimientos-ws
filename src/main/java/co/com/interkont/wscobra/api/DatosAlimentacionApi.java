@@ -1,6 +1,7 @@
 package co.com.interkont.wscobra.api;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,6 +54,21 @@ import co.com.interkont.wscobra.service.RelacionesindicadordetalleobraService;
      consumes="application/json")
 
 public class DatosAlimentacionApi {
+	
+	/**
+     * Formato de tiempo utilizado para el subfijo del nombre del archivo
+     */
+    public static final String FORMATO_TIEMPO = "yyyyMMddHHmmss";
+    
+    /**
+     * Formateador utilizado para el subfijo del nombre del archivo
+     */
+    private static final SimpleDateFormat subfijoTiempoDateFormat = new SimpleDateFormat(FORMATO_TIEMPO);
+    
+    /**
+     * Separador del subfijo de tiempo
+     */
+    public static final String SEPARADOR_TIEMPO = "_";
 	@Autowired
 	ActividadesService actividadesService;
 	
@@ -151,9 +167,21 @@ public class DatosAlimentacionApi {
 					}
 				}
 			}
+			List<Imagenevolucionobra> imagenesevolucionobra = new ArrayList<>();
+			Imagenevolucionobra imagenevolucionobra = new Imagenevolucionobra();
+			imagenevolucionobra.setDatefecha(alimentacion.getDatefecha());
+			imagenevolucionobra.setDatefecharegistro(new Date());
+			imagenevolucionobra.setIntidtipoimagen(6);
+			imagenevolucionobra.setJsfUsuario(alimentacion.getJsfUsuarioByIntusuAlimenta());
+			imagenevolucionobra.setObra(obra);
+			imagenevolucionobra.setStrnombre("Foto Principal Alimentación");
+			imagenevolucionobra.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
+			imagenevolucionobra.setStrubicacion("/resources/Documentos/ObrasVigentes/"+obra.getIntcodigoobra()+"/ImgsAlimentacion/"+alimentacionRequest.getFotoPrincipal().getNombre()+SEPARADOR_TIEMPO+subfijoTiempoDateFormat.format(alimentacion.getDatefecha())+alimentacionRequest.getFotoPrincipal().getTipo());
+			
+			alimentacion.setImagenevolucionobra(imagenevolucionobra);
 			
 			for (ImagenRequest imagenRequest : alimentacionRequest.getImagenesComplementarias()) {
-				Imagenevolucionobra imagenevolucionobra = new Imagenevolucionobra();
+				Imagenevolucionobra imagenevolucionobraComplementaria = new Imagenevolucionobra();
 				
 			}
 			

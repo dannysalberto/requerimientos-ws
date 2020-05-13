@@ -167,7 +167,7 @@ public class Alimentacion  implements java.io.Serializable {
         this.obra = obra;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="intidimagen")
     public Imagenevolucionobra getImagenevolucionobra() {
         return this.imagenevolucionobra;
