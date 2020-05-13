@@ -147,16 +147,9 @@ public class DatosAlimentacionApi {
 				for (Relacionindicadordetalleobra relacionindicadordetalleobra: relacionindicadordetalleobras) {
 					
 					if (relacionindicadordetalleobra.getIntid() == indicadorAlcanceRequest.getIndicadorAlcanceId()) {
-						System.out.println("relacionindicadordetalleobra.getIntidindicadortipodet()="+relacionindicadordetalleobra.getIntidindicadortipodet());
 						relacionindicadordetalleobra.setStrvalorejecutado(relacionindicadordetalleobra.getStrvalorejecutado().add(indicadorAlcanceRequest.getCantidadEjecucion()));
-						System.out.println("relacionindicadordetalleobra.getStrvalorejecutado()="+relacionindicadordetalleobra.getStrvalorejecutado());
 					}
 				}
-			}
-			
-			for (Relacionindicadordetalleobra relacionindicadordetalleobra: relacionindicadordetalleobras) {
-				System.out.println("Cambió?");
-				System.out.println("relacionindicadordetalleobra.getStrvalorejecutado()="+relacionindicadordetalleobra.getStrvalorejecutado());
 			}
 			
 			for (ImagenRequest imagenRequest : alimentacionRequest.getImagenesComplementarias()) {

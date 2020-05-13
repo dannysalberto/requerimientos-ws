@@ -7,3 +7,4 @@ select * from alimentacion where intidalimenta >= 439969;
 select * from relacionindicadordetalleobra where intcodigoobra = 6406;
 select * from alimentacioncualificacion where intidalimenta >= 439969;
 select * from relacionalimentacionfactoratraso where intidalimenta >= 439969;
+select * from relacionalimentacionactividad where intidalimenta >= 439969;
