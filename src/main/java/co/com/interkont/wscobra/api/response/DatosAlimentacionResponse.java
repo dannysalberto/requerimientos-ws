@@ -1,5 +1,6 @@
 package co.com.interkont.wscobra.api.response;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +38,8 @@ public class DatosAlimentacionResponse {
 		limitePorcentajeAtraso=7.0;
 		limitePorcentajeAtrasoAmarillo=20.0;
 		periodos= new ArrayList<>();
-		periodos.add(new PeriodoResponse(14244, "23.Mar.20", "29.Mar.20",50.0));
-		periodos.add(new PeriodoResponse(14245, "30.Mar.20", "30.Mar.20", 100.0));
+		periodos.add(new PeriodoResponse(1, "14.Feb.19", "13.Mar.19",BigDecimal.ZERO));
+		periodos.add(new PeriodoResponse(2, "14.Mar.19", "13.Abr.19", BigDecimal.ONE));
 		actividades= new ArrayList<>();
 //		actividades.add(new ActividadResponse(1l, "Actividad 1", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
 //		actividades.add(new ActividadResponse(2l, "Actividad 2", "Ml", BigDecimal.valueOf(1000000L), 10.0, 3.0, BigDecimal.valueOf(10000000L), BigDecimal.valueOf(3000000L), 30.0));
