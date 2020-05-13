@@ -69,27 +69,27 @@ public class DatosAlimentacionResponse {
 		tiposFactorAtraso.add(new TipoFactorAtrasoResponse(11, "Sociales"));
 		
 		factoresAtraso= new ArrayList<>();
-		factoresAtraso.add(new FactorAtrasoResponse(1, "PERMISOS", 1));
-		factoresAtraso.add(new FactorAtrasoResponse(2, "PLANOS", 1));
+		//factoresAtraso.add(new FactorAtrasoResponse(1, "PERMISOS", 1));
+		//factoresAtraso.add(new FactorAtrasoResponse(2, "PLANOS", 1));
 		factoresAtraso.add(new FactorAtrasoResponse(3, "TRÁMITES FIDUCIA", 1));
-		factoresAtraso.add(new FactorAtrasoResponse(4, "SOPORTES LIQUIDACIÓN", 1));
+		//factoresAtraso.add(new FactorAtrasoResponse(4, "SOPORTES LIQUIDACIÓN", 1));
 		factoresAtraso.add(new FactorAtrasoResponse(5, "LICENCIAS", 1));
-		factoresAtraso.add(new FactorAtrasoResponse(6, "CONEXIONES SERVICIOS PÚBLICOS", 1));
-		factoresAtraso.add(new FactorAtrasoResponse(7, "ATRASO DE LOS PAGOS", 1));
-		factoresAtraso.add(new FactorAtrasoResponse(8, "OTROS TRÁMITES", 1));
+		//factoresAtraso.add(new FactorAtrasoResponse(6, "CONEXIONES SERVICIOS PÚBLICOS", 1));
+		//factoresAtraso.add(new FactorAtrasoResponse(7, "ATRASO DE LOS PAGOS", 1));
+		//factoresAtraso.add(new FactorAtrasoResponse(8, "OTROS TRÁMITES", 1));
 
-		factoresAtraso.add(new FactorAtrasoResponse(9, "LLUVIAS", 2));
+		//factoresAtraso.add(new FactorAtrasoResponse(9, "LLUVIAS", 2));
 		factoresAtraso.add(new FactorAtrasoResponse(10, "VENDAVAL", 2));
-		factoresAtraso.add(new FactorAtrasoResponse(11, "SEQUÍA", 2));
-		factoresAtraso.add(new FactorAtrasoResponse(12, "DERRUMBE", 2));
-		factoresAtraso.add(new FactorAtrasoResponse(13, "TERREMOTOS", 2));
-		factoresAtraso.add(new FactorAtrasoResponse(14, "TERRENOS ADVERSOS", 2));
+//		factoresAtraso.add(new FactorAtrasoResponse(11, "SEQUÍA", 2));
+//		factoresAtraso.add(new FactorAtrasoResponse(12, "DERRUMBE", 2));
+//		factoresAtraso.add(new FactorAtrasoResponse(13, "TERREMOTOS", 2));
+//		factoresAtraso.add(new FactorAtrasoResponse(14, "TERRENOS ADVERSOS", 2));
 		factoresAtraso.add(new FactorAtrasoResponse(15, "LICENCIAS AMBIENTALES", 2));
-		factoresAtraso.add(new FactorAtrasoResponse(16, "PATRIMONIO CULTURAL", 2));
-		factoresAtraso.add(new FactorAtrasoResponse(17, "OTROS", 2));
+//		factoresAtraso.add(new FactorAtrasoResponse(16, "PATRIMONIO CULTURAL", 2));
+//		factoresAtraso.add(new FactorAtrasoResponse(17, "OTROS", 2));
 
 		factoresAtraso.add(new FactorAtrasoResponse(18, "ELABORACIÓN DE LA PROPUESTA", 3));
-		factoresAtraso.add(new FactorAtrasoResponse(19, "NO FIRMA DEL CONTRATO", 3));
+//		factoresAtraso.add(new FactorAtrasoResponse(19, "NO FIRMA DEL CONTRATO", 3));
 		factoresAtraso.add(new FactorAtrasoResponse(20, "CONVOCATORIA DESIERTA", 3));
 		factoresAtraso.add(new FactorAtrasoResponse(21, "INCUMPLIMIENTO DE REQUISITOS", 3));
 
