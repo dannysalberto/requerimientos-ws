@@ -45,7 +45,7 @@ public class ImagenRequest {
 
 	@Override
 	public String toString() {
-		return "ImagenRequest [image=" + image.substring(0, 10) + "..., nombre=" + nombre + ", tipo=" + tipo + "]";
+		return "ImagenRequest [image=" + ((image!=null)?image.substring(0, 10):null) + "..., nombre=" + nombre + ", tipo=" + tipo + "]";
 	}
 	
 }
