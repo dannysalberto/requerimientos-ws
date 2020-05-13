@@ -145,7 +145,8 @@ public class DatosAlimentacionApi {
 			
 			for (IndicadorAlcanceRequest indicadorAlcanceRequest : alimentacionRequest.getIndicadoresAlcance()) {
 				for (Relacionindicadordetalleobra relacionindicadordetalleobra: relacionindicadordetalleobras) {
-					if (relacionindicadordetalleobra.getIntidindicadortipodet() == indicadorAlcanceRequest.getIndicadorAlcanceId()) {
+					
+					if (relacionindicadordetalleobra.getIntid() == indicadorAlcanceRequest.getIndicadorAlcanceId()) {
 						System.out.println("relacionindicadordetalleobra.getIntidindicadortipodet()="+relacionindicadordetalleobra.getIntidindicadortipodet());
 						relacionindicadordetalleobra.setStrvalorejecutado(relacionindicadordetalleobra.getStrvalorejecutado().add(indicadorAlcanceRequest.getCantidadEjecucion()));
 						System.out.println("relacionindicadordetalleobra.getStrvalorejecutado()="+relacionindicadordetalleobra.getStrvalorejecutado());
