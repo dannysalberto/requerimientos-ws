@@ -172,18 +172,20 @@ public class DatosAlimentacionApi {
             
 			alimentacion.setImagenevolucionobra(imagenevolucionobra);
 			
-			for (ImagenRequest imagenRequest : alimentacionRequest.getImagenesComplementarias()) {
-				Imagenevolucionobra imagenevolucionobraComplementaria = new Imagenevolucionobra();
-				imagenevolucionobraComplementaria.setDatefecha(alimentacion.getDatefecha());
-				imagenevolucionobraComplementaria.setDatefecharegistro(new Date());
-				imagenevolucionobraComplementaria.setIntidtipoimagen(6);
-				imagenevolucionobraComplementaria.setJsfUsuario(alimentacion.getJsfUsuarioByIntusuAlimenta());
-				imagenevolucionobraComplementaria.setObra(obra);
-				imagenevolucionobraComplementaria.setStrnombre("Foto Complementaria Alimentación");
-				imagenevolucionobraComplementaria.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
-				imagenevolucionobraComplementaria.setStrubicacion(Utils.URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+Utils.CARPETA_IMGS_ALIMENTACION+"/"+imagenRequest.getNombre()+Utils.SEPARADOR_TIEMPO+Utils.subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
-				Utils.saveFileBase64(imagenRequest.getImage(), Utils.PATH_CARPETA_PROYECTO_WEB+imagenevolucionobraComplementaria.getStrubicacion());
-				imagenesevolucionobraService.save(imagenevolucionobraComplementaria);
+			if (alimentacionRequest.getImagenesComplementarias() != null) {
+				for (ImagenRequest imagenRequest : alimentacionRequest.getImagenesComplementarias()) {
+					Imagenevolucionobra imagenevolucionobraComplementaria = new Imagenevolucionobra();
+					imagenevolucionobraComplementaria.setDatefecha(alimentacion.getDatefecha());
+					imagenevolucionobraComplementaria.setDatefecharegistro(new Date());
+					imagenevolucionobraComplementaria.setIntidtipoimagen(6);
+					imagenevolucionobraComplementaria.setJsfUsuario(alimentacion.getJsfUsuarioByIntusuAlimenta());
+					imagenevolucionobraComplementaria.setObra(obra);
+					imagenevolucionobraComplementaria.setStrnombre("Foto Complementaria Alimentación");
+					imagenevolucionobraComplementaria.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
+					imagenevolucionobraComplementaria.setStrubicacion(Utils.URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+Utils.CARPETA_IMGS_ALIMENTACION+"/"+imagenRequest.getNombre()+Utils.SEPARADOR_TIEMPO+Utils.subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
+					Utils.saveFileBase64(imagenRequest.getImage(), Utils.PATH_CARPETA_PROYECTO_WEB+imagenevolucionobraComplementaria.getStrubicacion());
+					imagenesevolucionobraService.save(imagenevolucionobraComplementaria);
+				}
 			}
 			
 			alimentacionesService.save(alimentacion);
