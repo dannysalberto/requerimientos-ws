@@ -1,7 +1,6 @@
 package co.com.interkont.wscobra.api;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,11 +40,13 @@ import co.com.interkont.wscobra.dto.Semaforo;
 import co.com.interkont.wscobra.dto.VistaActividades;
 import co.com.interkont.wscobra.service.ActividadesService;
 import co.com.interkont.wscobra.service.AlimentacionesService;
+import co.com.interkont.wscobra.service.ImagenesevolucionobraService;
 import co.com.interkont.wscobra.service.JsfUsuariosService;
 import co.com.interkont.wscobra.service.ObrasService;
 import co.com.interkont.wscobra.service.PeriodosService;
 import co.com.interkont.wscobra.service.RelacionesalimentacionfactoratrasoService;
 import co.com.interkont.wscobra.service.RelacionesindicadordetalleobraService;
+import co.com.interkont.wscobra.utils.Utils;
 
 
 
@@ -55,28 +56,6 @@ import co.com.interkont.wscobra.service.RelacionesindicadordetalleobraService;
 
 public class DatosAlimentacionApi {
 	
-	/**
-     * Formato de tiempo utilizado para el subfijo del nombre del archivo
-     */
-    public static final String FORMATO_TIEMPO = "yyyyMMddHHmmss";
-    
-    /**
-     * Formateador utilizado para el subfijo del nombre del archivo
-     */
-    private static final SimpleDateFormat subfijoTiempoDateFormat = new SimpleDateFormat(FORMATO_TIEMPO);
-    
-    /**
-     * Separador del subfijo de tiempo
-     */
-    public static final String SEPARADOR_TIEMPO = "_";
-    
-    /**
-     * URL de la carpeta de imágenes de alimentacion
-     */
-    public static final String URL_CARPETA_OBRAS_VIGENTES = "/resources/Documentos/ObrasVigentes";
-    
-    public static final String CARPETA_IMGS_ALIMENTACION = "ImgsAlimentacion";
-    
 	@Autowired
 	ActividadesService actividadesService;
 	
@@ -91,6 +70,9 @@ public class DatosAlimentacionApi {
 	
 	@Autowired
 	AlimentacionesService alimentacionesService;
+	
+	@Autowired
+	ImagenesevolucionobraService imagenesevolucionobraService;
 	
 	@Autowired
 	RelacionesindicadordetalleobraService relacionesindicadordetalleobraService;
@@ -175,7 +157,7 @@ public class DatosAlimentacionApi {
 					}
 				}
 			}
-			List<Imagenevolucionobra> imagenesevolucionobra = new ArrayList<>();
+			
 			Imagenevolucionobra imagenevolucionobra = new Imagenevolucionobra();
 			imagenevolucionobra.setDatefecha(alimentacion.getDatefecha());
 			imagenevolucionobra.setDatefecharegistro(new Date());
@@ -184,13 +166,24 @@ public class DatosAlimentacionApi {
 			imagenevolucionobra.setObra(obra);
 			imagenevolucionobra.setStrnombre("Foto Principal Alimentación");
 			imagenevolucionobra.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
-			imagenevolucionobra.setStrubicacion(URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+CARPETA_IMGS_ALIMENTACION+"/"+alimentacionRequest.getFotoPrincipal().getNombre()+SEPARADOR_TIEMPO+subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
+			imagenevolucionobra.setStrubicacion(Utils.URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+Utils.CARPETA_IMGS_ALIMENTACION+"/"+alimentacionRequest.getFotoPrincipal().getNombre()+Utils.SEPARADOR_TIEMPO+Utils.subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
 			
+			Utils.saveFileBase64(alimentacionRequest.getFotoPrincipal().getImage(), Utils.PATH_CARPETA_PROYECTO_WEB+imagenevolucionobra.getStrubicacion());
+            
 			alimentacion.setImagenevolucionobra(imagenevolucionobra);
 			
 			for (ImagenRequest imagenRequest : alimentacionRequest.getImagenesComplementarias()) {
 				Imagenevolucionobra imagenevolucionobraComplementaria = new Imagenevolucionobra();
-				
+				imagenevolucionobraComplementaria.setDatefecha(alimentacion.getDatefecha());
+				imagenevolucionobraComplementaria.setDatefecharegistro(new Date());
+				imagenevolucionobraComplementaria.setIntidtipoimagen(6);
+				imagenevolucionobraComplementaria.setJsfUsuario(alimentacion.getJsfUsuarioByIntusuAlimenta());
+				imagenevolucionobraComplementaria.setObra(obra);
+				imagenevolucionobraComplementaria.setStrnombre("Foto Complementaria Alimentación");
+				imagenevolucionobraComplementaria.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
+				imagenevolucionobraComplementaria.setStrubicacion(Utils.URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+Utils.CARPETA_IMGS_ALIMENTACION+"/"+imagenRequest.getNombre()+Utils.SEPARADOR_TIEMPO+Utils.subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
+				Utils.saveFileBase64(alimentacionRequest.getFotoPrincipal().getImage(), Utils.PATH_CARPETA_PROYECTO_WEB+imagenevolucionobra.getStrubicacion());
+				imagenesevolucionobraService.save(imagenevolucionobraComplementaria);
 			}
 			
 			alimentacionesService.save(alimentacion);
@@ -222,6 +215,6 @@ public class DatosAlimentacionApi {
 		mensajes.add(new MensajeResponse("Tu proyecto ha sido actualizado exitosamente."));
 		response.setMensajes(mensajes);
 		return response;
-	}
+	}	
 	
 }
