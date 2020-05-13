@@ -146,9 +146,16 @@ public class DatosAlimentacionApi {
 			for (IndicadorAlcanceRequest indicadorAlcanceRequest : alimentacionRequest.getIndicadoresAlcance()) {
 				for (Relacionindicadordetalleobra relacionindicadordetalleobra: relacionindicadordetalleobras) {
 					if (relacionindicadordetalleobra.getIntidindicadortipodet() == indicadorAlcanceRequest.getIndicadorAlcanceId()) {
+						System.out.println("relacionindicadordetalleobra.getIntidindicadortipodet()="+relacionindicadordetalleobra.getIntidindicadortipodet());
 						relacionindicadordetalleobra.setStrvalorejecutado(relacionindicadordetalleobra.getStrvalorejecutado().add(indicadorAlcanceRequest.getCantidadEjecucion()));
+						System.out.println("relacionindicadordetalleobra.getStrvalorejecutado()="+relacionindicadordetalleobra.getStrvalorejecutado());
 					}
 				}
+			}
+			
+			for (Relacionindicadordetalleobra relacionindicadordetalleobra: relacionindicadordetalleobras) {
+				System.out.println("Cambió?");
+				System.out.println("relacionindicadordetalleobra.getStrvalorejecutado()="+relacionindicadordetalleobra.getStrvalorejecutado());
 			}
 			
 			for (ImagenRequest imagenRequest : alimentacionRequest.getImagenesComplementarias()) {
@@ -162,6 +169,7 @@ public class DatosAlimentacionApi {
 				Relacionalimentacionfactoratraso relacionalimentacionfactoratraso = new Relacionalimentacionfactoratraso();
 				relacionalimentacionfactoratraso.setId(new RelacionalimentacionfactoratrasoId(factorAtrasoRequest.getFactorAtrasoId(),alimentacion.getIntidalimenta()));
 				relacionalimentacionfactoratraso.setAlimentacion(alimentacion);
+				relacionesalimentacionfactoratraso.add(relacionalimentacionfactoratraso);
 			}
 			relacionesalimentacionfactoratrasoService.saveAll(relacionesalimentacionfactoratraso);
 			relacionesindicadordetalleobraService.saveAll(relacionindicadordetalleobras);
