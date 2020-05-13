@@ -35,10 +35,12 @@ import co.com.interkont.wscobra.dto.Relacionalimentacionfactoratraso;
 import co.com.interkont.wscobra.dto.RelacionalimentacionfactoratrasoId;
 import co.com.interkont.wscobra.dto.Relacionindicadordetalleobra;
 import co.com.interkont.wscobra.dto.Semaforo;
+import co.com.interkont.wscobra.api.response.PeriodoResponse;
 /**
  * imports RESPONSE
  */
 import co.com.interkont.wscobra.dto.VistaActividades;
+import co.com.interkont.wscobra.dto.VistaPeriodosObra;
 import co.com.interkont.wscobra.service.ActividadesService;
 import co.com.interkont.wscobra.service.AlimentacionesService;
 import co.com.interkont.wscobra.service.JsfUsuariosService;
@@ -46,6 +48,7 @@ import co.com.interkont.wscobra.service.ObrasService;
 import co.com.interkont.wscobra.service.PeriodosService;
 import co.com.interkont.wscobra.service.RelacionesalimentacionfactoratrasoService;
 import co.com.interkont.wscobra.service.RelacionesindicadordetalleobraService;
+import co.com.interkont.wscobra.service.PeriodosObraService;
 
 
 
@@ -94,6 +97,9 @@ public class DatosAlimentacionApi {
 	
 	@Autowired
 	RelacionesindicadordetalleobraService relacionesindicadordetalleobraService;
+
+    @Autowired
+	PeriodosObraService periodosObraService;
 	
 	@Autowired
 	RelacionesalimentacionfactoratrasoService relacionesalimentacionfactoratrasoService;
@@ -108,15 +114,23 @@ public class DatosAlimentacionApi {
 		DatosAlimentacionResponse datosAlimentacionResponse = new DatosAlimentacionResponse();
 		
 		List<VistaActividades> actividades = actividadesService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
+		List<VistaPeriodosObra> periodos = periodosObraService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
 		
 		List<ActividadResponse> actividadesResponse = new ArrayList<ActividadResponse>();
+		List<PeriodoResponse> periodosResponse = new ArrayList<PeriodoResponse>();
 
 		for (VistaActividades actividad : actividades) {
 			ActividadResponse actividadResponse = mapper.map(actividad, ActividadResponse.class);
 			actividadesResponse.add(actividadResponse);
 		}
+
+		for (VistaPeriodosObra periodo : periodos) {
+			PeriodoResponse periodoResponse = new PeriodoResponse(periodo.getId(), periodo.getFechainicioperiodo(), periodo.getFechafinperiodo(), periodo.getPorcentajeproyectado()); 
+			periodosResponse.add(periodoResponse);
+		}
 		
 		datosAlimentacionResponse.setActividades(actividadesResponse);
+		datosAlimentacionResponse.setPeriodos(periodosResponse);
 		
 		return datosAlimentacionResponse;
 	}
