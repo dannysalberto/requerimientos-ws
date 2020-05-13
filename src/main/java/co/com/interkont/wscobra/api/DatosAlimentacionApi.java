@@ -182,7 +182,7 @@ public class DatosAlimentacionApi {
 				imagenevolucionobraComplementaria.setStrnombre("Foto Complementaria Alimentación");
 				imagenevolucionobraComplementaria.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
 				imagenevolucionobraComplementaria.setStrubicacion(Utils.URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+Utils.CARPETA_IMGS_ALIMENTACION+"/"+imagenRequest.getNombre()+Utils.SEPARADOR_TIEMPO+Utils.subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
-				Utils.saveFileBase64(alimentacionRequest.getFotoPrincipal().getImage(), Utils.PATH_CARPETA_PROYECTO_WEB+imagenevolucionobra.getStrubicacion());
+				Utils.saveFileBase64(imagenRequest.getImage(), Utils.PATH_CARPETA_PROYECTO_WEB+imagenevolucionobraComplementaria.getStrubicacion());
 				imagenesevolucionobraService.save(imagenevolucionobraComplementaria);
 			}
 			
