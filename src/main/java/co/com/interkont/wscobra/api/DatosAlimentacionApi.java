@@ -109,7 +109,7 @@ public class DatosAlimentacionApi {
 			List<Relacionalimentacionfactoratraso> relacionesalimentacionfactoratraso = new ArrayList<>();
 			Alimentacion alimentacion = new Alimentacion();
 			
-			alimentacion.setAprobado(false);
+			alimentacion.setAprobado(null);
 			alimentacion.setDatefecha(periodosService.findById(alimentacionRequest.getPeriodoId()).getDatefecfinperiodo());
 			alimentacion.setDatefechaalimen(new Date());
 			alimentacion.setJsfUsuarioByIntusuAlimenta(jsfUsuariosService.findByUsuLogin(alimentacionRequest.getUsuario()));
