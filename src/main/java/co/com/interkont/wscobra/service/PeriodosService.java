@@ -1,4 +1,3 @@
-
 package co.com.interkont.wscobra.service;
 
 import org.springframework.beans.factory.annotation.Autowired;

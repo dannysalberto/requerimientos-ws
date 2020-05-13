@@ -98,7 +98,7 @@ public class DatosAlimentacionApi {
 	@Autowired
 	RelacionesindicadordetalleobraService relacionesindicadordetalleobraService;
 
-        @Autowired
+    @Autowired
 	PeriodosObraService periodosObraService;
 	
 	@Autowired
@@ -123,10 +123,11 @@ public class DatosAlimentacionApi {
 			ActividadResponse actividadResponse = mapper.map(actividad, ActividadResponse.class);
 			actividadesResponse.add(actividadResponse);
 		}
-		
-		periodos.forEach(periodo->{
-			periodosResponse.add(mapper.map(periodo, PeriodoResponse.class));
-		});
+
+		for (VistaPeriodosObra periodo : periodos) {
+			PeriodoResponse periodoResponse = new PeriodoResponse(periodo.getId(), periodo.getFechainicioperiodo(), periodo.getFechafinperiodo(), periodo.getPorcentajeproyectado()); 
+			periodosResponse.add(periodoResponse);
+		}
 		
 		datosAlimentacionResponse.setActividades(actividadesResponse);
 		datosAlimentacionResponse.setPeriodos(periodosResponse);

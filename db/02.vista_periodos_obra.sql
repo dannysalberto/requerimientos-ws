@@ -1,3 +1,34 @@
+CREATE OR REPLACE FUNCTION appmobile.f_porcentaje_proyectado_periodo(p_intcodigoobra integer, p_fechaincio date)
+  RETURNS NUMERIC AS
+$BODY$
+DECLARE
+    v_valor_proyectodo NUMERIC;
+    v_valor_total NUMERIC;
+    v_total_proyectado NUMERIC;    
+    v_total_proyectado_porcentaje NUMERIC;
+BEGIN
+
+	SELECT SUM(numvaltotplanif) 
+	INTO v_valor_proyectodo
+	FROM periodo  
+	WHERE intcodigoobra = p_intcodigoobra AND datefeciniperiodo <= p_fechaincio;
+
+	SELECT SUM(numvaltotplanif) 
+	INTO v_valor_total
+	FROM periodo  
+	WHERE intcodigoobra = p_intcodigoobra;
+
+	SELECT COALESCE(v_total_proyectado,0) * 100
+	INTO v_total_proyectado_porcentaje;
+	
+    RETURN v_total_proyectado_porcentaje;
+END
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION appmobile.f_porcentaje_proyectado_periodo(integer, date) OWNER TO cobra;
+
+
 CREATE OR REPLACE FUNCTION appmobile.f_fecha_ultimo_avance(p_intcodigoobra integer) RETURNS DATE
     LANGUAGE plpgsql
     AS $$
