@@ -1,6 +1,7 @@
 package co.com.interkont.wscobra.api;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,18 +23,6 @@ import co.com.interkont.wscobra.api.request.ImagenRequest;
 import co.com.interkont.wscobra.api.request.IndicadorAlcanceRequest;
 import co.com.interkont.wscobra.api.response.ActividadResponse;
 import co.com.interkont.wscobra.api.response.AlimentacionResponse;
-import co.com.interkont.wscobra.api.response.AspectoEvaluarResponse;
-
-/**
- * imports DTO
- */
-
-/**
- * imports SERVICE
- */
-/**
- * imports REQUEST
- */
 import co.com.interkont.wscobra.api.response.DatosAlimentacionResponse;
 import co.com.interkont.wscobra.api.response.MensajeResponse;
 import co.com.interkont.wscobra.dto.Actividadobra;
@@ -57,6 +46,7 @@ import co.com.interkont.wscobra.service.AlimentacionesService;
 import co.com.interkont.wscobra.service.JsfUsuariosService;
 import co.com.interkont.wscobra.service.ObrasService;
 import co.com.interkont.wscobra.service.PeriodosService;
+import co.com.interkont.wscobra.service.RelacionesalimentacionfactoratrasoService;
 import co.com.interkont.wscobra.service.RelacionesindicadordetalleobraService;
 import co.com.interkont.wscobra.service.PeriodosObraService;
 
@@ -67,6 +57,29 @@ import co.com.interkont.wscobra.service.PeriodosObraService;
      consumes="application/json")
 
 public class DatosAlimentacionApi {
+	
+	/**
+     * Formato de tiempo utilizado para el subfijo del nombre del archivo
+     */
+    public static final String FORMATO_TIEMPO = "yyyyMMddHHmmss";
+    
+    /**
+     * Formateador utilizado para el subfijo del nombre del archivo
+     */
+    private static final SimpleDateFormat subfijoTiempoDateFormat = new SimpleDateFormat(FORMATO_TIEMPO);
+    
+    /**
+     * Separador del subfijo de tiempo
+     */
+    public static final String SEPARADOR_TIEMPO = "_";
+    
+    /**
+     * URL de la carpeta de imágenes de alimentacion
+     */
+    public static final String URL_CARPETA_OBRAS_VIGENTES = "/resources/Documentos/ObrasVigentes";
+    
+    public static final String CARPETA_IMGS_ALIMENTACION = "ImgsAlimentacion";
+    
 	@Autowired
 	ActividadesService actividadesService;
 	
@@ -87,6 +100,9 @@ public class DatosAlimentacionApi {
 
         @Autowired
 	PeriodosObraService periodosObraService;
+	
+	@Autowired
+	RelacionesalimentacionfactoratrasoService relacionesalimentacionfactoratrasoService;
 	
 	@Autowired
 	Mapper mapper;
@@ -127,9 +143,10 @@ public class DatosAlimentacionApi {
 		try {
 			Obra obra = obrasService.findById(alimentacionRequest.getCodigoproyecto());
 			List<Relacionindicadordetalleobra> relacionindicadordetalleobras = relacionesindicadordetalleobraService.findByObra(obra);
+			List<Relacionalimentacionfactoratraso> relacionesalimentacionfactoratraso = new ArrayList<>();
 			Alimentacion alimentacion = new Alimentacion();
 			
-			alimentacion.setAprobado(false);
+			alimentacion.setAprobado(null);
 			alimentacion.setDatefecha(periodosService.findById(alimentacionRequest.getPeriodoId()).getDatefecfinperiodo());
 			alimentacion.setDatefechaalimen(new Date());
 			alimentacion.setJsfUsuarioByIntusuAlimenta(jsfUsuariosService.findByUsuLogin(alimentacionRequest.getUsuario()));
@@ -163,26 +180,41 @@ public class DatosAlimentacionApi {
 				alimentacion.getAlimentacioncualificacions().add(alimentacioncualificacion);
 			}
 			
-			for (FactorAtrasoRequest factorAtrasoRequest : alimentacionRequest.getFactoresAtraso()) {
-				Relacionalimentacionfactoratraso relacionalimentacionfactoratraso = new Relacionalimentacionfactoratraso();
-				relacionalimentacionfactoratraso.setId(new RelacionalimentacionfactoratrasoId(factorAtrasoRequest.getFactorAtrasoId(),alimentacion.getIntidalimenta()));
-				relacionalimentacionfactoratraso.setAlimentacion(alimentacion);
-			}
-			
 			for (IndicadorAlcanceRequest indicadorAlcanceRequest : alimentacionRequest.getIndicadoresAlcance()) {
 				for (Relacionindicadordetalleobra relacionindicadordetalleobra: relacionindicadordetalleobras) {
-					if (relacionindicadordetalleobra.getIntidindicadortipodet() == indicadorAlcanceRequest.getIndicadorAlcanceId()) {
+					
+					if (relacionindicadordetalleobra.getIntid() == indicadorAlcanceRequest.getIndicadorAlcanceId()) {
 						relacionindicadordetalleobra.setStrvalorejecutado(relacionindicadordetalleobra.getStrvalorejecutado().add(indicadorAlcanceRequest.getCantidadEjecucion()));
 					}
 				}
 			}
+			List<Imagenevolucionobra> imagenesevolucionobra = new ArrayList<>();
+			Imagenevolucionobra imagenevolucionobra = new Imagenevolucionobra();
+			imagenevolucionobra.setDatefecha(alimentacion.getDatefecha());
+			imagenevolucionobra.setDatefecharegistro(new Date());
+			imagenevolucionobra.setIntidtipoimagen(6);
+			imagenevolucionobra.setJsfUsuario(alimentacion.getJsfUsuarioByIntusuAlimenta());
+			imagenevolucionobra.setObra(obra);
+			imagenevolucionobra.setStrnombre("Foto Principal Alimentación");
+			imagenevolucionobra.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
+			imagenevolucionobra.setStrubicacion(URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+CARPETA_IMGS_ALIMENTACION+"/"+alimentacionRequest.getFotoPrincipal().getNombre()+SEPARADOR_TIEMPO+subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
+			
+			alimentacion.setImagenevolucionobra(imagenevolucionobra);
 			
 			for (ImagenRequest imagenRequest : alimentacionRequest.getImagenesComplementarias()) {
-				Imagenevolucionobra imagenevolucionobra = new Imagenevolucionobra();
+				Imagenevolucionobra imagenevolucionobraComplementaria = new Imagenevolucionobra();
 				
 			}
 			
 			alimentacionesService.save(alimentacion);
+			
+			for (FactorAtrasoRequest factorAtrasoRequest : alimentacionRequest.getFactoresAtraso()) {
+				Relacionalimentacionfactoratraso relacionalimentacionfactoratraso = new Relacionalimentacionfactoratraso();
+				relacionalimentacionfactoratraso.setId(new RelacionalimentacionfactoratrasoId(factorAtrasoRequest.getFactorAtrasoId(),alimentacion.getIntidalimenta()));
+				relacionalimentacionfactoratraso.setAlimentacion(alimentacion);
+				relacionesalimentacionfactoratraso.add(relacionalimentacionfactoratraso);
+			}
+			relacionesalimentacionfactoratrasoService.saveAll(relacionesalimentacionfactoratraso);
 			relacionesindicadordetalleobraService.saveAll(relacionindicadordetalleobras);
 			
 		} catch (Exception e) {
@@ -193,6 +225,7 @@ public class DatosAlimentacionApi {
 			mensajes.add(new MensajeResponse("Debes justificar el factor de atraso"));
 			mensajes.add(new MensajeResponse("Debes subir al menos una foto"));
 			mensajes.add(new MensajeResponse(e.getMessage()));
+			mensajes.add(new MensajeResponse(alimentacionRequest.toString()));
 			response.setMensajes(mensajes);
 			return response;
 		}
