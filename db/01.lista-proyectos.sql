@@ -22,7 +22,11 @@ select
 	||(select strvalorparametro from configuracion.configuracion_siente where strcodigoparametro='nombreContextoSiente')
 	||split_part(obra.strurllogo,'.svg',1)||'.png' imagencategoria,
 	obra.strcolor colorcategoria,
-	obra.usu_login usuario
+	obra.usu_login usuario,
+	CASE
+	    WHEN obra.intcodigoobra = 6421 THEN true
+	    ELSE false
+	END::boolean pendienteaprobacion
 from (
 	select 
 		obra.intcodigoobra,

@@ -51,6 +51,9 @@ public class VistaProyectosLista implements Serializable {
     @Column(length = 255)
     private String usuario;
     
+    @Column(name = "pendienteaprobacion")
+    private Boolean pendienteAprobacion;
+    
     public VistaProyectosLista() {
     }
 
@@ -193,6 +196,14 @@ public class VistaProyectosLista implements Serializable {
 
 	public void setColorcategoria(String colorcategoria) {
 		this.colorcategoria = colorcategoria;
+	}
+	
+	public Boolean getPendienteAprobacion() {
+		return pendienteAprobacion;
+	}
+	
+	public void setPendienteAprobacion(Boolean pendienteAprobacion) {
+		this.pendienteAprobacion = pendienteAprobacion;
 	}
 
 
