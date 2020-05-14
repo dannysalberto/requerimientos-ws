@@ -1,5 +1,8 @@
+DROP VIEW IF EXISTS appmobile.vista_indicadores_obra ;
+DROP FUNCTION IF EXISTS appmobile.f_porcentaje_avance_indicador(NUMERIC, NUMERIC);
+
 CREATE OR REPLACE FUNCTION appmobile.f_porcentaje_avance_indicador(valorprogramado NUMERIC, valorejecutado NUMERIC)
-  RETURNS NUMERIC(20,6) AS
+  RETURNS NUMERIC AS
 $BODY$
 DECLARE
     v_total_avance NUMERIC;    
@@ -10,6 +13,12 @@ BEGIN
 	INTO v_total_avance;
 
 	SELECT COALESCE(v_total_avance,0) * 100
+	INTO v_total_avance_porcentaje;
+
+	SELECT CASE WHEN v_total_avance_porcentaje > 0
+            THEN v_total_avance_porcentaje 
+            ELSE 0.0
+	END
 	INTO v_total_avance_porcentaje;
 
 	RETURN v_total_avance_porcentaje;
