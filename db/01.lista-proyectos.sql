@@ -23,7 +23,7 @@ select
 	||split_part(obra.strurllogo,'.svg',1)||'.png' imagencategoria,
 	obra.strcolor colorcategoria,
 	obra.usu_login usuario,
-	COALESCE((select aprobado from alimentacion ali1 where intcodigoobra = obra.intcodigoobra and datefecha = (select max(datefecha) from alimentacion ali2 where intcodigoobra = ali1.intcodigoobra) limit 1), false) pendienteaprobacion
+	NOT COALESCE((select aprobado from alimentacion ali1 where intcodigoobra = obra.intcodigoobra and datefecha = (select max(datefecha) from alimentacion ali2 where intcodigoobra = ali1.intcodigoobra) limit 1), false) pendienteaprobacion
 from (
 	select 
 		obra.intcodigoobra,
