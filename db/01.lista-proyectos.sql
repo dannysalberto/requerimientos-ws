@@ -1,7 +1,5 @@
 ﻿update configuracion.configuracion_siente set strvalorparametro='condor' where strcodigoparametro='nombreContextoSiente';
 --------------- se crea el esquema para las vistas de movil
-DROP SCHEMA IF EXISTS appmobile CASCADE;
-CREATE SCHEMA appmobile  AUTHORIZATION cobra;
 
 ---------------------------------------- VIEW LISTA DE PROYECTOS
 DROP VIEW IF EXISTS appmobile.vista_proyectos;
@@ -23,7 +21,7 @@ select
 	||split_part(obra.strurllogo,'.svg',1)||'.png' imagencategoria,
 	obra.strcolor colorcategoria,
 	obra.usu_login usuario,
-	COALESCE((select aprobado from alimentacion ali1 where intcodigoobra = obra.intcodigoobra and datefecha = (select max(datefecha) from alimentacion ali2 where intcodigoobra = ali1.intcodigoobra) limit 1), false) pendienteaprobacion
+	NOT COALESCE((select aprobado from alimentacion ali1 where intcodigoobra = obra.intcodigoobra and datefecha = (select max(datefecha) from alimentacion ali2 where intcodigoobra = ali1.intcodigoobra) limit 1), false) pendienteaprobacion
 from (
 	select 
 		obra.intcodigoobra,
