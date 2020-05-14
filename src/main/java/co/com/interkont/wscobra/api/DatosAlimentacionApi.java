@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -95,6 +97,10 @@ public class DatosAlimentacionApi {
 	
 	@Autowired
 	Mapper mapper;
+	
+	@Autowired
+	private ServletContext servletContext;
+	
 	
 	
 	@RequestMapping(value="/datos-alimentacion", method=RequestMethod.POST)
@@ -196,7 +202,7 @@ public class DatosAlimentacionApi {
 			imagenevolucionobra.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
 			imagenevolucionobra.setStrubicacion(Utils.URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+Utils.CARPETA_IMGS_ALIMENTACION+"/"+alimentacionRequest.getFotoPrincipal().getNombre()+Utils.SEPARADOR_TIEMPO+Utils.subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
 			
-			Utils.saveFileBase64(alimentacionRequest.getFotoPrincipal().getImage(), Utils.PATH_CARPETA_PROYECTO_WEB+imagenevolucionobra.getStrubicacion());
+			Utils.saveFileBase64(alimentacionRequest.getFotoPrincipal().getImage(), servletContext.getRealPath(imagenevolucionobra.getStrubicacion()));
 			
 			alimentacion.setImagenevolucionobra(imagenevolucionobra);
 			
@@ -211,7 +217,7 @@ public class DatosAlimentacionApi {
 					imagenevolucionobraComplementaria.setStrnombre("Foto Complementaria Alimentación");
 					imagenevolucionobraComplementaria.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
 					imagenevolucionobraComplementaria.setStrubicacion(Utils.URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+Utils.CARPETA_IMGS_ALIMENTACION+"/"+imagenRequest.getNombre()+Utils.SEPARADOR_TIEMPO+Utils.subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
-					Utils.saveFileBase64(imagenRequest.getImage(), Utils.PATH_CARPETA_PROYECTO_WEB+imagenevolucionobraComplementaria.getStrubicacion());
+					Utils.saveFileBase64(imagenRequest.getImage(), servletContext.getRealPath(imagenevolucionobraComplementaria.getStrubicacion()));
 					imagenesevolucionobraService.save(imagenevolucionobraComplementaria);
 				}
 			}

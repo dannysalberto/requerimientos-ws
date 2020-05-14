@@ -28,11 +28,6 @@ public class Utils {
     public static final String SEPARADOR_TIEMPO = "_";
     
     /**
-     * Ruta de la carpeta del proyecto web
-     */
-    public static final String PATH_CARPETA_PROYECTO_WEB = "/opt/tomcat8/apache-tomcat-8.5.34/webapps/cobra-ws-condor/";
-    
-    /**
      * URL de la carpeta de imágenes de alimentacion
      */
     public static final String URL_CARPETA_OBRAS_VIGENTES = "resources/Documentos/ObrasVigentes";
