@@ -204,6 +204,8 @@ public class DatosAlimentacionApi {
 			
 			Utils.saveFileBase64(alimentacionRequest.getFotoPrincipal().getImage(), servletContext.getRealPath(imagenevolucionobra.getStrubicacion()));
 			
+			imagenevolucionobra.setStrubicacion("/"+imagenevolucionobra.getStrubicacion());
+			
 			alimentacion.setImagenevolucionobra(imagenevolucionobra);
 			
 			if (alimentacionRequest.getImagenesComplementarias() != null) {
@@ -218,6 +220,7 @@ public class DatosAlimentacionApi {
 					imagenevolucionobraComplementaria.setStrnombrearchivo(alimentacionRequest.getFotoPrincipal().getNombre());
 					imagenevolucionobraComplementaria.setStrubicacion(Utils.URL_CARPETA_OBRAS_VIGENTES+"/"+obra.getIntcodigoobra()+"/"+Utils.CARPETA_IMGS_ALIMENTACION+"/"+imagenRequest.getNombre()+Utils.SEPARADOR_TIEMPO+Utils.subfijoTiempoDateFormat.format(new Date())+"."+alimentacionRequest.getFotoPrincipal().getTipo());
 					Utils.saveFileBase64(imagenRequest.getImage(), servletContext.getRealPath(imagenevolucionobraComplementaria.getStrubicacion()));
+					imagenevolucionobraComplementaria.setStrubicacion("/"+imagenevolucionobra.getStrubicacion());
 					imagenesevolucionobraService.save(imagenevolucionobraComplementaria);
 				}
 			}
