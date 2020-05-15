@@ -39,11 +39,12 @@ ALTER FUNCTION appmobile.f_porcentaje_proyectado_periodo(integer, date) OWNER TO
 
 --------------------------- FUNCTION ULTIMO AVANCE
 
-CREATE OR REPLACE FUNCTION appmobile.f_fecha_ultimo_avance(p_intcodigoobra integer) RETURNS DATE
-    LANGUAGE plpgsql
-    AS $$
+CREATE OR REPLACE FUNCTION appmobile.f_fecha_ultimo_avance(p_intcodigoobra integer)
+  RETURNS date AS
+$BODY$
 DECLARE
     v_fecha_ultimo_avance DATE;
+    v_fecha_primer_periodo DATE;
 BEGIN
 
 	SELECT datefecha 
@@ -51,11 +52,27 @@ BEGIN
 	FROM alimentacion  
 	WHERE intcodigoobra = p_intcodigoobra AND aprobado = TRUE
 	ORDER BY intidalimenta
-	LIMIT 1;     
+	LIMIT 1;    
+
+	SELECT MIN(datefeciniperiodo)  
+	INTO v_fecha_primer_periodo
+	FROM periodo  
+	WHERE intcodigoobra = 6420;
+
+	SELECT CASE WHEN v_fecha_ultimo_avance IS NULL 
+            THEN v_fecha_primer_periodo 
+            ELSE v_fecha_ultimo_avance
+	END
+	INTO v_fecha_ultimo_avance; 
+
+	
     RETURN v_fecha_ultimo_avance;
 END
-$$;
-ALTER FUNCTION appmobile.f_fecha_ultimo_avance(integer) OWNER TO cobra;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION appmobile.f_fecha_ultimo_avance(integer)
+  OWNER TO cobra;
 
 
 --------------------------- VIEW VISTA PERIODOS OBRA

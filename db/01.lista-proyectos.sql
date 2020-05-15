@@ -1,7 +1,5 @@
 ﻿update configuracion.configuracion_siente set strvalorparametro='condor' where strcodigoparametro='nombreContextoSiente';
 --------------- se crea el esquema para las vistas de movil
-DROP SCHEMA IF EXISTS appmobile CASCADE;
-CREATE SCHEMA appmobile  AUTHORIZATION cobra;
 
 ---------------------------------------- VIEW LISTA DE PROYECTOS
 DROP VIEW IF EXISTS appmobile.vista_proyectos;
