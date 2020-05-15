@@ -8,11 +8,9 @@ import org.springframework.stereotype.Repository;
 import co.com.interkont.wscobra.dto.VistaActividades;
 
 @Repository
-public interface ActividadesRepository extends JpaRepository<VistaActividades, Integer>{
+public interface VistaActividadesRepository extends JpaRepository<VistaActividades, Integer>{
 	
 	
 	public List<VistaActividades> findByCodigoProyecto(Integer codigoProyecto);
-	
-	public VistaActividades findByActividadId(Long id);
-	
+		
 }

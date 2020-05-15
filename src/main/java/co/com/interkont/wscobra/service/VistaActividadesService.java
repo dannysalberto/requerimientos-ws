@@ -6,22 +6,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.com.interkont.wscobra.dao.ActividadesRepository;
+import co.com.interkont.wscobra.dao.VistaActividadesRepository;
 import co.com.interkont.wscobra.dto.VistaActividades;
 
 @Service
-public class ActividadesService {
+public class VistaActividadesService {
 	
 	@Autowired
-	ActividadesRepository actividadesRepository;
+	VistaActividadesRepository actividadesRepository;
 	
 	
 	public List<VistaActividades> findByCodigoProyecto(Integer codigoProyecto){
 		return actividadesRepository.findByCodigoProyecto(codigoProyecto);		
-	}
-	
-	public VistaActividades findByActividadId(Long id){
-		return actividadesRepository.findByActividadId(id);		
 	}
 
 }

@@ -3,7 +3,6 @@ package co.com.interkont.wscobra.api;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -45,7 +44,8 @@ import co.com.interkont.wscobra.api.response.PeriodoResponse;
 import co.com.interkont.wscobra.dto.VistaActividades;
 import co.com.interkont.wscobra.dto.VistaIndicadoresObra;
 import co.com.interkont.wscobra.dto.VistaPeriodosObra;
-import co.com.interkont.wscobra.service.ActividadesService;
+import co.com.interkont.wscobra.service.VistaActividadesService;
+import co.com.interkont.wscobra.service.ActividadesobraService;
 import co.com.interkont.wscobra.service.AlimentacionesService;
 import co.com.interkont.wscobra.service.ImagenesevolucionobraService;
 import co.com.interkont.wscobra.service.IndicadoresObraService;
@@ -66,7 +66,10 @@ import co.com.interkont.wscobra.utils.Utils;
 public class DatosAlimentacionApi {
     
 	@Autowired
-	ActividadesService actividadesService;
+	VistaActividadesService vistaActividadesService;
+	
+	@Autowired
+	ActividadesobraService actividadesobraService;
 	
 	@Autowired
 	PeriodosService periodosService;
@@ -108,7 +111,7 @@ public class DatosAlimentacionApi {
 	public DatosAlimentacionResponse getDatosAlimentacionResponse(@RequestBody DatosAlimentacionRequest datosAlimentacionRequest){
 		DatosAlimentacionResponse datosAlimentacionResponse = new DatosAlimentacionResponse();
 		
-		List<VistaActividades> actividades = actividadesService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
+		List<VistaActividades> actividades = vistaActividadesService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
 		List<VistaPeriodosObra> periodos = periodosObraService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
 		List<VistaIndicadoresObra> indicadores = indicadoresObraService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
 		
@@ -162,15 +165,19 @@ public class DatosAlimentacionApi {
 			alimentacion.setSemaforo(new Semaforo(1));
 			BigDecimal valorEjecutadoAlimentacion = BigDecimal.ZERO;
 			for (ActividadRequest actividadRequest: alimentacionRequest.getActividades()) {
-				VistaActividades vistaActividades = actividadesService.findByActividadId(actividadRequest.getActividadId());
+				Actividadobra actividadobra = actividadesobraService.findByOidactiviobra(actividadRequest.getActividadId());
 				Relacionalimentacionactividad relacionalimentacionactividad = new Relacionalimentacionactividad();
 				relacionalimentacionactividad.setAlimentacion(alimentacion);
 				relacionalimentacionactividad.setFloatcantejec(actividadRequest.getCantidadEjecutada());
 				relacionalimentacionactividad.setActividadobra(new Actividadobra(actividadRequest.getActividadId()));
-				BigDecimal valorEjecutado = vistaActividades.getValorUnitario().multiply(BigDecimal.valueOf(actividadRequest.getCantidadEjecutada()));
-				relacionalimentacionactividad.setNumvalejec(vistaActividades.getValorEjecutado().add(valorEjecutado));
+				BigDecimal valorEjecutado = actividadobra.getNumvalorplanifao().multiply(BigDecimal.valueOf(actividadRequest.getCantidadEjecutada()));
+				relacionalimentacionactividad.setNumvalejec(actividadobra.getNumvalorejecutao().add(valorEjecutado));
 				valorEjecutadoAlimentacion = valorEjecutadoAlimentacion.add(valorEjecutado);
 				alimentacion.getRelacionalimentacionactividads().add(relacionalimentacionactividad);
+				
+				//Se almacena el nuevo valor ejecutado de la actividad
+				actividadobra.setNumvalorejecutao(actividadobra.getNumvalorejecutao().add(valorEjecutado));
+				actividadesobraService.save(actividadobra);
 			}
 			alimentacion.setNumtotalejec(valorEjecutadoAlimentacion);
 			alimentacion.setNumtotalejecacu(obra.getNumvalejecobra().add(valorEjecutadoAlimentacion));
