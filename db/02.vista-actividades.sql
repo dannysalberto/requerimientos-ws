@@ -18,5 +18,5 @@ select
 	
 from 
 	actividadobra;
-ALTER TABLE appmobile.vista_proyectos_lista OWNER TO cobra;
+ALTER VIEW appmobile.vista_actividades OWNER TO cobra;
 ------------------------------------------------------------------	

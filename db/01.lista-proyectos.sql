@@ -21,7 +21,7 @@ select
 	||split_part(obra.strurllogo,'.svg',1)||'.png' imagencategoria,
 	obra.strcolor colorcategoria,
 	obra.usu_login usuario,
-	NOT COALESCE((select aprobado from alimentacion ali1 where intcodigoobra = obra.intcodigoobra and datefecha = (select max(datefecha) from alimentacion ali2 where intcodigoobra = ali1.intcodigoobra) limit 1), false) pendienteaprobacion
+	NOT COALESCE((select aprobado from alimentacion ali1 where intcodigoobra = obra.intcodigoobra and datefecha = (select max(datefecha) from alimentacion ali2 where intcodigoobra = ali1.intcodigoobra) limit 1), TRUE) pendienteaprobacion
 from (
 	select 
 		obra.intcodigoobra,
@@ -74,5 +74,5 @@ from (
 	where obra.intestadoobra=1
 ) obra;
 
-ALTER TABLE appmobile.vista_proyectos OWNER TO cobra;
+ALTER VIEW appmobile.vista_proyectos OWNER TO cobra;
 ------------------------------------------------------------------
