@@ -176,7 +176,8 @@ public class DatosAlimentacionApi {
 				alimentacion.getRelacionalimentacionactividads().add(relacionalimentacionactividad);
 				
 				//Se almacena el nuevo valor ejecutado de la actividad
-				actividadobra.setNumvalorejecutao(actividadobra.getNumvalorejecutao().add(valorEjecutado));
+				actividadobra.setNumvalorejecutao(actividadobra.getNumvalorejecutao().add(valorEjecutado));	
+				actividadobra.setFloatcantidadejecutao(actividadobra.getFloatcantidadejecutao()*actividadRequest.getCantidadEjecutada());
 				actividadesobraService.save(actividadobra);
 			}
 			alimentacion.setNumtotalejec(valorEjecutadoAlimentacion);
