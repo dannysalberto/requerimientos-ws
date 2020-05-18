@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS appmobile.vista_indicadores_obra ;
+﻿DROP VIEW IF EXISTS appmobile.vista_indicadores_obra ;
 DROP FUNCTION IF EXISTS appmobile.f_porcentaje_avance_indicador(NUMERIC, NUMERIC);
 
 CREATE OR REPLACE FUNCTION appmobile.f_porcentaje_avance_indicador(valorprogramado NUMERIC, valorejecutado NUMERIC)
@@ -38,5 +38,5 @@ CREATE OR REPLACE VIEW appmobile.vista_indicadores_obra AS
 		rio.strvalorejecutado AS cantidadejecutada,
 		appmobile.f_porcentaje_avance_indicador(rio.strvalor,rio.strvalorejecutado) AS porcentajeAvance
 	FROM relacionindicadordetalleobra AS rio 
-		INNER JOIN indicadortipodetalle AS itd ON rio.intidindicadortipodet = itd.intidindicadortipodet;
+		INNER JOIN indicadortipodetalle AS itd ON (rio.intidindicadortipodet = itd.intidindicadortipodet AND itd.intidindicadortipo = 2);
 ALTER TABLE appmobile.vista_indicadores_obra OWNER TO cobra;
