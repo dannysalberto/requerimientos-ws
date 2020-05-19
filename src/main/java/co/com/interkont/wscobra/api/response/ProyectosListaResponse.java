@@ -20,7 +20,7 @@ public class ProyectosListaResponse {
 	@ApiModelProperty(value = "Valor ejecutado del proyecto (Avance)")
     private BigDecimal valorejecutado;
 	@ApiModelProperty(value = "porcentaje en el que debería ir el proyecto")
-	private Double porcentajeProyectado;
+	private BigDecimal porcentajeProyectado;
 	@ApiModelProperty(value = "Nombre del color del semaforo del proyecto (verde, amarillo, rojo)")
     private String semaforoproyecto;
 	@ApiModelProperty(value = "Código de la categoría u/o línea de negocio")
@@ -42,9 +42,7 @@ public class ProyectosListaResponse {
 	
 	public ProyectosListaResponse() {
 		/*mock*/objeto="Estudios, diseños y construcción de centros de integración ciudadana cic, grupo 1 - región paciﬁco de colombia";
-		/*mock*/contratista="Arqueada SAS";
-		/*mock*/pendienteAprobacion = false;
-		/*mock*/porcentajeProyectado = 67.0;
+		/*mock*/pendienteAprobacion = false;		
 	}
 
 	public Integer getCodigoproyecto() {
@@ -143,11 +141,11 @@ public class ProyectosListaResponse {
 		this.pendienteAprobacion = pendienteAprobacion;
 	}
 
-	public Double getPorcentajeProyectado() {
+	public BigDecimal getPorcentajeProyectado() {
 		return porcentajeProyectado;
 	}
 
-	public void setPorcentajeProyectado(Double porcentajeProyectado) {
+	public void setPorcentajeProyectado(BigDecimal porcentajeProyectado) {
 		this.porcentajeProyectado = porcentajeProyectado;
 	}
 }

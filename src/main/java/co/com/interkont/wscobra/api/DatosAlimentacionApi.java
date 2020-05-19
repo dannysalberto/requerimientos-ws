@@ -163,7 +163,6 @@ public class DatosAlimentacionApi {
 			aspectosEvaluarResponse.add(new AspectoEvaluarResponse(aspectoEvaluar.getIntidtipocualificacion(), aspectoEvaluar.getStrnombre()));
 		});
 		
-		
 		datosAlimentacionResponse.setActividades(actividadesResponse);
 		datosAlimentacionResponse.setPeriodos(periodosResponse);
 		datosAlimentacionResponse.setIndicadoresAlcance(indicadoresResponse);

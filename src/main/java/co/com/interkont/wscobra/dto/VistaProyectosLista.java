@@ -49,10 +49,13 @@ public class VistaProyectosLista implements Serializable {
     @Column(length = 100)
     private String nombrecategoria;
     @Column(length = 255)
-    private String usuario;
-    
+    private String usuario;    
     @Column(name = "pendienteaprobacion")
     private Boolean pendienteAprobacion;
+    @Column(name = "deberiair")
+    private BigDecimal porcentajeProyectado;
+    @Column(length = 255)
+    private String contratista;
     
     public VistaProyectosLista() {
     }
@@ -163,6 +166,25 @@ public class VistaProyectosLista implements Serializable {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+	
+	
+	public BigDecimal getPorcentajeProyectado() {
+		return porcentajeProyectado;
+	}
+
+
+
+	public void setPorcentajeProyectado(BigDecimal porcentajeProyectado) {
+		this.porcentajeProyectado = porcentajeProyectado;
+	}
+
+	public String getContratista() {
+		return contratista;
+	}
+
+	public void setContratista(String contratista) {
+		this.contratista = contratista;
 	}
 
 
