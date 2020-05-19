@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS appmobile.vista_periodos_obra;
+﻿DROP VIEW IF EXISTS appmobile.vista_periodos_obra;
 DROP FUNCTION IF EXISTS appmobile.f_porcentaje_proyectado_periodo(integer, date);
 DROP FUNCTION IF EXISTS appmobile.f_fecha_ultimo_avance(integer);
 
@@ -57,7 +57,7 @@ BEGIN
 	SELECT MIN(datefeciniperiodo)  
 	INTO v_fecha_primer_periodo
 	FROM periodo  
-	WHERE intcodigoobra = 6420;
+	WHERE intcodigoobra = p_intcodigoobra;
 
 	SELECT CASE WHEN v_fecha_ultimo_avance IS NULL 
             THEN v_fecha_primer_periodo 
