@@ -24,12 +24,16 @@ import co.com.interkont.wscobra.api.request.ImagenRequest;
 import co.com.interkont.wscobra.api.request.IndicadorAlcanceRequest;
 import co.com.interkont.wscobra.api.response.ActividadResponse;
 import co.com.interkont.wscobra.api.response.AlimentacionResponse;
+import co.com.interkont.wscobra.api.response.AspectoEvaluarResponse;
 import co.com.interkont.wscobra.api.response.DatosAlimentacionResponse;
+import co.com.interkont.wscobra.api.response.FactorAtrasoResponse;
 import co.com.interkont.wscobra.api.response.IndicadorAlcanceResponse;
 import co.com.interkont.wscobra.api.response.MensajeResponse;
 import co.com.interkont.wscobra.dto.Actividadobra;
 import co.com.interkont.wscobra.dto.Alimentacion;
 import co.com.interkont.wscobra.dto.Alimentacioncualificacion;
+import co.com.interkont.wscobra.dto.AspectoEvaluar;
+import co.com.interkont.wscobra.dto.FactorAtraso;
 import co.com.interkont.wscobra.dto.Imagenevolucionobra;
 import co.com.interkont.wscobra.dto.Obra;
 import co.com.interkont.wscobra.dto.Relacionalimentacionactividad;
@@ -37,7 +41,9 @@ import co.com.interkont.wscobra.dto.Relacionalimentacionfactoratraso;
 import co.com.interkont.wscobra.dto.RelacionalimentacionfactoratrasoId;
 import co.com.interkont.wscobra.dto.Relacionindicadordetalleobra;
 import co.com.interkont.wscobra.dto.Semaforo;
+import co.com.interkont.wscobra.dto.TipoFactorAtraso;
 import co.com.interkont.wscobra.api.response.PeriodoResponse;
+import co.com.interkont.wscobra.api.response.TipoFactorAtrasoResponse;
 /**
  * imports RESPONSE
  */
@@ -51,6 +57,7 @@ import co.com.interkont.wscobra.service.ImagenesevolucionobraService;
 import co.com.interkont.wscobra.service.IndicadoresObraService;
 import co.com.interkont.wscobra.service.JsfUsuariosService;
 import co.com.interkont.wscobra.service.ObrasService;
+import co.com.interkont.wscobra.service.ParametrosService;
 import co.com.interkont.wscobra.service.PeriodosService;
 import co.com.interkont.wscobra.service.RelacionesalimentacionfactoratrasoService;
 import co.com.interkont.wscobra.service.RelacionesindicadordetalleobraService;
@@ -99,6 +106,9 @@ public class DatosAlimentacionApi {
 	IndicadoresObraService indicadoresObraService;
 	
 	@Autowired
+	ParametrosService parametrosService;
+	
+	@Autowired
 	Mapper mapper;
 	
 	@Autowired
@@ -114,10 +124,17 @@ public class DatosAlimentacionApi {
 		List<VistaActividades> actividades = vistaActividadesService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
 		List<VistaPeriodosObra> periodos = periodosObraService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
 		List<VistaIndicadoresObra> indicadores = indicadoresObraService.findByCodigoProyecto(datosAlimentacionRequest.getCodigoProyecto());
-		
+		List<TipoFactorAtraso> tiposFactoresAtraso = parametrosService.tipoFactorAtrasoAll();
+		List<FactorAtraso> factoresAtraso = parametrosService.factoresAtrasoAll();
+		List<AspectoEvaluar> aspectosEvaluar = parametrosService.aspectosEvaluarAll();
+	
 		List<ActividadResponse> actividadesResponse = new ArrayList<ActividadResponse>();
 		List<PeriodoResponse> periodosResponse = new ArrayList<PeriodoResponse>();
 		List<IndicadorAlcanceResponse> indicadoresResponse = new ArrayList<IndicadorAlcanceResponse>();
+		List<TipoFactorAtrasoResponse> tiposFactorAtrasoResponse = new ArrayList<TipoFactorAtrasoResponse>();
+		List<FactorAtrasoResponse> factoresAtrasoResponse = new ArrayList<FactorAtrasoResponse>();
+		List<AspectoEvaluarResponse> aspectosEvaluarResponse = new ArrayList<AspectoEvaluarResponse>(); 
+	
 
 		for (VistaActividades actividad : actividades) {
 			ActividadResponse actividadResponse = mapper.map(actividad, ActividadResponse.class);
@@ -134,9 +151,25 @@ public class DatosAlimentacionApi {
 			indicadoresResponse.add(indicadorResponse);
 		}
 		
+		tiposFactoresAtraso.forEach(tipoFactorAtraso -> {
+			tiposFactorAtrasoResponse.add(new TipoFactorAtrasoResponse(tipoFactorAtraso.getInttipoatraso(), tipoFactorAtraso.getStrdesctipoatraso()));
+		});
+		
+		factoresAtraso.forEach(factorAtraso ->{			
+			factoresAtrasoResponse.add(new FactorAtrasoResponse(factorAtraso.getIntidfactor(), factorAtraso.getStrdescfactor(), factorAtraso.getInttipoatraso()));
+		});
+		
+		aspectosEvaluar.forEach(aspectoEvaluar ->{
+			aspectosEvaluarResponse.add(new AspectoEvaluarResponse(aspectoEvaluar.getIntidtipocualificacion(), aspectoEvaluar.getStrnombre()));
+		});
+		
+		
 		datosAlimentacionResponse.setActividades(actividadesResponse);
 		datosAlimentacionResponse.setPeriodos(periodosResponse);
 		datosAlimentacionResponse.setIndicadoresAlcance(indicadoresResponse);
+		datosAlimentacionResponse.setTiposFactorAtraso(tiposFactorAtrasoResponse);
+		datosAlimentacionResponse.setFactoresAtraso(factoresAtrasoResponse);
+		datosAlimentacionResponse.setApectosEvaluar(aspectosEvaluarResponse);
 		
 		return datosAlimentacionResponse;
 	}
