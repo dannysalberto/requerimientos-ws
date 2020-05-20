@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS appmobile.vista_proyectos;
+﻿DROP VIEW IF EXISTS appmobile.vista_proyectos;
 DROP FUNCTION IF EXISTS appmobile.f_debeir_obra_alimentacion(p_intcodigoobra integer);
 DROP FUNCTION IF EXISTS appmobile.f_obra_contratista_obra(p_intcodigoobra integer);
 
@@ -73,12 +73,7 @@ CREATE OR REPLACE VIEW appmobile.vista_proyectos AS
           WHERE configuracion_siente.strcodigoparametro::text = 'nombreContextoSiente'::text))::text)) || split_part(obra.strurllogo::text, '.svg'::text, 1)) || '.png'::text AS imagencategoria,
     obra.strcolor AS colorcategoria,
     obra.usu_login AS usuario,
-    NOT COALESCE(( SELECT ali1.aprobado
-           FROM alimentacion ali1
-          WHERE ali1.intcodigoobra = obra.intcodigoobra AND ali1.datefecha = (( SELECT max(ali2.datefecha) AS max
-                   FROM alimentacion ali2
-                  WHERE ali2.intcodigoobra = ali1.intcodigoobra))
-         LIMIT 1), false) AS pendienteaprobacion,
+    NOT COALESCE((select COALESCE(aprobado,false) from alimentacion ali1 where intcodigoobra = obra.intcodigoobra and datefecha = (select max(datefecha) from alimentacion ali2 where intcodigoobra = ali1.intcodigoobra) ORDER BY ali1.datefechaalimen DESC limit 1), TRUE) pendienteaprobacion,
     appmobile.f_debeir_obra_alimentacion(obra.intcodigoobra) AS deberiair,
     appmobile.f_obra_contratista_obra(obra.intcodigoobra) AS contratista
    FROM ( SELECT obra_1.intcodigoobra,
