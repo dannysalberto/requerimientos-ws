@@ -84,7 +84,7 @@ CREATE OR REPLACE VIEW appmobile.vista_periodos_obra AS
     appmobile.f_porcentaje_proyectado_periodo(pe.intcodigoobra, pe.datefeciniperiodo)  AS porcentajeproyectado,
     pe.intcodigoobra AS codigoproyecto
    FROM periodo pe
-  WHERE pe.datefeciniperiodo > appmobile.f_fecha_ultimo_avance(pe.intcodigoobra);
+  WHERE pe.datefeciniperiodo >= appmobile.f_fecha_ultimo_avance(pe.intcodigoobra);
 
 ALTER TABLE appmobile.vista_periodos_obra OWNER TO cobra;
 
