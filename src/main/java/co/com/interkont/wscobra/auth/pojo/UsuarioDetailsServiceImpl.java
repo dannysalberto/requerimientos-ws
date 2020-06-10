@@ -34,9 +34,13 @@ public class UsuarioDetailsServiceImpl implements UserDetailsService {
 		if (usuario == null) {
 			throw new UsernameNotFoundException(username);
 		}
+		System.out.println("usuario.getLdap()="+usuario.getLdap());
+		System.out.println("LDAP.validarLDAP(usuario.getUsuLogin(), usuario.getUsuPasswd(), env)"+LDAP.validarLDAP(usuario.getUsuLogin(), usuario.getUsuPasswd(), env));
 		//Se utiliza el atributo accountNonLocked para bloquear el usuario si está configurado con ldap pero la autenticacion ldap no fue exitosa
 		boolean accountNonLocked = ((usuario.getLdap())?(LDAP.validarLDAP(usuario.getUsuLogin(), usuario.getUsuPasswd(), env)):true);
 		boolean accountNonExpired = ((usuario.getUsuFchaVncmnto().before(new Date()))?true:false);
+		System.out.println("accountNonLocked="+accountNonLocked);
+		System.out.println("accountNonExpired="+accountNonExpired);
 		User user = new User(usuario.getUsuLogin(), usuario.getUsuPasswd(), usuario.getUsuEstado(), accountNonExpired, true, accountNonLocked, emptyList());
 		
 		return user;
