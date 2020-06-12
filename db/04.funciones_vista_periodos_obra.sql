@@ -47,12 +47,10 @@ DECLARE
     v_fecha_primer_periodo DATE;
 BEGIN
 
-	SELECT datefecha 
+	SELECT MAX(datefecha) 
 	INTO v_fecha_ultimo_avance
 	FROM alimentacion  
-	WHERE intcodigoobra = p_intcodigoobra AND aprobado = TRUE
-	ORDER BY intidalimenta
-	LIMIT 1;    
+	WHERE intcodigoobra = p_intcodigoobra AND aprobado = TRUE;   
 
 	SELECT MIN(datefeciniperiodo)  
 	INTO v_fecha_primer_periodo
@@ -84,11 +82,6 @@ CREATE OR REPLACE VIEW appmobile.vista_periodos_obra AS
     appmobile.f_porcentaje_proyectado_periodo(pe.intcodigoobra, pe.datefeciniperiodo)  AS porcentajeproyectado,
     pe.intcodigoobra AS codigoproyecto
    FROM periodo pe
-  WHERE pe.datefeciniperiodo >= appmobile.f_fecha_ultimo_avance(pe.intcodigoobra);
+  WHERE pe.datefeciniperiodo BETWEEN appmobile.f_fecha_ultimo_avance(pe.intcodigoobra) AND CURRENT_DATE;
 
 ALTER TABLE appmobile.vista_periodos_obra OWNER TO cobra;
-
-
-
-
-
