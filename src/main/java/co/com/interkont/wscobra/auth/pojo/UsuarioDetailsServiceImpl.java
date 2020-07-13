@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import co.com.interkont.wscobra.auth.LDAP;
+import co.com.interkont.wscobra.auth.encrypt.Encrypter;
 import co.com.interkont.wscobra.service.JsfUsuariosService;
 
 @Service
@@ -34,8 +35,16 @@ public class UsuarioDetailsServiceImpl implements UserDetailsService {
 		if (usuario == null) {
 			throw new UsernameNotFoundException(username);
 		}
+		Encrypter encrypter;
+		String password = null;
+		try {
+			encrypter = Encrypter.getInstance();
+			password = encrypter.decrypt(usuario.getUsuPasswd());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		//Se utiliza el atributo accountNonLocked para bloquear el usuario si está configurado con ldap pero la autenticacion ldap no fue exitosa
-		boolean accountNonLocked = ((usuario.getLdap())?(LDAP.validarLDAP(usuario.getUsuLogin(), usuario.getUsuPasswd(), env)):true);
+		boolean accountNonLocked = ((usuario.getLdap())?(LDAP.validarLDAP(usuario.getUsuLogin(), password, env)):true);
 		boolean accountNonExpired = ((usuario.getUsuFchaVncmnto().after(new Date()))?true:false);
 		User user = new User(usuario.getUsuLogin(), usuario.getUsuPasswd(), usuario.getUsuEstado(), accountNonExpired, true, accountNonLocked, emptyList());
 		
