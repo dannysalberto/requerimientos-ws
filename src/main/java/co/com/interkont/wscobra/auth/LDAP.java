@@ -45,6 +45,12 @@ public class LDAP {
 				props.put(Context.SECURITY_CREDENTIALS, strPassword.getBytes("UTF8"));
 
 				InitialDirContext ctx = new InitialDirContext(props);
+				
+				System.out.println("strUser="+strUser);
+				System.out.println("password="+strPassword);
+				System.out.println("env.getProperty(\"app.ldapSearch\")="+env.getProperty("app.ldapSearch"));
+				
+				
 
 				NamingEnumeration<?> ne = ctx.search(env.getProperty("app.ldapSearch"), "(SAMAccountName=" + strUser + ")", new SearchControls());
 				while (ne.hasMore()) {
