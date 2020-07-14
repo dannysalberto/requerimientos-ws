@@ -23,6 +23,15 @@ public class LDAP {
 	public static boolean validarLDAP(String strUser, String strPassword, Environment env) {
 		boolean validacion = false;
         	try {
+        		
+        		System.out.println("strUser="+strUser);
+				System.out.println("password="+strPassword);
+				System.out.println("env.getProperty(\"app.ldapIp\")="+env.getProperty("app.ldapIp"));
+				System.out.println("env.getProperty(\"app.ldapNombre\")="+env.getProperty("app.ldapNombre"));
+				System.out.println("env.getProperty(\"app.ldapConexion\")="+env.getProperty("app.ldapConexion"));
+				System.out.println("env.getProperty(\"app.ldapSearch\")="+env.getProperty("app.ldapSearch"));
+				
+				
 				StringBuilder login = new StringBuilder();
 				StringBuilder ldapHost = new StringBuilder();
 
@@ -46,9 +55,7 @@ public class LDAP {
 
 				InitialDirContext ctx = new InitialDirContext(props);
 				
-				System.out.println("strUser="+strUser);
-				System.out.println("password="+strPassword);
-				System.out.println("env.getProperty(\"app.ldapSearch\")="+env.getProperty("app.ldapSearch"));
+				
 				
 				
 
