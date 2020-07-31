@@ -2,26 +2,22 @@ package co.com.interkont.wscobra.auth;
 
 import static co.com.interkont.wscobra.auth.config.ConfiguracionConstantes.LOGIN_URL;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import co.com.interkont.wscobra.auth.pojo.UsuarioDetailsServiceImpl;
+import co.com.interkont.wscobra.filters.JWTFilters;
 
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
-//se activa la seguridad web
-//se hereda de WebSecurityConfigurerAdapter clase para configuracion de spring
-@Configuration
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter{
 
@@ -29,37 +25,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 	 * se inyecta el servicio
 	 */
 	@Autowired	
-	private UserDetailsService userDetailsService;
+	private UsuarioDetailsServiceImpl userDetailsService;
 	
+	@Autowired
+	private JWTFilters jWTFilters;
 	
 	@Bean
-	public PasswordEncoder passwordEncoder() {		
-		return DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder();
-	} 
-
-	
-	
 	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		/*
-		 * 1. Se desactiva el uso de cookies
-		 * 2. Se activa la configuración CORS con los valores por defecto
-		 * 3. Se desactiva el filtro CSRF
-		 * 4. Se indica que el login no requiere autenticación
-		 * 5. Se indica que el resto de URLs esten securizadas
-		 */
-		httpSecurity
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.cors().and()
-			.csrf().disable()
-			.authorizeRequests()
-				.antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
-				.antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
-			.anyRequest().authenticated().and()
-				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
-				.addFilter(new JWTAuthorizationFilter(authenticationManager()));
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+	    return super.authenticationManagerBean();
 	}
-	
 	
 	/**
 	 * se sobre escribe este metodo de la clase WebSecurityConfigurerAdapter
@@ -70,11 +45,33 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 	}
 	
 	@Bean
+	public PasswordEncoder passwordEncoder() {		
+		return DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder();
+	} 
+	
+	
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity
+			.csrf().disable()
+			.authorizeRequests()
+				.antMatchers(HttpMethod.POST,LOGIN_URL).permitAll()
+				.antMatchers("/test","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
+				.anyRequest().authenticated()
+				.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		httpSecurity.addFilterBefore(jWTFilters, UsernamePasswordAuthenticationFilter.class);
+	}			
+	
+	
+	/*@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
 		return source;
-	}
+	}*/
+	
 	
 	
 }
