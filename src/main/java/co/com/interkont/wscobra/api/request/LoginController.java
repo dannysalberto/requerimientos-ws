@@ -52,37 +52,46 @@ public class LoginController {
 		return "Testing Security";
 	}
 	
+	private static Boolean bContinue;
 	
 	@RequestMapping(value=LOGIN_URL, method=RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(AuthenticationRequest authenticationRequest, HttpServletResponse response )
 		throws Exception{
+		
+		bContinue = false;  //validamos si debe continuar la authenticación
+	    String token = null;
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsuario());
-	    
 
+	    //si el usuario requiere LDAP, entonces vamos a validar contra LDAP
 		if (userDetailsService.getRequiereLDAP()) {
+			
 			int result = this.authLDAP(authenticationRequest);
 			if (result == 0) {
-				return ResponseEntity.status(HttpStatus.ACCEPTED).body(String.valueOf("Bienvenido"));
+				//si la autenticación resulta succesfull, entonces ya la validación contra BD no procede
+				bContinue = true;
 			}else {
 					return ResponseEntity.status(HttpStatus.FORBIDDEN)
 							.body(String.valueOf(LdapService.getError()));
 			}
 		}
-		try {
-			authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(
-					authenticationRequest.getUsuario(), 
-					authenticationRequest.getContrasena(),new ArrayList<>()));
-		} catch (BadCredentialsException e) {
-					System.out.println("Usuario o contraseña inválido");
-					return ResponseEntity.status(HttpStatus.FORBIDDEN)
-							.body(String.valueOf("Usuario o contraseña inválido"));
+		
+		if (!bContinue) {
+			try {
+				authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(
+						authenticationRequest.getUsuario(), 
+						authenticationRequest.getContrasena(),new ArrayList<>()));
+			} catch (BadCredentialsException e) {
+						System.out.println("Usuario o contraseña inválido");
+						return ResponseEntity.status(HttpStatus.FORBIDDEN)
+								.body(String.valueOf("Usuario o contraseña inválido"));
+			}
+			
 		}
-		final String JavaWebToken = jwtService.generateToken(userDetails);
-		String token = TOKEN_BEARER_PREFIX + " " + JavaWebToken ; 
-
+		
 		//respuesta a la cabecera
 		HttpHeaders responseHeaders = new HttpHeaders();
+		token = this.getToken(authenticationRequest,userDetails);
 	    responseHeaders.set(HEADER_AUTHORIZACION_KEY, token);
 	    
 	    @SuppressWarnings("unused")
@@ -90,6 +99,12 @@ public class LoginController {
 	    return ResponseEntity.ok()
 	      .headers(responseHeaders).body("Authenticated succesfull");
 		
+	}
+	
+	public String getToken(AuthenticationRequest authenticationRequest, UserDetails userDetails) {
+		final String JavaWebToken = jwtService.generateToken(userDetails);
+		String token = TOKEN_BEARER_PREFIX + " " + JavaWebToken ; 
+		return token;
 	}
 	
 	private int authLDAP(AuthenticationRequest authenticationRequest) {
