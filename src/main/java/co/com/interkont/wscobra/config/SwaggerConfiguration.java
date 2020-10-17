@@ -32,7 +32,7 @@ public class SwaggerConfiguration {
    private ApiInfo cobraWSApiInfo() {
 
         return new ApiInfoBuilder()
-                .title("Web services Cobra, by Interkont")
+                .title("Servicios Rest-CondorWeb, by Interkont")
                 .version("1.0")
                 .build();
 

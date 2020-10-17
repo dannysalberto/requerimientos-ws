@@ -8,7 +8,7 @@ import co.com.interkont.wscobra.api.response.ConfiguraciónResponse;
 
 import io.swagger.annotations.Api;
 
-@RestController
+//@RestController
 @Api(value = "Controlador para el servicio de configuración", 
 	 description = "Está API, muestra los servicisios para configuración de proyectos",
 	 consumes="application/json")

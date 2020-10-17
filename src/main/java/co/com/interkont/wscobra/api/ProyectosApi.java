@@ -37,7 +37,7 @@ import co.com.interkont.wscobra.api.response.ProyectosListaResponse;
 
 
 
-@RestController
+//@RestController
 @Api(value = "Api para servicios de proyectos", 
      description = "Está API, muestra los servicisios de vista lista de proyectos, vista mapa",
      consumes="application/json")

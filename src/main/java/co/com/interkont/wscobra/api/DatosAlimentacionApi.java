@@ -66,7 +66,7 @@ import co.com.interkont.wscobra.utils.Utils;
 
 
 
-@RestController
+//@RestController
 @Api(value = "Api para consultar los datos necesarios para alimentar un proyecto",
      consumes="application/json")
 
