@@ -15,7 +15,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	
-	<name>cobra-ws</name>
+	<name>cobraweb</name>
 	<description>Servicios Rest Cobra</description>
 
 	<properties>
