@@ -16,7 +16,13 @@ public class ObrasService {
 	ObrasRepository obrasRepository;
 	
 	public Obra findById(Integer id){
-		return obrasRepository.findById(id).get();		
+		try {
+			return obrasRepository.findById(id).get();
+		}catch (Exception e){
+			System.out.println("No existe el Id de Obra");
+		}
+		return null;
+				
 	}
 	
 }
