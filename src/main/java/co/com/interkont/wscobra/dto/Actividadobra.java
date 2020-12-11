@@ -41,6 +41,7 @@ public class Actividadobra  implements java.io.Serializable {
      private double floatcantplanifao;
      private String strdescactividad;
      private String strtipounidadmed;
+     private Integer idcategoria;
      private String strcodcubs;
      private BigDecimal numvalorejecutao;
      private Double floatcantidadejecutao;
@@ -116,8 +117,16 @@ public class Actividadobra  implements java.io.Serializable {
     public void setOidactiviobra(long oidactiviobra) {
         this.oidactiviobra = oidactiviobra;
     }
+    
+    public Integer getIdcategoria() {
+		return idcategoria;
+	}
 
-@ManyToOne(fetch=FetchType.LAZY)
+	public void setIdcategoria(Integer idcategoria) {
+		this.idcategoria = idcategoria;
+	}
+
+	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="intcodigoobra")
     public Obra getObra() {
         return this.obra;

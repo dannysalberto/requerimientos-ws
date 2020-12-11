@@ -19,6 +19,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import co.com.interkont.wscobra.auth.pojo.JsfUsuario;
 
@@ -129,12 +130,22 @@ public class Obra  implements java.io.Serializable {
      private Set<Imagenevolucionobra> imagenevolucionobras = new HashSet<Imagenevolucionobra>(0);
      private Set<Obra> obras = new HashSet<Obra>(0);
 
+     @Column(name="costo_directo", columnDefinition="numeric(20,6)")
+ 	 private BigDecimal costo_directo;
+ 	
+ 	 @Column(name="costo_directo_aiu", columnDefinition="numeric(20,6)")
+ 	 private BigDecimal costo_directo_aiu;
+
+ 	 @Column(name="costo_total", columnDefinition="numeric(20,6)")
+ 	 private BigDecimal costo_total;
+
+ 	 @Transient
+ 	 private Integer actividades;
+
     public Obra() {
     }
     
     
-
-	
     public Obra(int intcodigoobra) {
 		super();
 		this.intcodigoobra = intcodigoobra;
@@ -1145,7 +1156,7 @@ public class Obra  implements java.io.Serializable {
         this.periodos = periodos;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
     public Set<Videoevolucionobra> getVideoevolucionobras() {
         return this.videoevolucionobras;
     }
@@ -1154,7 +1165,7 @@ public class Obra  implements java.io.Serializable {
         this.videoevolucionobras = videoevolucionobras;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
     public Set<Alimentacion> getAlimentacions() {
         return this.alimentacions;
     }
@@ -1163,7 +1174,7 @@ public class Obra  implements java.io.Serializable {
         this.alimentacions = alimentacions;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
     public Set<Imagenevolucionobra> getImagenevolucionobras() {
         return this.imagenevolucionobras;
     }
@@ -1172,7 +1183,7 @@ public class Obra  implements java.io.Serializable {
         this.imagenevolucionobras = imagenevolucionobras;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
     public Set<Obra> getObras() {
         return this.obras;
     }
@@ -1183,6 +1194,44 @@ public class Obra  implements java.io.Serializable {
 
 
 
+
+	public BigDecimal getCosto_directo() {
+		return costo_directo;
+	}
+
+
+
+
+	public void setCosto_directo(BigDecimal costo_directo) {
+		this.costo_directo = costo_directo;
+	}
+
+
+
+
+	public BigDecimal getCosto_directo_aiu() {
+		return costo_directo_aiu;
+	}
+
+	public void setCosto_directo_aiu(BigDecimal costo_directo_aiu) {
+		this.costo_directo_aiu = costo_directo_aiu;
+	}
+
+	public BigDecimal getCosto_total() {
+		return costo_total;
+	}
+
+	public void setCosto_total(BigDecimal costo_total) {
+		this.costo_total = costo_total;
+	}
+
+	public Integer getActividades() {
+		return actividades;
+	}
+
+	public void setActividades(Integer actividades) {
+		this.actividades = actividades;
+	}
 
 }
 
