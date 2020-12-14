@@ -66,9 +66,6 @@ public class ActividadObraResponse {
 	@Column(name="floatcantidadejecutao",columnDefinition="numeric(20,6) null")
 	private Double cantidadejecutada;
 	
-	//@Transient
-	//@Column(name="numvalorejecutao",columnDefinition="numeric(20,6) null")
-	//private BigDecimal valorejecutado;
 	
 	@Transient   
 	//retornar por consulta

@@ -3,6 +3,9 @@
 alter table public.actividadobra add valorunitario numeric(20,6);
 
 
+
+alter table public.obra add actividades int;
+
 create table public.categoria (id serial,codigo varchar(6) not null,nombre varchar(50) not null);
 
 alter table public.obra add costo_directo numeric(20,6);
