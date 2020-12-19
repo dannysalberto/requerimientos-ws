@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name="actividadobra", schema="public")
 public class ActividadObraRequest {
@@ -17,7 +19,7 @@ public class ActividadObraRequest {
 	@Id
 	@Column(name="oidactiviobra")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+	private Integer id;
 	
 	@Column(name="strdescactividad")
 	private String nombre;
@@ -49,11 +51,13 @@ public class ActividadObraRequest {
 	@Column(name="floatcantidadejecutao",columnDefinition="numeric(20,6) null")
 	private Double cantidadejecutada;
 
-	public long getId() {
+
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -89,6 +93,7 @@ public class ActividadObraRequest {
 		this.cantidad = cantidad;
 	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
 	public Date getFechainicio() {
 		return fechainicio;
 	}
@@ -97,6 +102,7 @@ public class ActividadObraRequest {
 		this.fechainicio = fechainicio;
 	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
 	public Date getFechafin() {
 		return fechafin;
 	}

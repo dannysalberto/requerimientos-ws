@@ -1,7 +1,4 @@
 package co.com.interkont.wscobra.dto;
-// Generated 6/05/2020 11:05:19 AM by Hibernate Tools 3.6.0
-
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;

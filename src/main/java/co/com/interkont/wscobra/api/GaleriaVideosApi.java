@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,7 +63,7 @@ public class GaleriaVideosApi {
 			response.setMessage(ConfiguracionConstantes.DATOS_INCORRECTOS);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.BAD_REQUEST);
 		}
-		Obra obra = serviceObra.findById(galeriavideo.getObra_id());
+		Obra obra = serviceObra.buscarPorId(galeriavideo.getObra_id());
 		
 		if (obra==null) {
 			response.setStatus(false);
