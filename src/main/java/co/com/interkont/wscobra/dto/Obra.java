@@ -139,12 +139,6 @@ public class Obra  implements java.io.Serializable {
      @Column(name="costo_directo", columnDefinition="numeric(20,6)")
  	 private BigDecimal costo_directo;
  	
- 	 @Column(name="costo_directo_aiu", columnDefinition="numeric(20,6)")
- 	 private BigDecimal costo_directo_aiu;
-
- 	 @Column(name="costo_total", columnDefinition="numeric(20,6)")
- 	 private BigDecimal costo_total;
-
  	 @Transient
  	 private Integer actividades;
 
@@ -1210,25 +1204,6 @@ public class Obra  implements java.io.Serializable {
 
 	public void setCosto_directo(BigDecimal costo_directo) {
 		this.costo_directo = costo_directo;
-	}
-
-
-
-
-	public BigDecimal getCosto_directo_aiu() {
-		return costo_directo_aiu;
-	}
-
-	public void setCosto_directo_aiu(BigDecimal costo_directo_aiu) {
-		this.costo_directo_aiu = costo_directo_aiu;
-	}
-
-	public BigDecimal getCosto_total() {
-		return costo_total;
-	}
-
-	public void setCosto_total(BigDecimal costo_total) {
-		this.costo_total = costo_total;
 	}
 
 	public Integer getActividades() {

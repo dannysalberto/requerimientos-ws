@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @Entity
@@ -25,10 +26,10 @@ public class ObraResponse {
 	private Integer id;
 	
 	@Column(name="datefeciniobra", columnDefinition="DATE")
-	private Date fechaInicioObra; 
+	private Date fechaInicio; 
 
 	@Column(name="datefecfinobra",columnDefinition="DATE")
-	private Date fechaFinObra; 
+	private Date fechaFin; 
 
 	@Column(name="intplazoobra")
 	private Integer plazoObra;
@@ -64,6 +65,9 @@ public class ObraResponse {
 	@Column(name="costo_directo", columnDefinition="numeric(20,6)")
 	private BigDecimal costo_directo; //sumatoria de las actividades sin aiu
 
+	@JsonProperty(value="incluyeaiu")
+	private Boolean boolincluyeaiu;
+
 	public Integer getId() {
 		return id;
 	}
@@ -72,22 +76,25 @@ public class ObraResponse {
 		this.id = id;
 	}
 
-	public Date getFechaInicioObra() {
-		return fechaInicioObra;
-	}
 
-	public void setFechaInicioObra(Date fechaInicioObra) {
-		this.fechaInicioObra = fechaInicioObra;
-	}
 
-	public Date getFechaFinObra() {
-		return fechaFinObra;
-	}
-
-	public void setFechaFinObra(Date fechaFinObra) {
-		this.fechaFinObra = fechaFinObra;
-	}
 	
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
 	public Integer getPlazoObra() {
 		return plazoObra;
 	}
@@ -176,14 +183,28 @@ public class ObraResponse {
 		this.costo_directo = costo_directo;
 	}
 
+	public Boolean getBoolincluyeaiu() {
+		if (boolincluyeaiu==null) {
+			return false;
+		}
+		return boolincluyeaiu;
+	}
+
+	public void setBoolincluyeaiu(Boolean boolincluyeaiu) {
+		this.boolincluyeaiu = boolincluyeaiu;
+	}
+
 	@Override
 	public String toString() {
-		return "ObraResponse [id=" + id + ", fechaInicioObra=" + fechaInicioObra + ", fechaFinObra=" + fechaFinObra
-				+ ", plazoObra=" + plazoObra + ", periodoMedida=" + periodoMedida + ", porAdmon=" + porAdmon
-				+ ", porImprevi=" + porImprevi + ", porUtilidad=" + porUtilidad + ", porIvaSobreUtil=" + porIvaSobreUtil
-				+ ", porOtros=" + porOtros + ", valTotalObra=" + valTotalObra + ", valEjecucionObra=" + valEjecucionObra
-				+ ", actividadObra=" + actividadObra + ", costo_directo=" + costo_directo + "]";
+		return "ObraResponse [id=" + id + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", plazoObra="
+				+ plazoObra + ", periodoMedida=" + periodoMedida + ", porAdmon=" + porAdmon + ", porImprevi="
+				+ porImprevi + ", porUtilidad=" + porUtilidad + ", porIvaSobreUtil=" + porIvaSobreUtil + ", porOtros="
+				+ porOtros + ", valTotalObra=" + valTotalObra + ", valEjecucionObra=" + valEjecucionObra
+				+ ", actividadObra=" + actividadObra + ", costo_directo=" + costo_directo + ", boolincluyeaiu="
+				+ boolincluyeaiu + "]";
 	}
+
+	
 
 	
 }

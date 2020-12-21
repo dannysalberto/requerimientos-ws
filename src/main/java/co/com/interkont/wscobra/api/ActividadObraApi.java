@@ -1,19 +1,23 @@
 package co.com.interkont.wscobra.api;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import co.com.interkont.wscobra.api.request.ActividadObraRequest;
+import co.com.interkont.wscobra.api.request.ActividadUpdObraRequest;
 import co.com.interkont.wscobra.api.response.ActividadObraResponse;
 import co.com.interkont.wscobra.auth.config.ConfiguracionConstantes;
+import co.com.interkont.wscobra.config.Constantes;
 import co.com.interkont.wscobra.dao.vActividadesObraRepository;
 import co.com.interkont.wscobra.models.ActividadobraWS;
 import co.com.interkont.wscobra.dto.Obra;
@@ -85,10 +89,12 @@ public class ActividadObraApi {
 		
 		actividad.setValorunitario(objRequest.getValorunitario());
 		actividad.setFloatcantidadejecutao(objRequest.getCantidadejecutada());
-		actividad.setNumvalorplanifao(objRequest.getValortotal());
+		actividad.setNumvalorplanifao(objRequest.getValorunitario());
+		actividad.setValortotalactividadaiu(objRequest.getValortotal());
 		actividad.setBoolaiu(false);
 		actividad.setIntcedula( 0 );
 		
+		this.calcularCostos(actividad, obra);
 		serviceactividadWS.Guardar(actividad);
 
 		response.setStatus(true);
@@ -99,7 +105,7 @@ public class ActividadObraApi {
 
 	@RequestMapping(value="/actividadobra", method=RequestMethod.PUT)
 	@ApiOperation(value = "Actualizar datos de actividadobra")
-	public ResponseEntity<?> update(@RequestBody ActividadObraRequest objRequest) {
+	public ResponseEntity<?> update(@RequestBody ActividadUpdObraRequest objRequest) {
 
 		ResponseGeneric response = new ResponseGeneric();
 		if (objRequest.getId()==null) {
@@ -117,9 +123,7 @@ public class ActividadObraApi {
 		}
 		
 		actividad.setOidactiviobra(objRequest.getId());
-		actividad.setStrdescactividad(objRequest.getNombre());
-		actividad.setIdcategoria(objRequest.getIdcategoria());
-		actividad.setStrtipounidadmed(objRequest.getUnidadMedida());
+
 		actividad.setFloatcantplanifao(objRequest.getCantidad());
 		actividad.setFechainicio(objRequest.getFechainicio());
 		actividad.setFechafin(objRequest.getFechafin());
@@ -133,10 +137,12 @@ public class ActividadObraApi {
 		actividad.setObra(obra);
 		actividad.setValorunitario(objRequest.getValorunitario());
 		actividad.setFloatcantidadejecutao(objRequest.getCantidadejecutada());
-		actividad.setNumvalorplanifao(objRequest.getValortotal());
+		actividad.setNumvalorplanifao(objRequest.getValorunitario());
+		actividad.setValortotalactividadaiu(objRequest.getValortotal());
 		actividad.setBoolaiu(false);
 		actividad.setIntcedula( 0 );
-		
+
+		this.calcularCostos(actividad, obra);
 		serviceactividadWS.actualizar(actividad);
 		
 		response.setStatus(true);
@@ -144,5 +150,82 @@ public class ActividadObraApi {
 		
 		return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);			
 	}
+	
+	private static BigDecimal truncateDecimal(double x,int numberofDecimals)
+	{
+	       if ( x > 0) {
+	           return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, 
+	        		   BigDecimal.ROUND_HALF_DOWN);
+	       } else {
+	           return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, BigDecimal.ROUND_CEILING);
+	       }
+	}
+	
+	public ActividadobraWS calcularCostos(ActividadobraWS actividadobra,Obra obra) {
+
+		double por_totalAUI = 0;
+		BigDecimal totalAux = actividadobra.getValorunitario();
+		BigDecimal total 	= totalAux; 
+
+	
+		por_totalAUI = 1+ (obra.getFloatporadmon() 
+					+ obra.getFloatporimprevi() 
+					+ obra.getFloatporutilidad()
+					+ obra.getFloatporotros());
+		BigDecimal totalAUI = new BigDecimal (0);
+		double cantact = actividadobra.getFloatcantplanifao();			
+		totalAUI = totalAUI.setScale(3, RoundingMode.HALF_EVEN);
+
+		if (!obra.isBoolincluyeaiu()) {
+			por_totalAUI = por_totalAUI  + (obra.getFloatporutilidad()*obra.getFloatporivasobreutil()/100);
+			totalAUI = total.multiply(new BigDecimal(truncateDecimal(por_totalAUI,2).doubleValue()))
+					.divide(new BigDecimal(100));
+		
+			actividadobra.setNumvalorplanifao(total.multiply(new BigDecimal(por_totalAUI)));
+			
+		}else {
+			actividadobra.setNumvalorplanifao(totalAux);
+		}
+		actividadobra.setValortotalactividadaiu(actividadobra.getNumvalorplanifao().multiply(new BigDecimal(cantact)));		
+		
+		BigDecimal costo_directo_aiu = total.add(totalAUI);
+		
+		costo_directo_aiu = costo_directo_aiu.setScale(3, RoundingMode.HALF_EVEN);
+		BigDecimal factorIncremento =  new BigDecimal(obra.getFloatporotros());
+		BigDecimal incremento = costo_directo_aiu.multiply(factorIncremento);
+		incremento = incremento.divide(new BigDecimal(100));
+		incremento = incremento.setScale(3, RoundingMode.HALF_EVEN);
+
+		actividadobra.setValortotalactividadaiu(costo_directo_aiu.add(incremento.abs()));
+		
+		return actividadobra;
+	
+	}
+	
+	@RequestMapping(value="/actividadobra", method=RequestMethod.DELETE)
+	@ApiOperation(value = "Borrar una actividadobra")
+	public ResponseEntity<?> borrar(@PathVariable("id") int id) {
+	
+		ResponseGeneric response = new ResponseGeneric();
+		if (id>0) {
+			try {
+				serviceObra.eliminar(id);
+				response.setStatus(true);
+				response.setMessage(Constantes.ELIMINADO);
+				return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);
+			}catch (Exception e){
+				response.setStatus(false);
+				response.setMessage(Constantes.NO_EXISTE);
+				return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);
+			}
+			
+		}else {
+			response.setStatus(false);
+			response.setMessage(Constantes.FALTAN_ATRIBUTOS);
+			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);
+		}
+	}
+
 
 }
+

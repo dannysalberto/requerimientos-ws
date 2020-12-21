@@ -4,9 +4,9 @@ package co.com.interkont.wscobra.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.com.interkont.wscobra.dao.ObrasRepository;
 import co.com.interkont.wscobra.dto.Obra;
 import co.com.interkont.wscobra.interfaces.IObraWS;
+import co.com.interkont.wscobra.repository.ObrasRepository;
 
 @Service
 public class ObrasService implements IObraWS {
@@ -32,5 +32,38 @@ public class ObrasService implements IObraWS {
 		obrasRepository.save(obra);
 		System.out.println("Actualizado");		
 	}
+	
+	@Override
+	public Double totalPrecioActividades(Integer idObra) {
+		// TODO Auto-generated method stub
+		//return repositorio.totalActividades(idObra);
+		double total = 0;
+		try {
+			
+			total = obrasRepository.totalActividades(idObra);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return total;
+	}
+
+	@Override
+	public Integer cantidadActividades(Integer idObra) {
+		// TODO Auto-generated method stub
+		try {
+			return obrasRepository.cantidadActividades(idObra);
+		
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return 0;
+	}
+
+	@Override
+	public void eliminar(Integer id) {
+		// TODO Auto-generated method stub
+		obrasRepository.deleteById(id);
+	}
+	
 	
 }
