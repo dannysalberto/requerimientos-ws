@@ -34,10 +34,10 @@ public class ActividadobraWS  implements java.io.Serializable {
 	private String strtipounidadmed;
 	private double floatcantplanifao;
 	
-	@Column(name="fechainicio")
+	@Column(name="fechainicio",columnDefinition="DATE NOT NULL")
 	private Date fechainicio;
 	
-	@Column(name="fechafin")
+	@Column(name="fechafin",columnDefinition="DATE NOT NULL")
 	private Date fechafin;
 
 	@ManyToOne

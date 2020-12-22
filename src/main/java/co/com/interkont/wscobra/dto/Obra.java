@@ -106,7 +106,7 @@ public class Obra  implements java.io.Serializable {
      private BigDecimal numvalavanfinanciaerodeclarado;
      private boolean booleantienehijos;
      private BigDecimal numvlrsumahijos;
-     private Boolean boolincluyeaiu;
+     private boolean boolincluyeaiu;
      private Integer intconvenio;
      private Integer inttiposolicitante;
      private BigDecimal numvalprogramejec;
@@ -920,11 +920,11 @@ public class Obra  implements java.io.Serializable {
 
     @JsonIgnore
     @Column(name="boolincluyeaiu", nullable=false)
-    public Boolean isBoolincluyeaiu() {
+    public boolean isBoolincluyeaiu() {
     	return this.boolincluyeaiu;
     }
     
-    public void setBoolincluyeaiu(Boolean boolincluyeaiu) {
+    public void setBoolincluyeaiu(boolean boolincluyeaiu) {
         this.boolincluyeaiu = boolincluyeaiu;
     }
 
@@ -1223,10 +1223,6 @@ public class Obra  implements java.io.Serializable {
 	public void setActividadesobras(List<ActividadobraWS> actividadesobras) {
 		this.actividadesobras = actividadesobras;
 	}
-
-
-
-	
 	
 
 }

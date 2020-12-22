@@ -1,5 +1,6 @@
 package co.com.interkont.wscobra.api;
 
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
@@ -37,6 +38,7 @@ public class ObraApi {
 
 	public int cantidad=0;
 	public double cantPor=0; //cantidad porcentual
+	public double por_totalAUI = 0;
 	
 	@Autowired
 	ObrasService serviceObra;
@@ -69,7 +71,7 @@ public class ObraApi {
 			obranew.setPorOtros(obra.getFloatporotros());
 			obranew.setPorUtilidad(obra.getFloatporutilidad());
 			obranew.setValTotalObra(obra.getNumvaltotobra());
-			
+			obranew.setBoolincluyeaiu(obra.isBoolincluyeaiu());
 			return new ResponseEntity<ObraResponse>(obranew, HttpStatus.OK);			
 		}else {
 			response.setStatus(false);
@@ -186,15 +188,8 @@ public class ObraApi {
 	@PutMapping
 	public ResponseEntity<?> actualizarObra(@RequestBody(required=true) ObraUpdRequest request) {
 		ResponseGeneric response = new ResponseGeneric(); //this.valid(request); 
-		/*if (response!=null){
-			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);
-		}*/
-
 		Obra obra = new Obra();
-		System.out.println(request.getId());
-
 		if (request.getId()!=null) {
-			System.out.println("prueba");
 			obra = serviceObra.buscarPorId(request.getId());
 			if (obra==null) {
 				response.setStatus(false);
@@ -203,7 +198,6 @@ public class ObraApi {
 			}
 		}
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println(request.getFechaFin());
 		
 		obra.setIntplazoobra(request.getPlazoObra());
 		try {
@@ -226,12 +220,16 @@ public class ObraApi {
 		obra.setFloatporutilidad(request.getPorUtilidad());
 		obra.setFloatporotros(request.getPorOtros());
 		obra.setFloatporivasobreutil(request.getPorIvaSobreUtil());
-		  
 		
 		obra = this.calcularCostos(obra);
-		serviceObra.actualizar(obra);
-		
 		obra.setActividades(serviceObra.cantidadActividades(obra.getIntcodigoobra()));
+		obra.setNumvaltotobra(new BigDecimal(serviceObra.totalPrecioActividades(obra.getIntcodigoobra())));
+		obra.setCosto_directo(new BigDecimal(serviceObra.totalCostoDirecto(obra.getIntcodigoobra())));
+		serviceObra.actualizar(obra);
+		  
+		
+		
+		//serviceObra.actualizar(obra);
 		response.setStatus(true);
 		response.setMessage("Actualizado");
 		return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);
@@ -239,6 +237,74 @@ public class ObraApi {
 	}
 	
 	public Obra calcularCostos(Obra obra) {
+
+		
+		
+		/*por_totalAUI = ((obra.getFloatporadmon() 
+					+ obra.getFloatporimprevi() 
+					+ obra.getFloatporutilidad() + 
+					((obra.getFloatporutilidad()*obra.getFloatporivasobreutil())/100)));
+		*/
+		
+		List<ActividadobraWS> lst = serviceactividadWS.desplegarTodos(obra);
+		if (obra.isBoolincluyeaiu()) {
+			lst.forEach((act)->{
+				act.setNumvalorplanifao(act.getValorunitario());
+				act.setValortotalactividadaiu(new BigDecimal(
+						act.getFloatcantplanifao()).multiply(act.getNumvalorplanifao()));
+				serviceactividadWS.actualizar(act);
+				System.out.println("AIU INCLUIDO");
+			});
+		}else {
+			lst.forEach((act)->{
+				this.por_totalAUI = ((
+						obra.getFloatporadmon() 
+						+ obra.getFloatporimprevi() 
+						+ obra.getFloatporutilidad() + 
+						+ obra.getFloatporotros() +
+						((obra.getFloatporutilidad()*obra.getFloatporivasobreutil())/100)));
+				BigDecimal porAIU = truncateDecimal(por_totalAUI,2);
+				System.out.println(porAIU);
+				
+				act.setNumvalorplanifao(act.getValorunitario().multiply(
+						new BigDecimal(1).add(porAIU.divide(new BigDecimal(100)))));
+				act.setNumvalorplanifao(truncateDecimal(act.getNumvalorplanifao().doubleValue(),2));
+				act.setValortotalactividadaiu(new BigDecimal(
+						act.getFloatcantplanifao()).multiply(act.getNumvalorplanifao()));
+				
+				//System.out.println(act.getValortotalactividadaiu());				
+				//System.out.println("AIU NO INCLUIDO");
+				serviceactividadWS.actualizar(act);
+			});
+
+		}
+		double totalAux = serviceObra.totalPrecioActividades(obra.getIntcodigoobra());
+		
+		BigDecimal total = new BigDecimal(totalAux); 
+		BigDecimal totalAUI =  total.multiply(new BigDecimal(truncateDecimal(por_totalAUI,2).doubleValue()));
+
+		totalAUI = totalAUI.divide(new BigDecimal(100));
+		totalAUI = totalAUI.setScale(4, RoundingMode.HALF_EVEN);
+
+		BigDecimal costo_directo_aiu = totalAUI.add(total);
+		costo_directo_aiu = costo_directo_aiu.setScale(2, RoundingMode.HALF_EVEN);
+
+		BigDecimal factorIncremento=  new BigDecimal(obra.getFloatporotros());
+		BigDecimal incremento = costo_directo_aiu.multiply(factorIncremento.divide(new BigDecimal(100)));
+		incremento = incremento.setScale(2, RoundingMode.HALF_EVEN);
+			
+		//obra.setCosto_directo(new BigDecimal(serviceObra.totalCostoDirecto(obra.getIntcodigoobra())));
+		BigDecimal costoTotal = costo_directo_aiu.add(incremento.abs());
+
+		costoTotal = costoTotal.setScale(2, RoundingMode.HALF_EVEN); 
+		obra.setNumvaltotobra(costoTotal);
+
+		System.out.println("Completado proceso de cálculo");
+		return obra;
+	
+	}
+	
+	/*public Obra calcularCostos(Obra obra) {
 
 		double por_totalAUI = 0;
 		double totalAux = serviceObra.totalPrecioActividades(obra.getIntcodigoobra());
@@ -264,13 +330,6 @@ public class ObraApi {
 		BigDecimal incremento = costo_directo_aiu.multiply(factorIncremento.divide(new BigDecimal(100)));
 		incremento = incremento.setScale(2, RoundingMode.HALF_EVEN);
 		
-		/**
-	    Porcentaje de descuento se tomará del campo: floatporotros
-	    Costo final de la obra de mejoramiento (incluido porcentaje de descuento) se tomará del campo numvaltotobra
-	    Valor de la Categorización y Diagnóstico se tomará el campo: numvalordiagnostico
-	    Costo total del proyecto de mejoramiento de vivienda se tomará del campo costo_total
-		**/
-		
 		obra.setCosto_directo(total);
 		BigDecimal costoTotal = costo_directo_aiu.add(incremento.abs());
 
@@ -281,7 +340,7 @@ public class ObraApi {
 		System.out.println("Completado proceso de cálculo");
 		return obra;
 	
-	}
+	}*/
 	
 	private static BigDecimal truncateDecimal(double x,int numberofDecimals)
 	{

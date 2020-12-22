@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import co.com.interkont.wscobra.dto.Obra;
 import co.com.interkont.wscobra.interfaces.IActividadObraWS;
 import co.com.interkont.wscobra.models.ActividadobraWS;
 import co.com.interkont.wscobra.repository.ActividadObraRepositoryWS;
@@ -56,6 +57,13 @@ public class ActividadObraWSService implements IActividadObraWS {
 		// TODO Auto-generated method stub
 		return repository.findAll();
 	}
+
+	@Override
+	public List<ActividadobraWS> desplegarTodos(Obra obra) {
+		// TODO Auto-generated method stub
+		return repository.findByObra(obra);
+	}
+	
 	
 	
 }

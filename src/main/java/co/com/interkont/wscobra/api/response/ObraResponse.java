@@ -65,7 +65,8 @@ public class ObraResponse {
 	@Column(name="costo_directo", columnDefinition="numeric(20,6)")
 	private BigDecimal costo_directo; //sumatoria de las actividades sin aiu
 
-	@JsonProperty(value="incluyeaiu")
+	@JsonProperty(value="incluyeAiu")
+	@Column(name="boolincluyeaiu")
 	private Boolean boolincluyeaiu;
 
 	public Integer getId() {
@@ -183,10 +184,11 @@ public class ObraResponse {
 		this.costo_directo = costo_directo;
 	}
 
+
+
+
+
 	public Boolean getBoolincluyeaiu() {
-		if (boolincluyeaiu==null) {
-			return false;
-		}
 		return boolincluyeaiu;
 	}
 

@@ -41,10 +41,10 @@ public class ActividadObraResponse {
 	@Column(name="floatcantplanifao", columnDefinition="NUMERIC NOT NULL")
 	private Double cantidad;
 	
-	@Column(name="fechainicio",columnDefinition="DATE NOT NULL")
+	@Column(name="fechainicio",columnDefinition="DATE")
 	private Date fechainicio ;
 	
-	@Column(name="fechafin",columnDefinition="DATE NOT NULL")
+	@Column(name="fechafin",columnDefinition="DATE")
 	private Date fechafin;
 	
 	@ManyToOne
@@ -153,9 +153,16 @@ public class ActividadObraResponse {
 	}
 
 	public BigDecimal getPorcentajeavance() {
-		if (porcentajeavance==null) {
+		/*if (porcentajeavance==null) {
 			return new BigDecimal(0);
+		}*/
+		if (cantidadejecutada == null) {
+			cantidadejecutada = (double) 0;
 		}
+		if (cantidad == null) {
+			cantidadejecutada = (double) 0;
+		}
+		porcentajeavance = new BigDecimal((cantidadejecutada*100)/cantidad);
 		return porcentajeavance;
 	}
 

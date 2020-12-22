@@ -89,12 +89,12 @@ public class ActividadObraApi {
 		
 		actividad.setValorunitario(objRequest.getValorunitario());
 		actividad.setFloatcantidadejecutao(objRequest.getCantidadejecutada());
-		actividad.setNumvalorplanifao(objRequest.getValorunitario());
+		actividad.setNumvalorplanifao(new BigDecimal(0));
 		actividad.setValortotalactividadaiu(objRequest.getValortotal());
 		actividad.setBoolaiu(false);
 		actividad.setIntcedula( 0 );
 		
-		this.calcularCostos(actividad, obra);
+		//this.calcularCostos(actividad, obra);
 		serviceactividadWS.Guardar(actividad);
 
 		response.setStatus(true);
@@ -137,12 +137,14 @@ public class ActividadObraApi {
 		actividad.setObra(obra);
 		actividad.setValorunitario(objRequest.getValorunitario());
 		actividad.setFloatcantidadejecutao(objRequest.getCantidadejecutada());
-		actividad.setNumvalorplanifao(objRequest.getValorunitario());
-		actividad.setValortotalactividadaiu(objRequest.getValortotal());
+		//actividad.setNumvalorplanifao(objRequest.getValorunitario());
+		//actividad.setValortotalactividadaiu(
+		//			actividad.getNumvalorplanifao().multiply(
+		//					new BigDecimal(actividad.getFloatcantidadejecutao())));
 		actividad.setBoolaiu(false);
 		actividad.setIntcedula( 0 );
 
-		this.calcularCostos(actividad, obra);
+		//this.calcularCostos(actividad, obra);
 		serviceactividadWS.actualizar(actividad);
 		
 		response.setStatus(true);
@@ -202,14 +204,14 @@ public class ActividadObraApi {
 	
 	}
 	
-	@RequestMapping(value="/actividadobra", method=RequestMethod.DELETE)
+	@RequestMapping(value="/actividadobra/{id}", method=RequestMethod.DELETE)
 	@ApiOperation(value = "Borrar una actividadobra")
 	public ResponseEntity<?> borrar(@PathVariable("id") int id) {
 	
 		ResponseGeneric response = new ResponseGeneric();
 		if (id>0) {
 			try {
-				serviceObra.eliminar(id);
+				serviceactividadWS.eliminar(id);
 				response.setStatus(true);
 				response.setMessage(Constantes.ELIMINADO);
 				return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);

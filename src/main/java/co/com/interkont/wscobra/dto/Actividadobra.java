@@ -14,6 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import co.com.interkont.wscobra.auth.pojo.JsfUsuario;
 
 /**
@@ -286,8 +289,8 @@ public class Actividadobra  implements java.io.Serializable {
         this.boolimprevisto = boolimprevisto;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="fechainicio", length=29)
+    @Column(name="fechainicio",columnDefinition="DATE NOT NULL")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
     public Date getFechainicio() {
         return this.fechainicio;
     }
@@ -296,8 +299,8 @@ public class Actividadobra  implements java.io.Serializable {
         this.fechainicio = fechainicio;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="fechafin", length=29)
+    @Column(name="fechafin",columnDefinition="DATE NOT NULL")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
     public Date getFechafin() {
         return this.fechafin;
     }

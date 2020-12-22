@@ -64,6 +64,19 @@ public class ObrasService implements IObraWS {
 		// TODO Auto-generated method stub
 		obrasRepository.deleteById(id);
 	}
+
+	@Override
+	public Double totalCostoDirecto(Integer id) {
+		// TODO Auto-generated method stub
+		double total = 0;
+		try {
+			
+			total = obrasRepository.totalCostoDirecto(id);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return total;
+	}
 	
 	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
+import co.com.interkont.wscobra.dto.Obra;
 import co.com.interkont.wscobra.models.ActividadobraWS;
 
 public interface IActividadObraWS {
@@ -13,6 +14,7 @@ public interface IActividadObraWS {
 	void eliminar(Integer id);
 	void actualizar(ActividadobraWS actividad);
 	List<ActividadobraWS> desplegarTodos(Pageable page);
+	List<ActividadobraWS> desplegarTodos(Obra obra);
 	
 
 }
