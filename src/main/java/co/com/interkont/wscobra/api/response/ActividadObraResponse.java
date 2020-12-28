@@ -35,6 +35,9 @@ public class ActividadObraResponse {
 	@Column(name="categoria")
 	private String categoria;
 
+	@Column(name="idcategoria")
+	private Integer idcategoria;
+
 	@Column(name="strtipounidadmed")
 	private String unidadMedida;
 	
