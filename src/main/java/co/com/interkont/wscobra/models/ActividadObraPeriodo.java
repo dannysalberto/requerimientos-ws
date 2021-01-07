@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -17,8 +18,10 @@ public class ActividadObraPeriodo {
 
 	@Id
 	@NotNull
-	@Column(name="oidnmid", columnDefinition="BIGINT")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@SequenceGenerator(name="seq_actividad_obra_periodo_new",sequenceName="seq_actividad_obra_periodo_new",
+     	allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="seq_actividad_obra_periodo_new")
+	@Column(name="oidnmid")
 	private long id;
 	
 	@Column(name="numvalplanif",  columnDefinition="numeric(20,6)")

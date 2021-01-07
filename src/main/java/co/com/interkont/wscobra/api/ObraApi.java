@@ -348,7 +348,7 @@ public class ObraApi {
 
 				ActividadObraPeriodo actividadObraPeriodo = new ActividadObraPeriodo(); 
 				BigDecimal cantiPor = (dato.getValtotplanif().multiply(new BigDecimal(100)))
-						.divide(obra.getNumvaltotobra());
+						.divide(obra.getNumvaltotobra(), 3, RoundingMode.HALF_EVEN);
 
 				BigDecimal cantiPorRound = cantiPor;
 				cantiPorRound = cantiPorRound.setScale(2,RoundingMode.HALF_EVEN);
