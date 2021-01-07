@@ -10,6 +10,6 @@ import co.com.interkont.wscobra.dto.GaleriaVideos;
 @Repository
 public interface GaleriaVideosRepository extends JpaRepository<GaleriaVideos, Integer> {
 
-	List<GaleriaVideos> findByObra_intcodigoobra(Integer idObra);
+	List<GaleriaVideos> findByObra_id(Integer idObra);
 	
 }

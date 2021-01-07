@@ -15,7 +15,7 @@ public class GaleriaVideosService {
 	GaleriaVideosRepository repo;
 	
 	public List<GaleriaVideos> findByAllVideos(Integer idObra){
-		return repo.findByObra_intcodigoobra(idObra);		
+		return repo.findByObra_id(idObra);		
 	}
 	
 	public void Guardar(GaleriaVideos obj) {
