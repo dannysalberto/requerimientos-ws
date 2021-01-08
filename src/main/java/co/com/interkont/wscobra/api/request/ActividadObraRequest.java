@@ -12,43 +12,28 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-@Entity
-@Table(name="actividadobra", schema="public")
 public class ActividadObraRequest {
 	
-	@Id
-	@Column(name="oidactiviobra")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="strdescactividad")
 	private String nombre;
 	
-	@Column(name="idcategoria")
 	private Integer idcategoria;
 
-	@Column(name="strtipounidadmed")
 	private String unidadMedida;
 	
-	@Column(name="floatcantplanifao", columnDefinition="NUMERIC NOT NULL")
 	private Double cantidad;
 	
-	@Column(name="fechainicio",columnDefinition="DATE NOT NULL")
-	private Date fechainicio ;
+	private String fechainicio ;
 	
-	@Column(name="fechafin",columnDefinition="DATE NOT NULL")
-	private Date fechafin;
+	private String fechafin;
 	
-	@Column(name="intcodigoobra",columnDefinition="integer NOT NULL")
 	private Integer idobra;
 	
-	@Column(name="valorunitario",columnDefinition="numeric(20,6) null")
 	private BigDecimal valorunitario; //crear valor q escribe el usuario
 	
-	@Column(name="numvalorplanifao",columnDefinition="numeric(20,6) null")
 	private BigDecimal valortotal; //aqui va el precio unitario + aiu + porcentaje float por otros
 	
-	@Column(name="floatcantidadejecutao",columnDefinition="numeric(20,6) null")
 	private Double cantidadejecutada;
 
 
@@ -94,20 +79,20 @@ public class ActividadObraRequest {
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
-	public Date getFechainicio() {
+	public String getFechainicio() {
 		return fechainicio;
 	}
 
-	public void setFechainicio(Date fechainicio) {
+	public void setFechainicio(String fechainicio) {
 		this.fechainicio = fechainicio;
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
-	public Date getFechafin() {
+	public String getFechafin() {
 		return fechafin;
 	}
 
-	public void setFechafin(Date fechafin) {
+	public void setFechafin(String fechafin) {
 		this.fechafin = fechafin;
 	}
 

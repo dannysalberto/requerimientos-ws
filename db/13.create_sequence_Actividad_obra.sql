@@ -18,3 +18,5 @@ CREATE SEQUENCE public.seq_actividad_obra_periodo_new
   CACHE 1;
 ALTER TABLE public.seq_actividad_obra_periodo_new
   OWNER TO cobra;
+
+  

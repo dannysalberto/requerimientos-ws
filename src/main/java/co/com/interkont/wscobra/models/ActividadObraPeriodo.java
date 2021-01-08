@@ -1,5 +1,7 @@
 package co.com.interkont.wscobra.models;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +27,7 @@ public class ActividadObraPeriodo {
 	private long id;
 	
 	@Column(name="numvalplanif",  columnDefinition="numeric(20,6)")
-	private Double valPlanif;
+	private BigDecimal valPlanif;
 	
 	@Column(name="floatcantplanif",  columnDefinition="numeric(5,3)")
 	private Double cantidadPlanif;
@@ -46,11 +48,11 @@ public class ActividadObraPeriodo {
 		this.id = id;
 	}
 
-	public Double getValPlanif() {
+	public BigDecimal getValPlanif() {
 		return valPlanif;
 	}
 
-	public void setValPlanif(Double valPlanif) {
+	public void setValPlanif(BigDecimal valPlanif) {
 		this.valPlanif = valPlanif;
 	}
 

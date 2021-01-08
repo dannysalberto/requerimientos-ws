@@ -55,6 +55,19 @@ public class Periodo {
 	@OneToMany(mappedBy="periodo",fetch=FetchType.LAZY)
 	private List<ActividadObraPeriodo> actividadObra;
 
+	public Integer GenerarId(Obra obra, int i) {
+		
+		String sid = String.valueOf(obra.getId());
+		if (i < 10) {
+			sid = sid + "0"+ String.valueOf(i);
+		}else {
+			sid = sid + String.valueOf(i);	
+		}
+		id = Integer.valueOf(sid);
+		return id;
+		
+	}
+	
 	public Integer getId() {
 		return id;
 	}

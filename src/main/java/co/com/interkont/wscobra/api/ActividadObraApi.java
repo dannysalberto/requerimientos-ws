@@ -2,6 +2,8 @@ package co.com.interkont.wscobra.api;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,8 +79,22 @@ public class ActividadObraApi {
 		actividad.setIdcategoria(objRequest.getIdcategoria());
 		actividad.setStrtipounidadmed(objRequest.getUnidadMedida());
 		actividad.setFloatcantplanifao(objRequest.getCantidad());
-		actividad.setFechainicio(objRequest.getFechainicio());
-		actividad.setFechafin(objRequest.getFechafin());
+	    
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        
+		try {
+			actividad.setFechainicio(formato.parse(objRequest.getFechainicio()));
+		} catch (ParseException e) {
+				// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			actividad.setFechafin(formato.parse(objRequest.getFechafin()));
+		} catch (ParseException e) {
+				// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 		Obra obra = serviceObra.buscarPorId(objRequest.getIdobra());
 		actividad.setObra(obra);
 		if (obra==null) {

@@ -15,7 +15,7 @@ public interface PeriodoRepository extends JpaRepository<Periodo, Integer> {
 
 	List<Periodo> findByObra_Id(Integer id);
 	void deleteByObra(Obra obra);
-	List<Periodo> findByObra_IdAndFechafinGreaterThanAndFechainicioLessThan(Integer idObra, Date FechaIni,Date FechaFin);
+	Periodo findByObra_IdAndFechafinGreaterThanAndFechainicioLessThan(Integer idObra, Date FechaIni,Date FechaFin);
 	
 	
 }
