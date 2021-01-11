@@ -1,6 +1,7 @@
 package co.com.interkont.wscobra.models;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,8 +30,8 @@ public class ActividadObraPeriodo {
 	@Column(name="numvalplanif",  columnDefinition="numeric(20,6)")
 	private BigDecimal valPlanif;
 	
-	@Column(name="floatcantplanif",  columnDefinition="numeric(5,3)")
-	private Double cantidadPlanif;
+	@Column(name="floatcantplanif",  columnDefinition="float8")
+	private BigDecimal cantidadPlanif;
 	
 	@ManyToOne
 	@JoinColumn(name="actividadobra_id",columnDefinition="integer NOT NULL")
@@ -56,12 +57,13 @@ public class ActividadObraPeriodo {
 		this.valPlanif = valPlanif;
 	}
 
-	public Double getCantidadPlanif() {
+	public BigDecimal getCantidadPlanif() {
 		return cantidadPlanif;
 	}
 
-	public void setCantidadPlanif(Double cantidadPlanif) {
-		this.cantidadPlanif = cantidadPlanif;
+	public void setCantidadPlanif(BigDecimal cantidadPlanif) {
+		BigDecimal cantidad  = cantidadPlanif.setScale(8,RoundingMode.HALF_EVEN);
+		this.cantidadPlanif = cantidad;
 	}
 
 	public ActividadobraWS getActividadObra() {

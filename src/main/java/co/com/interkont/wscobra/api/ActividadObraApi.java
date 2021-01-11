@@ -141,8 +141,22 @@ public class ActividadObraApi {
 		actividad.setOidactiviobra(objRequest.getId());
 
 		actividad.setFloatcantplanifao(objRequest.getCantidad());
-		actividad.setFechainicio(objRequest.getFechainicio());
-		actividad.setFechafin(objRequest.getFechafin());
+
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			actividad.setFechainicio(formato.parse(objRequest.getFechainicio()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(objRequest.getFechainicio());
+		try {
+			actividad.setFechafin(formato.parse(objRequest.getFechafin()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Obra obra = serviceObra.buscarPorId(objRequest.getIdobra());
 		if (obra==null) {
 			response.setStatus(false);
@@ -191,7 +205,7 @@ public class ActividadObraApi {
 					+ obra.getFloatporutilidad()
 					+ obra.getFloatporotros());
 		BigDecimal totalAUI = new BigDecimal (0);
-		double cantact = actividadobra.getFloatcantplanifao();			
+		double cantact = actividadobra.getFloatcantplanifao().doubleValue();			
 		totalAUI = totalAUI.setScale(3, RoundingMode.HALF_EVEN);
 
 		if (!obra.isBoolincluyeaiu()) {

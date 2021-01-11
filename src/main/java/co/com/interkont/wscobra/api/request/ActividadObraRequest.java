@@ -22,7 +22,7 @@ public class ActividadObraRequest {
 
 	private String unidadMedida;
 	
-	private Double cantidad;
+	private BigDecimal cantidad;
 	
 	private String fechainicio ;
 	
@@ -70,11 +70,11 @@ public class ActividadObraRequest {
 		this.unidadMedida = unidadMedida;
 	}
 
-	public Double getCantidad() {
+	public BigDecimal getCantidad() {
 		return cantidad;
 	}
 
-	public void setCantidad(Double cantidad) {
+	public void setCantidad(BigDecimal cantidad) {
 		this.cantidad = cantidad;
 	}
 

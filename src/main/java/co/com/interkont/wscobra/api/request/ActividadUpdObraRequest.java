@@ -22,13 +22,13 @@ public class ActividadUpdObraRequest {
 	private Integer id;
 	
 	@Column(name="floatcantplanifao", columnDefinition="NUMERIC NOT NULL")
-	private Double cantidad;
+	private BigDecimal cantidad;
 	
 	@Column(name="fechainicio",columnDefinition="DATE NOT NULL")
-	private Date fechainicio ;
+	private String fechainicio ;
 	
 	@Column(name="fechafin",columnDefinition="DATE NOT NULL")
-	private Date fechafin;
+	private String fechafin;
 	
 	@Column(name="intcodigoobra",columnDefinition="integer NOT NULL")
 	private Integer idobra;
@@ -52,29 +52,29 @@ public class ActividadUpdObraRequest {
 		this.id = id;
 	}
 
-	public Double getCantidad() {
+	public BigDecimal getCantidad() {
 		return cantidad;
 	}
 
-	public void setCantidad(Double cantidad) {
+	public void setCantidad(BigDecimal cantidad) {
 		this.cantidad = cantidad;
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
-	public Date getFechainicio() {
+	public String getFechainicio() {
 		return fechainicio;
 	}
 
-	public void setFechainicio(Date fechainicio) {
+	public void setFechainicio(String fechainicio) {
 		this.fechainicio = fechainicio;
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
-	public Date getFechafin() {
+	public String getFechafin() {
 		return fechafin;
 	}
 
-	public void setFechafin(Date fechafin) {
+	public void setFechafin(String fechafin) {
 		this.fechafin = fechafin;
 	}
 

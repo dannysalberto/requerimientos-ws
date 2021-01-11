@@ -11,7 +11,8 @@ public interface IPeriodo {
 
 	List<Periodo> desplegarTodos();
 	List<Periodo> ListarPorObra(Integer idObra);
-	Periodo ListarPorObraFecha(Integer idObra,Date fechaIni, Date FechaFin);
+	List<Periodo> ListarPorObraFecha(Integer idObra,Date fechaIni, Date FechaFin);
+	List<Periodo> ListarPeriodosPorObraFechaInicio(Integer idObra,Date fechaIni);
 	void guardar(Periodo periodo);
 	void actualizar(Periodo periodo);
 	Periodo buscarPorId(Integer id);

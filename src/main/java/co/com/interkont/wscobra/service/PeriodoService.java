@@ -71,9 +71,9 @@ public class PeriodoService implements IPeriodo {
 	}
 
 	@Override
-	public Periodo ListarPorObraFecha(Integer idObra, Date FechaIni, Date FechaFin) {
+	public List<Periodo> ListarPorObraFecha(Integer idObra, Date FechaIni, Date FechaFin) {
 		// TODO Auto-generated method stub
-		return repository.findByObra_IdAndFechafinGreaterThanAndFechainicioLessThan(idObra, FechaIni, FechaFin);
+		return repository.findByObra_IdAndFechafinGreaterThanAndFechainicioLessThanOrderByFechainicioAsc(idObra, FechaIni, FechaFin);
 	}
 
 	@Override
@@ -88,6 +88,12 @@ public class PeriodoService implements IPeriodo {
 			return false;
 		}
 		
+	}
+
+	@Override
+	public List<Periodo> ListarPeriodosPorObraFechaInicio(Integer idObra, Date fechaIni) {
+		// TODO Auto-generated method stub
+		return repository.findByObra_IdAndFechainicioGreaterThanEqualOrderByFechainicioAsc(idObra, fechaIni);
 	}
 
 }

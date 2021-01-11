@@ -32,12 +32,12 @@ public class ActividadobraWS  implements java.io.Serializable {
 	private String strdescactividad;
 	private Integer idcategoria;
 	private String strtipounidadmed;
-	private double floatcantplanifao;
+	private BigDecimal floatcantplanifao;
 	
-	@Column(name="fechainicio",columnDefinition="DATE NOT NULL")
+	@Column(name="fechainicio")
 	private Date fechainicio;
 	
-	@Column(name="fechafin",columnDefinition="DATE NOT NULL")
+	@Column(name="fechafin")
 	private Date fechafin;
 
 	@ManyToOne
@@ -99,12 +99,12 @@ public class ActividadobraWS  implements java.io.Serializable {
 	}
 
 
-	public double getFloatcantplanifao() {
+	public BigDecimal getFloatcantplanifao() {
 		return floatcantplanifao;
 	}
 
 
-	public void setFloatcantplanifao(double floatcantplanifao) {
+	public void setFloatcantplanifao(BigDecimal floatcantplanifao) {
 		this.floatcantplanifao = floatcantplanifao;
 	}
 

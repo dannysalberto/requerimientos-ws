@@ -22,10 +22,11 @@ public class Constantes {
 
 	public static final String NO_EXISTE_ACTIVIDAD = "No se encontraron registros para actualizar.";
 	public static final String ACTIVIDAD_ACTUALIZADA = "Se han actualizado correctamente: ";
-	public static final String PLANIFICACION_COMPLETADA = "Planificación completada ";
+	public static final String PLANIFICACION_COMPLETADA = "Planificación completada exitosamente ";
 	
 	public static final Integer DISTRIBUCION_ACTIVIDADES_PERIODO_V1= 1;
 	public static final Integer DISTRIBUCION_ACTIVIDADES_PERIODO_V2= 2;
 	public static final String DISTRIBUCION_ACTIVIDADES_PERIODO_VERSION_INCORRECTA= "La versión de cálculo o distribución de actividades por período es inválida";
 	public static final String MIGRATION_OK = "Migración concluida correctamente";
+	
 }
