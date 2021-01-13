@@ -395,11 +395,11 @@ public class ObraApi {
 			
 			BigDecimal acumCantidad = new BigDecimal(0);
 			BigDecimal acumvalPlanif = new BigDecimal (0); 
-			
+			BigDecimal diarioActividad = new BigDecimal(0);
 			double diasTotalActividad = 
 					1+ ((actObra.getFechafin().getTime() - actObra.getFechainicio().getTime())
 					/ 1000 / 3600 / 24);
-			
+			diarioActividad = actObra.getValortotalactividadaiu().divide(new BigDecimal(diasTotalActividad),6,RoundingMode.HALF_EVEN); 
 			for (int i = 0; i < lstPeriodos.size(); i++) {
 
 				if (lstPeriodos.get(i).getFechainicio().after(actObra.getFechafin())) {
@@ -425,8 +425,7 @@ public class ObraApi {
 							-lstPeriodos.get(i).getFechainicio().getTime()) / 1000/3600/24);
 				}
 				
-				porcionDiasPeriodo = (DiasPeriodo * actObra.getFloatcantplanifao().doubleValue())/diasTotalActividad;
-				System.out.println(porcionDiasPeriodo);
+				porcionDiasPeriodo = this.truncateDecimal((DiasPeriodo * actObra.getFloatcantplanifao().doubleValue())/diasTotalActividad, 6).doubleValue();
 				
 				ActividadObraPeriodo actividadObraPeriodo = new ActividadObraPeriodo(); 
 				actividadObraPeriodo.setActividadObra(actObra);
@@ -440,9 +439,10 @@ public class ObraApi {
 					//PERIODOS INTERMEDIOS
 					System.out.println(porcionDiasPeriodo);
 					actividadObraPeriodo.setCantidadPlanif(new BigDecimal(porcionDiasPeriodo));
-
-					actividadObraPeriodo.setValPlanif(
-							actObra.getValortotalactividadaiu().multiply(actividadObraPeriodo.getCantidadPlanif()));
+					
+					actividadObraPeriodo.setValPlanif(diarioActividad.multiply(new BigDecimal(DiasPeriodo)));
+					//actividadObraPeriodo.setValPlanif(
+					//		actObra.getValortotalactividadaiu().multiply(actividadObraPeriodo.getCantidadPlanif()));
 					acumCantidad = acumCantidad.add(actividadObraPeriodo.getCantidadPlanif());
 					acumvalPlanif = acumvalPlanif.add(actividadObraPeriodo.getValPlanif());
 										
