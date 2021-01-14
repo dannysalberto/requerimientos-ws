@@ -323,12 +323,16 @@ public class ObraApi {
 	}
 	
 	public void generarPeriodos(Obra obra) {
-		
+		System.out.println("Generando Periodos");					
+
 		if (obra.getIntidperiomedida()>0) {
 			PeriodoMedida periodoMedida = servicePeriodoMedida.buscarPorId(obra.getIntidperiomedida());
 			BigDecimal ciclos = new BigDecimal((float) obra.getIntplazoobra() / (float) Math.max(periodoMedida.getDiasPeriodo(), 1));
-			
+			System.out.println("Generando Periodos, ciclos: "+ciclos);					
+
 			int iter  = ciclos.intValue();
+			int diasRestantes = 0;
+			System.out.println("Generando Periodos, iteraciones: "+iter);					
 			if (servicePeriodo.eliminarAll(servicePeriodo.ListarPorObra(obra.getId()))) {
 		
 				Date fechaInicio = obra.getDatefeciniobra();
@@ -336,15 +340,20 @@ public class ObraApi {
 				calendar.setTime(fechaInicio);
 				BigDecimal montoRestante = obra.getNumvaltotobra();
 				montoRestante.setScale(3, RoundingMode.HALF_EVEN);
-				int diasRestantes = obra.getIntplazoobra();
+				if (iter>0) {
+					diasRestantes = obra.getIntplazoobra();				
+				}
 				
 				for (i=1;i<=iter;i++) {
 					
 					Periodo periodo = new Periodo();
 					if (i==1) {
 						periodo.setFechainicio(calendar.getTime());
+						System.out.println("Caso 1");					
 					}else {
+						System.out.println("Caso 2");
 						calendar.add(calendar.DAY_OF_YEAR,1);
+						
 						periodo.setFechainicio(calendar.getTime());
 					}
 					calendar.add(calendar.DAY_OF_YEAR,periodoMedida.getDiasPeriodo()-1);
@@ -358,7 +367,17 @@ public class ObraApi {
 				
 				}
 				
-				if (diasRestantes > 0) {
+				if (diasRestantes == 0) {
+					System.out.println("Sin interaciones por periodo");	
+					Periodo periodo = new Periodo();
+					periodo.setFechainicio(obra.getDatefeciniobra());
+					periodo.setFechafin(obra.getDatefecfinobra());
+					periodo.setValtotplanif(new BigDecimal(0));
+					periodo.setObra(obra);
+					periodo.GenerarId(obra, 1);
+					servicePeriodo.guardar(periodo);
+				}else {
+					System.out.println("Con interaciones por periodo");
 					Periodo periodo = new Periodo();
 					calendar.add(calendar.DAY_OF_YEAR,1);
 					periodo.setFechainicio(calendar.getTime());
@@ -370,6 +389,7 @@ public class ObraApi {
 					periodo.setObra(obra);
 					periodo.GenerarId(obra, i);
 					servicePeriodo.guardar(periodo);
+					
 				}
 
 			}
@@ -387,7 +407,7 @@ public class ObraApi {
 
 		List<ActividadobraWS> lstactividadObra = serviceactividadWS.desplegarTodos(obra); 
 		lstactividadObra.forEach((actObra)-> {
-			
+			System.out.println(actObra);
 			List<Periodo> lstPeriodos = servicePeriodo
 					.ListarPorObraFecha(idObra, actObra.getFechainicio(), actObra.getFechafin());
 			long DiasPeriodo = 0;
@@ -399,7 +419,8 @@ public class ObraApi {
 			double diasTotalActividad = 
 					1+ ((actObra.getFechafin().getTime() - actObra.getFechainicio().getTime())
 					/ 1000 / 3600 / 24);
-			diarioActividad = actObra.getValortotalactividadaiu().divide(new BigDecimal(diasTotalActividad),6,RoundingMode.HALF_EVEN); 
+			diarioActividad = actObra.getValortotalactividadaiu().divide(new BigDecimal(diasTotalActividad),6,RoundingMode.HALF_EVEN);
+			System.out.println(lstPeriodos.size());
 			for (int i = 0; i < lstPeriodos.size(); i++) {
 
 				if (lstPeriodos.get(i).getFechainicio().after(actObra.getFechafin())) {
@@ -448,7 +469,7 @@ public class ObraApi {
 										
 				}
 				
-				
+				System.out.println(actividadObraPeriodo.getCantidadPlanif().doubleValue());
 				if (actividadObraPeriodo.getCantidadPlanif().doubleValue()>0) {
 					serviceActividadObraPeriodo.guardar(actividadObraPeriodo);
 					

@@ -1,0 +1,1 @@
+﻿update periodomedida set intnrodiasperiomedida=15 where intidperiomedida=2;
