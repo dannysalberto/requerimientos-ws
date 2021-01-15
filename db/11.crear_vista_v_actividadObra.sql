@@ -6,7 +6,7 @@ CREATE SEQUENCE public.categoria_id_seq
   START 1
   CACHE 1;
 ALTER TABLE public.categoria_id_seq
-  OWNER TO postgres;
+  OWNER TO cobra;
 
 CREATE TABLE public.categoria
 (
@@ -18,7 +18,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE public.categoria
-  OWNER TO postgres;
+  OWNER TO cobra;
 
 INSERT INTO public.categoria(
             id, codigo, nombre)
@@ -43,4 +43,4 @@ CREATE OR REPLACE VIEW public.v_actividadobra AS
   WHERE a.idcategoria = b.id;
 
 ALTER TABLE public.v_actividadobra
-  OWNER TO postgres;
+  OWNER TO cobra;

@@ -29,4 +29,11 @@ public class Constantes {
 	public static final String DISTRIBUCION_ACTIVIDADES_PERIODO_VERSION_INCORRECTA= "La versión de cálculo o distribución de actividades por período es inválida";
 	public static final String MIGRATION_OK = "Migración concluida correctamente";
 	
+	public static final String URLPROPERTIES = "./src/main/resources/application.properties";
+	public static final String TEMPORAL_EXTENSION = ".new";
+	public static final String FIELD_FILE_CRONOGRAMA = "appDev.fileEditCrograma";
+	public static final String FIELD_FILE_GALERIA = "appDev.fileEditGaleria";
+	public static final String FIELD_ENDPOINT = "appDev.endPoint";
+	public static final String FILE_NOT_EXIST_CRONOGRAMA= "El archivo cronograma.js a editar no existe";
+	public static final String FILE_NOT_EXIST_GALERIA= "El archivo galeria.js a editar no existe";
 }

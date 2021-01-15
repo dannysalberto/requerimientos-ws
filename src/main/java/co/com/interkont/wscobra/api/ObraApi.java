@@ -60,6 +60,7 @@ public class ObraApi {
 	ActividadObraPeriodoService serviceActividadObraPeriodo;
 	
 	public int i=0;
+	public boolean itero = false;
 	public int cantidad=0;
 	public double cantPor=0; //cantidad porcentual
 	public double por_totalAUI = 0;
@@ -327,10 +328,15 @@ public class ObraApi {
 
 		if (obra.getIntidperiomedida()>0) {
 			PeriodoMedida periodoMedida = servicePeriodoMedida.buscarPorId(obra.getIntidperiomedida());
-			BigDecimal ciclos = new BigDecimal((float) obra.getIntplazoobra() / (float) Math.max(periodoMedida.getDiasPeriodo(), 1));
+			BigDecimal DiasObra = new BigDecimal(1 + ((obra.getDatefecfinobra().getTime()
+					-obra.getDatefeciniobra().getTime()) / 1000/3600/24));
+			System.out.println("Dias obra: "+DiasObra.doubleValue());
+			//BigDecimal ciclos = new BigDecimal((float) obra.getIntplazoobra() / (float) Math.max(periodoMedida.getDiasPeriodo(), 1));
+			BigDecimal ciclos = DiasObra.divide(new BigDecimal(Math.max(periodoMedida.getDiasPeriodo(),1)),6,RoundingMode.HALF_EVEN) ;
 			System.out.println("Generando Periodos, ciclos: "+ciclos);					
 
 			int iter  = ciclos.intValue();
+			
 			int diasRestantes = 0;
 			System.out.println("Generando Periodos, iteraciones: "+iter);					
 			if (servicePeriodo.eliminarAll(servicePeriodo.ListarPorObra(obra.getId()))) {
@@ -341,9 +347,9 @@ public class ObraApi {
 				BigDecimal montoRestante = obra.getNumvaltotobra();
 				montoRestante.setScale(3, RoundingMode.HALF_EVEN);
 				if (iter>0) {
-					diasRestantes = obra.getIntplazoobra();				
+					diasRestantes = DiasObra.intValue();				
 				}
-				
+				itero=false;
 				for (i=1;i<=iter;i++) {
 					
 					Periodo periodo = new Periodo();
@@ -361,13 +367,22 @@ public class ObraApi {
 					periodo.setValtotplanif(new BigDecimal(0));				
 					periodo.setObra(obra);
 					diasRestantes = diasRestantes - (periodoMedida.getDiasPeriodo());
-					
+					/*
+					if (DiasObra.doubleValue()<diasRestantes) {
+						diasRestantes = diasRestantes - (DiasObra.intValue());
+					}else {
+						diasRestantes = diasRestantes - (periodoMedida.getDiasPeriodo());					
+					} 
+					DiasObra = DiasObra.subtract(new BigDecimal(periodoMedida.getDiasPeriodo()));
+					*/
+					System.out.println(periodo);
 					periodo.GenerarId(obra, i);
 					servicePeriodo.guardar(periodo);
+					itero = true;
 				
 				}
 				
-				if (diasRestantes == 0) {
+				if (itero == false) {
 					System.out.println("Sin interaciones por periodo");	
 					Periodo periodo = new Periodo();
 					periodo.setFechainicio(obra.getDatefeciniobra());
@@ -376,14 +391,19 @@ public class ObraApi {
 					periodo.setObra(obra);
 					periodo.GenerarId(obra, 1);
 					servicePeriodo.guardar(periodo);
-				}else {
+				}else if (diasRestantes>0){
 					System.out.println("Con interaciones por periodo");
 					Periodo periodo = new Periodo();
 					calendar.add(calendar.DAY_OF_YEAR,1);
 					periodo.setFechainicio(calendar.getTime());
+					periodo.setFechafin(obra.getDatefecfinobra());
+					/*if (diasRestantes>0) {
+						calendar.add(calendar.DAY_OF_YEAR,diasRestantes-1);				
+						periodo.setFechafin(calendar.getTime());
+					}else {
+						periodo.setFechafin(obra.getDatefecfinobra());
+					}*/
 					
-					calendar.add(calendar.DAY_OF_YEAR,diasRestantes-1);
-					periodo.setFechafin(calendar.getTime());
 					periodo.setValtotplanif(new BigDecimal(0));
 
 					periodo.setObra(obra);

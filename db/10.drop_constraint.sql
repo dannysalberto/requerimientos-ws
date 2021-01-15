@@ -20,24 +20,3 @@ alter table public.actividadobra drop column fechafin;
 
 alter table public.actividadobra rename fechainicionew to fechainicio;
 alter table public.actividadobra rename fechafinnew to fechafin;
-
-CREATE OR REPLACE VIEW public.v_actividadobra AS 
- SELECT a.oidactiviobra,
-    a.strdescactividad,
-    b.nombre AS categoria,
-    a.strtipounidadmed,
-    a.floatcantplanifao,
-    a.fechainicio,
-    a.fechafin,
-    a.intcodigoobra,
-    a.valorunitario,
-    a.numvalorplanifao,
-    a.valortotalactividadaiu,
-    a.floatcantidadejecutao,
-    a.porcentajeavance
-   FROM actividadobra a,
-    categoria b
-  WHERE a.idcategoria = b.id;
-
-ALTER TABLE public.v_actividadobra
-  OWNER TO postgres;
