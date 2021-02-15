@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>co.com.interkont</groupId>
-	<artifactId>cobraweb</artifactId>
+	<artifactId>miobraweb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
@@ -15,8 +15,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	
-	<name>cobraweb</name>
-	<description>Servicios Rest Cobra</description>
+	<name>miobraweb</name>
+	<description>Servicios Rest MiObra</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

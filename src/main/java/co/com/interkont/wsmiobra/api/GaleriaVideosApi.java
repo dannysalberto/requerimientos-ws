@@ -23,7 +23,7 @@ import co.com.interkont.wsmiobra.service.ObrasService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@RestController
+//@RestController
 @Api(value = "Api para gestionar los videos relacionados con la obra",
      consumes="application/json")
 @CrossOrigin(origins="*")
