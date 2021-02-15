@@ -375,8 +375,8 @@ public class ObraApi {
 					} 
 					DiasObra = DiasObra.subtract(new BigDecimal(periodoMedida.getDiasPeriodo()));
 					*/
-					System.out.println(periodo);
 					periodo.GenerarId(obra, i);
+					System.out.println(periodo);
 					servicePeriodo.guardar(periodo);
 					itero = true;
 				
