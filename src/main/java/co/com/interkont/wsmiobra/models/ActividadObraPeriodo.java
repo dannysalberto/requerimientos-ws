@@ -34,7 +34,7 @@ public class ActividadObraPeriodo {
 	private BigDecimal cantidadPlanif;
 	
 	@ManyToOne
-	@JoinColumn(name="actividadobra_id",columnDefinition="integer NOT NULL")
+	@JoinColumn(name="oidactiviobra",columnDefinition="oid")
 	private ActividadobraWS actividadObra;
 	
 	@ManyToOne
