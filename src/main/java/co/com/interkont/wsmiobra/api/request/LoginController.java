@@ -1,9 +1,5 @@
 package co.com.interkont.wsmiobra.api.request;
 
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.HEADER_AUTHORIZACION_KEY;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.LOGIN_URL;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.TOKEN_BEARER_PREFIX;
-
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.com.interkont.wsmiobra.auth.LDAP;
 import co.com.interkont.wsmiobra.auth.pojo.UsuarioDetailsServiceImpl;
+import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.models.AuthenticationRequest;
 import co.com.interkont.wsmiobra.models.AuthenticationResponse;
 import co.com.interkont.wsmiobra.utils.JWTUtils;
@@ -55,7 +52,7 @@ public class LoginController {
 	
 	private static Boolean bContinue;
 	
-	@RequestMapping(value=LOGIN_URL, method=RequestMethod.POST)
+	@RequestMapping(value=Constantes.LOGIN_URL, method=RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response )
 		throws Exception{
 		
@@ -93,7 +90,7 @@ public class LoginController {
 		//respuesta a la cabecera
 		HttpHeaders responseHeaders = new HttpHeaders();
 		token = this.getToken(authenticationRequest,userDetails);
-	    responseHeaders.set(HEADER_AUTHORIZACION_KEY, token);
+	    responseHeaders.set(Constantes.HEADER_AUTHORIZACION_KEY, token);
 	    
 	    @SuppressWarnings("unused")
 		AuthenticationResponse Authenticate = new AuthenticationResponse(token);
@@ -104,7 +101,7 @@ public class LoginController {
 	
 	public String getToken(AuthenticationRequest authenticationRequest, UserDetails userDetails) {
 		final String JavaWebToken = jwtService.generateToken(userDetails);
-		String token = TOKEN_BEARER_PREFIX + " " + JavaWebToken ; 
+		String token = Constantes.TOKEN_BEARER_PREFIX + " " + JavaWebToken ; 
 		return token;
 	}
 	

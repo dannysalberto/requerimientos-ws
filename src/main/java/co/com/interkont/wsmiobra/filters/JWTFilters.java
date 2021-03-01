@@ -1,8 +1,5 @@
 package co.com.interkont.wsmiobra.filters;
 
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.HEADER_AUTHORIZACION_KEY;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.TOKEN_BEARER_PREFIX;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -20,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import co.com.interkont.wsmiobra.auth.pojo.UsuarioDetailsServiceImpl;
+import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.utils.JWTUtils;
 @Component
 public class JWTFilters extends OncePerRequestFilter{
@@ -34,12 +32,12 @@ public class JWTFilters extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		final String header = request.getHeader(HEADER_AUTHORIZACION_KEY);
+		final String header = request.getHeader(Constantes.HEADER_AUTHORIZACION_KEY);
 		String usuario = null;
 		String JWTtoken = null;
 		
 		
-		if (header != null && header.startsWith(TOKEN_BEARER_PREFIX)) {
+		if (header != null && header.startsWith(Constantes.TOKEN_BEARER_PREFIX)) {
 			JWTtoken = header.substring(6);
 			usuario = jwtService.extractUsuario(JWTtoken);			
 		}

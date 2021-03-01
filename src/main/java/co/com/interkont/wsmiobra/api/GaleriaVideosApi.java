@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import co.com.interkont.wsmiobra.api.request.GaleriaVideosRequest;
-import co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes;
+import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.dto.GaleriaVideos;
 import co.com.interkont.wsmiobra.dto.Obra;
 import co.com.interkont.wsmiobra.models.ResponseGeneric;
@@ -47,7 +45,7 @@ public class GaleriaVideosApi {
 			return new ResponseEntity<List<GaleriaVideos>>(lstVideos, HttpStatus.OK);
 		}else {
 			response.setStatus(false);
-			response.setMessage(ConfiguracionConstantes.NO_EXISTE);
+			response.setMessage(Constantes.NO_EXISTE);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);
 		}
 		
@@ -60,14 +58,14 @@ public class GaleriaVideosApi {
 		ResponseGeneric response = new ResponseGeneric();
 		if (galeriavideo==null) {
 			response.setStatus(false);
-			response.setMessage(ConfiguracionConstantes.DATOS_INCORRECTOS);
+			response.setMessage(Constantes.DATOS_INCORRECTOS);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.BAD_REQUEST);
 		}
 		Obra obra = serviceObra.buscarPorId(galeriavideo.getObra_id());
 		
 		if (obra==null) {
 			response.setStatus(false);
-			response.setMessage(ConfiguracionConstantes.NO_EXISTE_OBRA);
+			response.setMessage(Constantes.NO_EXISTE_OBRA);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);
 		}
 		GaleriaVideos obj = new GaleriaVideos (); 
@@ -91,16 +89,16 @@ public class GaleriaVideosApi {
 		ResponseGeneric response = new ResponseGeneric();
 		if (idVideo==null) {
 			response.setStatus(false);
-			response.setMessage(ConfiguracionConstantes.DATOS_INCORRECTOS);
+			response.setMessage(Constantes.DATOS_INCORRECTOS);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.BAD_REQUEST);
 		}
 		if (serviceGaleria.Borrar(idVideo)) {
 			response.setStatus(true);
-			response.setMessage(ConfiguracionConstantes.REGISTRO_ELIMINADO);
+			response.setMessage(Constantes.REGISTRO_ELIMINADO);
 			
 		}else{
 			response.setStatus(false);
-			response.setMessage(ConfiguracionConstantes.DATOS_INCORRECTOS);
+			response.setMessage(Constantes.DATOS_INCORRECTOS);
 			
 		}
 		return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);

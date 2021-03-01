@@ -5,68 +5,43 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
-@Entity
-@Table(schema="public",name="obra")
 public class ObraResponse {
 	
-	@Id
-	@Column(name="intcodigoobra")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="datefeciniobra", columnDefinition="DATE")
 	private Date fechaInicio; 
 
-	@Column(name="datefecfinobra",columnDefinition="DATE")
 	private Date fechaFin; 
 
-	@Column(name="intplazoobra")
 	private Integer plazoObra;
 	
-	@Column(name="intidperiomedida")
 	private Integer periodoMedida;
 
-	@Column(name="floatporadmon",nullable=false)
 	private Float porAdmon;
 	
-	@Column(name="floatporimprevi",nullable=false)
 	private Float porImprevi; //por imprevisto
 	
-	@Column(name="floatporutilidad",nullable=false)
 	private Float porUtilidad;
 	
-	@Column(name="floatporivasobreutil",nullable=false)
 	private Float porIvaSobreUtil;
 	
-	@Column(name="floatporotros")
 	private Float porOtros; 
 	
-	@Column(name="numvaltotobra",  columnDefinition="numeric(20,6)")
 	private BigDecimal valTotalObra;
 	
-	@Column(name="numvalejecobra", columnDefinition="NUMERIC DEFAULT 0")
 	private BigDecimal valEjecucionObra; 
 	  
 	@JsonIgnore
 	@OneToMany(mappedBy="obra",cascade=CascadeType.ALL)
 	private List<ActividadObraResponse> actividadObra;
 	
-	@Column(name="costo_directo", columnDefinition="numeric(20,6)")
 	private BigDecimal costo_directo; //sumatoria de las actividades sin aiu
 
 	@JsonProperty(value="incluyeAiu")
-	@Column(name="boolincluyeaiu")
 	private Boolean boolincluyeaiu;
 
 	public Integer getId() {

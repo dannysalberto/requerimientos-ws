@@ -20,7 +20,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes;
+import co.com.interkont.wsmiobra.config.Constantes;
 
 /**
  * -----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ public class Encrypter {
     public static Encrypter getInstance() throws Exception {
         if (instance == null) {
 
-            String key = ConfiguracionConstantes.KEY_ENCODER;
+            String key = Constantes.KEY_ENCODER;
             instance = new Encrypter(key, AlgorithmEncrypter.MD5_DES);
         }
         return instance;

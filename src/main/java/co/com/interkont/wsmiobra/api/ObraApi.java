@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.interkont.wsmiobra.api.response.ObraResponse;
-import co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes;
 import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.dto.Obra;
 import co.com.interkont.wsmiobra.models.*;
@@ -96,7 +95,7 @@ public class ObraApi {
 			return new ResponseEntity<ObraResponse>(obranew, HttpStatus.OK);			
 		}else {
 			response.setStatus(false);
-			response.setMessage(ConfiguracionConstantes.NO_EXISTE);
+			response.setMessage(Constantes.NO_EXISTE);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);
 		}
 		

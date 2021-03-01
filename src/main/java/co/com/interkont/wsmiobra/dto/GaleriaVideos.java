@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes;
+import co.com.interkont.wsmiobra.config.Constantes;
 
 
 @Entity
@@ -32,7 +32,7 @@ public class GaleriaVideos {
 	@JoinColumn(name="obra_id",columnDefinition="int4 NOT NULL")
 	private Obra obra;
 	
-	private Integer tipovideo = ConfiguracionConstantes.VIDEO_CAMARA;
+	private Integer tipovideo = Constantes.VIDEO_CAMARA;
 	
 	@NotNull
 	@Column(name="nombre",nullable=false, length=50)

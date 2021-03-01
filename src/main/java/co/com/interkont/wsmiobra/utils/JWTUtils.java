@@ -1,9 +1,5 @@
 package co.com.interkont.wsmiobra.utils;
 
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.ISSUER_INFO;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.SUPER_SECRET_KEY;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.TOKEN_EXPIRATION_TIME;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +8,7 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import co.com.interkont.wsmiobra.config.Constantes;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -36,7 +33,7 @@ public class JWTUtils {
 	}
 	
 	private Claims extractAllClaims(String token) {
-		return Jwts.parser().setSigningKey(SUPER_SECRET_KEY).parseClaimsJws(token).getBody();		
+		return Jwts.parser().setSigningKey(Constantes.SUPER_SECRET_KEY).parseClaimsJws(token).getBody();		
 	}
 	
 	private Boolean isTokenExpired(String token) {
@@ -50,10 +47,10 @@ public class JWTUtils {
 	}
 	
 	private String createToken(Map<String, Object> claims, String usuario) {
-		return Jwts.builder().setIssuedAt(new Date()).setIssuer(ISSUER_INFO)
+		return Jwts.builder().setIssuedAt(new Date()).setIssuer(Constantes.ISSUER_INFO)
 		.setSubject(usuario)
-		.setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION_TIME))
-		.signWith(SignatureAlgorithm.HS512, SUPER_SECRET_KEY).compact();
+		.setExpiration(new Date(System.currentTimeMillis() + Constantes.TOKEN_EXPIRATION_TIME))
+		.signWith(SignatureAlgorithm.HS512, Constantes.SUPER_SECRET_KEY).compact();
 	}
 	
 	public Boolean validateToken(String token, UserDetails userDetails) {

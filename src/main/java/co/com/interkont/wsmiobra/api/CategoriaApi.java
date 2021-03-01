@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes;
+import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.models.Categoria;
 import co.com.interkont.wsmiobra.models.ResponseGeneric;
 import co.com.interkont.wsmiobra.service.CategoriaService;
@@ -38,7 +38,7 @@ public class CategoriaApi {
 			return new ResponseEntity<List<Categoria>>(lstCategorias, HttpStatus.OK);
 		}else {
 			response.setStatus(false);
-			response.setMessage(ConfiguracionConstantes.NO_EXISTE);
+			response.setMessage(Constantes.NO_EXISTE);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);
 		}
 		

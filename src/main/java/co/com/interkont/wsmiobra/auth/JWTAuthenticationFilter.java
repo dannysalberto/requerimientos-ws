@@ -1,12 +1,6 @@
 package co.com.interkont.wsmiobra.auth;
 
 
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.HEADER_AUTHORIZACION_KEY;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.ISSUER_INFO;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.SUPER_SECRET_KEY;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.TOKEN_BEARER_PREFIX;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.TOKEN_EXPIRATION_TIME;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.com.interkont.wsmiobra.auth.pojo.JsfUsuarioRequest;
+import co.com.interkont.wsmiobra.config.Constantes;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -56,11 +51,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication auth) throws IOException, ServletException {
 
-		String token = Jwts.builder().setIssuedAt(new Date()).setIssuer(ISSUER_INFO)
+		String token = Jwts.builder().setIssuedAt(new Date()).setIssuer(Constantes.ISSUER_INFO)
 				.setSubject(((User)auth.getPrincipal()).getUsername())
-				.setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION_TIME))
-				.signWith(SignatureAlgorithm.HS512, SUPER_SECRET_KEY).compact();
-		System.out.println(TOKEN_BEARER_PREFIX + " " + token);
-		response.addHeader(HEADER_AUTHORIZACION_KEY, TOKEN_BEARER_PREFIX + " " + token);
+				.setExpiration(new Date(System.currentTimeMillis() + Constantes.TOKEN_EXPIRATION_TIME))
+				.signWith(SignatureAlgorithm.HS512, Constantes.SUPER_SECRET_KEY).compact();
+		System.out.println(Constantes.TOKEN_BEARER_PREFIX + " " + token);
+		response.addHeader(Constantes.HEADER_AUTHORIZACION_KEY, Constantes.TOKEN_BEARER_PREFIX + " " + token);
 	}
 }

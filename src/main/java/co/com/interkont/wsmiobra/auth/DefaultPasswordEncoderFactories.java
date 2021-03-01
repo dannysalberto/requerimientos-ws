@@ -5,8 +5,7 @@ import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import co.com.interkont.wsmiobra.auth.encrypt.CustomPasswordEncoder;
-
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.ENCODER;
+import co.com.interkont.wsmiobra.config.Constantes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,9 +28,9 @@ class DefaultPasswordEncoderFactories {
         
         Map<String, PasswordEncoder> encoders = new HashMap<>();
 
-        encoders.put(ENCODER, customPassword);
+        encoders.put(Constantes.ENCODER, customPassword);
 
-        DelegatingPasswordEncoder delegatingPasswordEncoder = new DelegatingPasswordEncoder(ENCODER, encoders);
+        DelegatingPasswordEncoder delegatingPasswordEncoder = new DelegatingPasswordEncoder(Constantes.ENCODER, encoders);
 
         delegatingPasswordEncoder.setDefaultPasswordEncoderForMatches(customPassword);
         return delegatingPasswordEncoder;

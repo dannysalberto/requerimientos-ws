@@ -16,6 +16,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+
 import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.config.SwaggerConfiguration;
 
@@ -26,7 +30,7 @@ public class CobraWsApplication {
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(CobraWsApplication.class, args);
-	
+		
 		Properties properties= new Properties();
 		properties.load(new FileInputStream(new File(Constantes.URLPROPERTIES)));
 		String ruta = (String) properties.get(Constantes.FIELD_FILE_CRONOGRAMA);
@@ -101,6 +105,12 @@ public class CobraWsApplication {
 			System.out.println(Constantes.FILE_NOT_EXIST_GALERIA);
 		}
 
+		SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+	    filterProvider.addFilter("contratoEjecucion",
+	              SimpleBeanPropertyFilter.filterOutAllExcept("name", "phone"));
+
+	    ObjectMapper om = new ObjectMapper();
+	    om.setFilterProvider(filterProvider);
 		 
 	}
 	

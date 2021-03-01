@@ -1,10 +1,6 @@
 package co.com.interkont.wsmiobra.auth;
 
 
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.HEADER_AUTHORIZACION_KEY;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.SUPER_SECRET_KEY;
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.TOKEN_BEARER_PREFIX;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -18,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import co.com.interkont.wsmiobra.config.Constantes;
 import io.jsonwebtoken.Jwts;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
@@ -29,8 +26,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
-		String header = req.getHeader(HEADER_AUTHORIZACION_KEY);
-		if (header == null || !header.startsWith(TOKEN_BEARER_PREFIX)) {
+		String header = req.getHeader(Constantes.HEADER_AUTHORIZACION_KEY);
+		if (header == null || !header.startsWith(Constantes.TOKEN_BEARER_PREFIX)) {
 			chain.doFilter(req, res);
 			return;
 		}
@@ -40,12 +37,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	}
 
 	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-		String token = request.getHeader(HEADER_AUTHORIZACION_KEY);
+		String token = request.getHeader(Constantes.HEADER_AUTHORIZACION_KEY);
 		if (token != null) {
 			// Se procesa el token y se recupera el usuario.
 			String user = Jwts.parser()
-						.setSigningKey(SUPER_SECRET_KEY)
-						.parseClaimsJws(token.replace(TOKEN_BEARER_PREFIX, ""))
+						.setSigningKey(Constantes.SUPER_SECRET_KEY)
+						.parseClaimsJws(token.replace(Constantes.TOKEN_BEARER_PREFIX, ""))
 						.getBody()
 						.getSubject();
 

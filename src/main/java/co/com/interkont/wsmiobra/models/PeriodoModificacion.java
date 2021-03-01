@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,15 +24,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import co.com.interkont.wsmiobra.dto.Obra;
 
 @Entity
-@Table(schema="public",name="periodo")
-public class Periodo {
+@Table(schema="modificacion",name="periodo")
+public class PeriodoModificacion {
 
 	@Id
-	@Column(name="intidperiodo")
+	@Column(name="id")
+	@NotNull
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Integer id;
 	
+	@Column(name="intidperiodo")
+	private Integer intidperiodo;
+	
 	@NotNull
-	//@Column(name="datefeciniperiodo",columnDefinition="TIMESTAMP")
 	@Column(name="datefeciniperiodo",columnDefinition="DATE NOT NULL")
 	private Date fechainicio;
 	
@@ -47,11 +53,16 @@ public class Periodo {
 	@NotNull
 	@JoinColumn(name="intcodigoobra",columnDefinition="integer")
 	private Obra obra;
+	
+	@ManyToOne
+	@JoinColumn(name="obra_id",columnDefinition="INTEGER NOT NULL")
+	private ObraModificacion obraModificacion;
+	
 
 	@JsonIgnore
-	//@Transient
-	@OneToMany(mappedBy="periodo",fetch=FetchType.EAGER)
-	private List<ActividadObraPeriodo> actividadObra;
+	@Transient
+	@OneToMany(mappedBy="periodoModificacion",fetch=FetchType.LAZY)
+	private List<ActividadObraPeriodoModificacion> actividadObra;
 
 	public Integer GenerarId(Obra obra, int i) {
 		
@@ -66,6 +77,7 @@ public class Periodo {
 		
 	}
 	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -73,6 +85,18 @@ public class Periodo {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+	
+
+	public Integer getIntidperiodo() {
+		return intidperiodo;
+	}
+
+
+	public void setIntidperiodo(Integer intidperiodo) {
+		this.intidperiodo = intidperiodo;
+	}
+
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
 	public Date getFechainicio() {
@@ -108,25 +132,37 @@ public class Periodo {
 		this.obra = obra;
 	}
 
-	public List<ActividadObraPeriodo> getActividadObra() {
+	public List<ActividadObraPeriodoModificacion> getActividadObra() {
 		return actividadObra;
 	}
 
-	public void setActividadObra(List<ActividadObraPeriodo> actividadObra) {
+	public void setActividadObra(List<ActividadObraPeriodoModificacion> actividadObra) {
 		this.actividadObra = actividadObra;
 	}
 
-	public void addActividadObraPeriodo(ActividadObraPeriodo obj) {
+	public void addActividadObraPeriodo(ActividadObraPeriodoModificacion obj) {
 		if (this.actividadObra==null) {
 			this.actividadObra = new ArrayList<>();
 		}
 		this.actividadObra.add(obj);
 	}
-	
+
+
+	public ObraModificacion getObraModificacion() {
+		return obraModificacion;
+	}
+
+
+	public void setObraModificacion(ObraModificacion obraModificacion) {
+		this.obraModificacion = obraModificacion;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Periodo [id=" + id + ", fechainicio=" + fechainicio + ", fechafin=" + fechafin + ", valtotplanif="
-				+ valtotplanif + ", obra=" + obra + ", actividadObra=" + actividadObra + "]";
+		return "PeriodoModificacion [id=" + id + ", intidperiodo=" + intidperiodo + ", fechainicio=" + fechainicio
+				+ ", fechafin=" + fechafin + ", valtotplanif=" + valtotplanif + ", obra=" + obra + ", obraModificacion="
+				+ obraModificacion + ", actividadObra=" + actividadObra + "]";
 	}
 
 

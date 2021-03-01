@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import co.com.interkont.wsmiobra.api.request.ActividadObraRequest;
 import co.com.interkont.wsmiobra.api.request.ActividadUpdObraRequest;
 import co.com.interkont.wsmiobra.api.response.ActividadObraResponse;
-import co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes;
 import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.dao.vActividadesObraRepository;
 import co.com.interkont.wsmiobra.dto.Obra;
@@ -61,7 +60,7 @@ public class ActividadObraApi {
 			return new ResponseEntity<List<ActividadObraResponse>>(lst, HttpStatus.OK);			
 		}else {
 			response.setStatus(false);
-			response.setMessage(ConfiguracionConstantes.NO_EXISTE);
+			response.setMessage(Constantes.NO_EXISTE);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);
 		}
 		

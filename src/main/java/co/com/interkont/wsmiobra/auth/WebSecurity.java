@@ -1,7 +1,5 @@
 package co.com.interkont.wsmiobra.auth;
 
-import static co.com.interkont.wsmiobra.auth.config.ConfiguracionConstantes.LOGIN_URL;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -13,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 import co.com.interkont.wsmiobra.auth.pojo.UsuarioDetailsServiceImpl;
+import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.filters.JWTFilters;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,7 +54,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 		httpSecurity
 			.csrf().disable()
 			.authorizeRequests()
-				.antMatchers(HttpMethod.POST,LOGIN_URL).permitAll()
+				.antMatchers(HttpMethod.POST,Constantes.LOGIN_URL).permitAll()
 				.antMatchers("/**","/test","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
 				.anyRequest().authenticated()
 				.and()

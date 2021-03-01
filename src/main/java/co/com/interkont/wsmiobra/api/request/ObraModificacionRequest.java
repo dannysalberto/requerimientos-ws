@@ -1,0 +1,41 @@
+package co.com.interkont.wsmiobra.api.request;
+
+import java.util.Date;
+
+public class ObraModificacionRequest {
+	
+	private int id;
+	
+	private Date fechaModificacion;
+	
+	private String justificacionModificacion;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Date getFechaModificacion() {
+		return fechaModificacion;
+	}
+
+	public void setFechaModificacion(Date fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
+
+	public String getJustificacionModificacion() {
+		return justificacionModificacion;
+	}
+
+	public void setJustificacionModificacion(String justificacionModificacion) {
+		this.justificacionModificacion = justificacionModificacion;
+	}
+
+	
+	
+	
+
+}

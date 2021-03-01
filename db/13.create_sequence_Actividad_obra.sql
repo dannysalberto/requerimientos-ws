@@ -12,9 +12,9 @@ ALTER TABLE public.seq_actividad_obra_new
 
 CREATE SEQUENCE public.seq_actividad_obra_periodo_new
   INCREMENT 1
-  MINVALUE 6000
+  MINVALUE 60000
   MAXVALUE 600000
-  START 6004
+  START 60000
   CACHE 1;
 ALTER TABLE public.seq_actividad_obra_periodo_new
   OWNER TO cobra;
