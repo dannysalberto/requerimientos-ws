@@ -3,6 +3,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,7 +21,8 @@ import co.com.interkont.wsmiobra.dto.Obra;
 
 @Entity
 @Table(name="actividadobra",schema="public")
-public class ActividadobraWS  implements java.io.Serializable {
+@EntityListeners(AuditingEntityListener.class)
+public class ActividadobraWS  extends BasicAuditoria implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -201,6 +204,8 @@ public class ActividadobraWS  implements java.io.Serializable {
 	public void setIntcedula(Integer intcedula) {
 		this.intcedula = intcedula;
 	}
+	
+	
 
 
 	@Override
@@ -210,7 +215,7 @@ public class ActividadobraWS  implements java.io.Serializable {
 				+ floatcantplanifao + ", fechainicio=" + fechainicio + ", fechafin=" + fechafin + ", obra=" + obra
 				+ ", valorunitario=" + valorunitario + ", numvalorplanifao=" + numvalorplanifao
 				+ ", floatcantidadejecutao=" + floatcantidadejecutao + ", boolaiu=" + boolaiu
-				+ ", valortotalactividadaiu=" + valortotalactividadaiu + ", intcedula=" + intcedula + "]";
+				+ ", valortotalactividadaiu=" + valortotalactividadaiu + "]";
 	}
 
 	

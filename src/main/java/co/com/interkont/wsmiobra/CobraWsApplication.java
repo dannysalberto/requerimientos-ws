@@ -14,6 +14,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,7 @@ import co.com.interkont.wsmiobra.config.SwaggerConfiguration;
 @Configuration
 @SpringBootApplication
 @Import(SwaggerConfiguration.class)
+@EnableJpaAuditing
 public class CobraWsApplication {
 
 	public static void main(String[] args) throws IOException {

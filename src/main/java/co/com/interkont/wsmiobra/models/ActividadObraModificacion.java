@@ -11,10 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import co.com.interkont.wsmiobra.config.Constantes;
 
@@ -63,8 +61,9 @@ public class ActividadObraModificacion {
     
 	private BigDecimal valorunitario;
     private BigDecimal numvalorplanifao;
-    private Double floatcantidadejecutao;
     private boolean boolaiu;
+
+    private Double floatcantidadejecutao;
     
     @Column(name="valortotalactividadaiu",columnDefinition="numeric(20,6) null")
  	private BigDecimal valortotalactividadaiu; //aqui va el (precio unitario + aiu + porcentaje float por otros) * cantidad 
@@ -73,8 +72,32 @@ public class ActividadObraModificacion {
     private BigDecimal numvalorejecutao;
     
     @Column(name="tipomodificacion",columnDefinition="VARCHAR(1)")
-    private String tipoModificacion = Constantes.ACTIVIDAD_EXISTENTE;
+    private String tipoModificacion = Constantes.ACTIVIDAD_CLONADA;
 
+    /**/
+    
+	@Column(name="newfechainicio",columnDefinition="DATE")
+	private Date newfechainicio;
+	
+	@Column(name="newfechafin",columnDefinition="DATE")
+	private Date newfechafin;
+
+    @Column(name="newnumvalorplanifao")
+    private BigDecimal newnumvalorplanifao;
+    
+    @Column(name="newfloatcantplanifao")
+    private BigDecimal newfloatcantplanifao;
+    
+    @Column(name="newvalorunitario",columnDefinition="numeric(20,6) null")
+    private BigDecimal newvalorunitario;
+    
+    @Column(name="newvalortotalactividadaiu",columnDefinition="numeric(20,6) null")
+ 	private BigDecimal newvalortotalactividadaiu;
+    
+    
+    
+    
+    
 	public Integer getId() {
 		return id;
 	}
@@ -214,17 +237,74 @@ public class ActividadObraModificacion {
 		this.tipoModificacion = tipoModificacion;
 	}
 
+	public Date getNewfechainicio() {
+		return newfechainicio;
+	}
+
+	public void setNewfechainicio(Date newfechainicio) {
+		this.newfechainicio = newfechainicio;
+	}
+
+	public Date getNewfechafin() {
+		return newfechafin;
+	}
+
+	public void setNewfechafin(Date newfechafin) {
+		this.newfechafin = newfechafin;
+	}
+
+	public BigDecimal getNewnumvalorplanifao() {
+		return newnumvalorplanifao;
+	}
+
+	public void setNewnumvalorplanifao(BigDecimal newnumvalorplanifao) {
+		this.newnumvalorplanifao = newnumvalorplanifao;
+	}
+
+	public BigDecimal getNewfloatcantplanifao() {
+		return newfloatcantplanifao;
+	}
+
+	public void setNewfloatcantplanifao(BigDecimal newfloatcantplanifao) {
+		this.newfloatcantplanifao = newfloatcantplanifao;
+	}
+
+	public BigDecimal getNewvalorunitario() {
+		return newvalorunitario;
+	}
+
+	public void setNewvalorunitario(BigDecimal newvalorunitario) {
+		this.newvalorunitario = newvalorunitario;
+	}
+
+	public BigDecimal getNewvalortotalactividadaiu() {
+		return newvalortotalactividadaiu;
+	}
+
+	public void setNewvalortotalactividadaiu(BigDecimal newvalortotalactividadaiu) {
+		this.newvalortotalactividadaiu = newvalortotalactividadaiu;
+	}
+
+	public void setTipoModificacion(String tipoModificacion) {
+		this.tipoModificacion = tipoModificacion;
+	}
+
 	@Override
 	public String toString() {
 		return "ActividadObraModificacion [id=" + id + ", obraModificacion=" + obraModificacion + ", oidactiviobra="
 				+ oidactiviobra + ", strdescactividad=" + strdescactividad + ", idcategoria=" + idcategoria
 				+ ", strtipounidadmed=" + strtipounidadmed + ", floatcantplanifao=" + floatcantplanifao
 				+ ", fechainicio=" + fechainicio + ", fechafin=" + fechafin + ", intcodigoobra=" + intcodigoobra
-				+ ", valorunitario=" + valorunitario + ", numvalorplanifao=" + numvalorplanifao
-				+ ", floatcantidadejecutao=" + floatcantidadejecutao + ", boolaiu=" + boolaiu
-				+ ", valortotalactividadaiu=" + valortotalactividadaiu + ", numvalorejecutao=" + numvalorejecutao
-				+ ", tipoModificacion=" + tipoModificacion + "]";
+				+ ", valorunitario=" + valorunitario + ", numvalorplanifao=" + numvalorplanifao + ", boolaiu=" + boolaiu
+				+ ", floatcantidadejecutao=" + floatcantidadejecutao + ", valortotalactividadaiu="
+				+ valortotalactividadaiu + ", numvalorejecutao=" + numvalorejecutao + ", tipoModificacion="
+				+ tipoModificacion + ", newfechainicio=" + newfechainicio + ", newfechafin=" + newfechafin
+				+ ", newnumvalorplanifao=" + newnumvalorplanifao + ", newfloatcantplanifao=" + newfloatcantplanifao
+				+ ", newvalorunitario=" + newvalorunitario + ", newvalortotalactividadaiu=" + newvalortotalactividadaiu
+				+ "]";
 	}
+	
+	
 
 	
     

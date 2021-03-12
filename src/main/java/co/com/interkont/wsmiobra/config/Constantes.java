@@ -41,12 +41,14 @@ public class Constantes {
 	public static final String MODIFICACION_INICIADA = "I";
 	public static final String MODIFICACION_FINALIZADA = "F";
 	
-	public static final String ACTIVIDAD_EXISTENTE= "A";
+	public static final String ACTIVIDAD_AGREGADA= "A";
+	public static final String ACTIVIDAD_CLONADA= "N";
 	public static final String ACTIVIDAD_MODIFICADA = "M";
 	public static final String ACTIVIDAD_ELIMINADA = "D";
 
 	public static final Integer CONTRATO_EJECUCION = 1;
 	
+	public static final String CALCULO_REALIZADO = "Cálculos realizados correctamente";
 	
 	// passwordEncoder
 	

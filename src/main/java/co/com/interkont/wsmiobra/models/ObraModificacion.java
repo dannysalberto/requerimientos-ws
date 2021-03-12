@@ -1,6 +1,7 @@
 package co.com.interkont.wsmiobra.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -14,22 +15,14 @@ import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.context.annotation.ComponentScan.Filter;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import co.com.interkont.wsmiobra.config.Constantes;
-import co.com.interkont.wsmiobra.dto.Obra;
 
 
 @Entity
 @Table(name="obra",schema="modificacion",indexes = 
 	{@Index(name = "idx_obra", unique=false ,columnList = "intcodigoobra")})
-//@JsonIgnoreProperties(value = { "actividades" })
 public class ObraModificacion implements Serializable{
 	
 	/**
@@ -81,6 +74,29 @@ public class ObraModificacion implements Serializable{
 	@JsonManagedReference
 	@OneToMany(mappedBy="obra")
 	private List<RelacionContratoObra> relacioncontratos;
+	
+	/**/
+	@NotNull
+	@Column(name="newdatefecfinobra",columnDefinition="DATE NOT NULL")
+	private Date newfechafin;
+	
+	@NotNull
+	@Column(name="newintplazoobra",columnDefinition="INTEGER NOT NULL")
+	private Integer newplazo;
+	
+    private boolean boolincluyeaiu;
+
+    private float floatporadmon;
+    
+    private float floatporimprevi;
+    
+    private float floatporutilidad;
+    
+    private float floatporivasobreutil;
+
+    private float floatporotros;
+
+    private BigDecimal numvaltotobra;
 
 	public Integer getId() {
 		return id;
@@ -171,6 +187,78 @@ public class ObraModificacion implements Serializable{
 
 	public void setRelacioncontratos(List<RelacionContratoObra> relacioncontratos) {
 		this.relacioncontratos = relacioncontratos;
+	}
+
+	public boolean isBoolincluyeaiu() {
+		return boolincluyeaiu;
+	}
+
+	public void setBoolincluyeaiu(boolean boolincluyeaiu) {
+		this.boolincluyeaiu = boolincluyeaiu;
+	}
+
+	public float getFloatporadmon() {
+		return floatporadmon;
+	}
+
+	public void setFloatporadmon(float floatporadmon) {
+		this.floatporadmon = floatporadmon;
+	}
+
+	public float getFloatporimprevi() {
+		return floatporimprevi;
+	}
+
+	public void setFloatporimprevi(float floatporimprevi) {
+		this.floatporimprevi = floatporimprevi;
+	}
+
+	public float getFloatporutilidad() {
+		return floatporutilidad;
+	}
+
+	public void setFloatporutilidad(float floatporutilidad) {
+		this.floatporutilidad = floatporutilidad;
+	}
+
+	public float getFloatporivasobreutil() {
+		return floatporivasobreutil;
+	}
+
+	public void setFloatporivasobreutil(float floatporivasobreutil) {
+		this.floatporivasobreutil = floatporivasobreutil;
+	}
+
+	public float getFloatporotros() {
+		return floatporotros;
+	}
+
+	public void setFloatporotros(float floatporotros) {
+		this.floatporotros = floatporotros;
+	}
+
+	public BigDecimal getNumvaltotobra() {
+		return numvaltotobra;
+	}
+
+	public void setNumvaltotobra(BigDecimal numvaltotobra) {
+		this.numvaltotobra = numvaltotobra;
+	}
+
+	public Date getNewfechafin() {
+		return newfechafin;
+	}
+
+	public void setNewfechafin(Date newfechafin) {
+		this.newfechafin = newfechafin;
+	}
+
+	public Integer getNewplazo() {
+		return newplazo;
+	}
+
+	public void setNewplazo(Integer newplazo) {
+		this.newplazo = newplazo;
 	}
 
 
