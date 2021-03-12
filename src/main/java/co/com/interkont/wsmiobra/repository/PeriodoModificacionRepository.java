@@ -11,9 +11,9 @@ import co.com.interkont.wsmiobra.models.PeriodoModificacion;
 @Repository
 public interface PeriodoModificacionRepository extends JpaRepository<PeriodoModificacion, Integer> {
 	
-	List<PeriodoModificacion> findByObra_Id(Integer id);
+	List<PeriodoModificacion> findByObraModificacion_Id(Integer id);
 	void deleteByObraModificacion(ObraModificacion obra);
-	List<PeriodoModificacion> findByObra_IdAndFechafinGreaterThanEqualAndFechainicioLessThanEqualOrderByFechainicioAsc(Integer idObra, Date FechaIni,Date FechaFin);
-	List<PeriodoModificacion> findByObra_IdAndFechainicioGreaterThanEqualOrderByFechainicioAsc(Integer idObra, Date FechaIni);
+	List<PeriodoModificacion> findByObraModificacion_IdAndFechafinGreaterThanEqualAndFechainicioLessThanEqualOrderByFechainicioAsc(Integer idObra, Date FechaIni,Date FechaFin);
+	List<PeriodoModificacion> findByObraModificacion_IdAndFechainicioGreaterThanEqualOrderByFechainicioAsc(Integer idObra, Date FechaIni);
 	
 }

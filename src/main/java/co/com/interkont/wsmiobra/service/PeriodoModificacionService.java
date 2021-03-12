@@ -26,7 +26,7 @@ public class PeriodoModificacionService implements IPeriodoModificacion {
 	@Override
 	public List<PeriodoModificacion> ListarPorObra(Integer idObra) {
 		// TODO Auto-generated method stub
-		return repository.findByObra_Id(idObra);
+		return repository.findByObraModificacion_Id(idObra);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class PeriodoModificacionService implements IPeriodoModificacion {
 	@Override
 	public List<PeriodoModificacion> ListarPorObraFecha(Integer idObra, Date FechaIni, Date FechaFin) {
 		// TODO Auto-generated method stub
-		return repository.findByObra_IdAndFechafinGreaterThanEqualAndFechainicioLessThanEqualOrderByFechainicioAsc(idObra, FechaIni, FechaFin);
+		return repository.findByObraModificacion_IdAndFechafinGreaterThanEqualAndFechainicioLessThanEqualOrderByFechainicioAsc(idObra, FechaIni, FechaFin);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class PeriodoModificacionService implements IPeriodoModificacion {
 	@Override
 	public List<PeriodoModificacion> ListarPeriodosPorObraFechaInicio(Integer idObra, Date fechaIni) {
 		// TODO Auto-generated method stub
-		return repository.findByObra_IdAndFechainicioGreaterThanEqualOrderByFechainicioAsc(idObra, fechaIni);
+		return repository.findByObraModificacion_IdAndFechainicioGreaterThanEqualOrderByFechainicioAsc(idObra, fechaIni);
 	}
 	
 
