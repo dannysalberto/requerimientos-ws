@@ -29,6 +29,8 @@ public class Constantes {
 	public static final String DISTRIBUCION_ACTIVIDADES_PERIODO_VERSION_INCORRECTA= "La versión de cálculo o distribución de actividades por período es inválida";
 	public static final String MIGRATION_OK = "Migración concluida correctamente";
 	public static final String MODIFICACION_INICIADA_OK = "Modificación iniciada correctamente";
+	public static final String MODIFICACION_EXISTENTE_OK = "Modificación ya existe y esta iniciada";
+
 	public static final String MODIFICACION_INICIADA_NOTFOUND = "La obra no se encuentra en modificación";
 	
 	public static final String URLPROPERTIES = "./src/main/resources/application.properties";

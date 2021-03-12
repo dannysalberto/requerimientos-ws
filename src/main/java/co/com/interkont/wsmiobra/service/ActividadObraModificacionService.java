@@ -52,7 +52,7 @@ public class ActividadObraModificacionService implements IActividadObraModificac
 	@Override
 	public List<ActividadObraModificacion> desplegarTodos(ObraModificacion obra) {
 		// TODO Auto-generated method stub
-		return null;
+		return repo.findByObraModificacion(obra);
 	}
 	
 	

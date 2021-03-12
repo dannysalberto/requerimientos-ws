@@ -39,8 +39,6 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin(origins="*")
 @RequestMapping("/obra")
 public class ObraApi {
-
-
 	
 	@Autowired
 	ObrasService serviceObra;
@@ -329,7 +327,7 @@ public class ObraApi {
 			BigDecimal DiasObra = new BigDecimal(1 + ((obra.getDatefecfinobra().getTime()
 					-obra.getDatefeciniobra().getTime()) / 1000/3600/24));
 			System.out.println("Dias obra: "+DiasObra.doubleValue());
-			//BigDecimal ciclos = new BigDecimal((float) obra.getIntplazoobra() / (float) Math.max(periodoMedida.getDiasPeriodo(), 1));
+
 			BigDecimal ciclos = DiasObra.divide(new BigDecimal(Math.max(periodoMedida.getDiasPeriodo(),1)),6,RoundingMode.HALF_EVEN) ;
 			System.out.println("Generando Periodos, ciclos: "+ciclos);					
 
@@ -480,11 +478,8 @@ public class ObraApi {
 					actividadObraPeriodo.setCantidadPlanif(new BigDecimal(porcionDiasPeriodo));
 					
 					actividadObraPeriodo.setValPlanif(diarioActividad.multiply(new BigDecimal(DiasPeriodo)));
-					//actividadObraPeriodo.setValPlanif(
-					//		actObra.getValortotalactividadaiu().multiply(actividadObraPeriodo.getCantidadPlanif()));
 					acumCantidad = acumCantidad.add(actividadObraPeriodo.getCantidadPlanif());
-					acumvalPlanif = acumvalPlanif.add(actividadObraPeriodo.getValPlanif());
-										
+					acumvalPlanif = acumvalPlanif.add(actividadObraPeriodo.getValPlanif());				
 				}
 				
 				System.out.println(actividadObraPeriodo.getCantidadPlanif().doubleValue());

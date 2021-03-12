@@ -28,9 +28,6 @@ public class ActividadUpdObraRequest {
 	@Column(name="fechafin",columnDefinition="DATE NOT NULL")
 	private String fechafin;
 	
-	@Column(name="intcodigoobra",columnDefinition="integer NOT NULL")
-	private Integer idobra;
-	
 	@Column(name="valorunitario",columnDefinition="numeric(20,6) null")
 	private BigDecimal valorunitario; //crear valor q escribe el usuario
 	
@@ -74,14 +71,6 @@ public class ActividadUpdObraRequest {
 
 	public void setFechafin(String fechafin) {
 		this.fechafin = fechafin;
-	}
-
-	public Integer getIdobra() {
-		return idobra;
-	}
-
-	public void setIdobra(Integer idobra) {
-		this.idobra = idobra;
 	}
 
 	public BigDecimal getValorunitario() {

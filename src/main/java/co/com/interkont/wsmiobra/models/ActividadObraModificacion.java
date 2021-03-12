@@ -20,7 +20,6 @@ import co.com.interkont.wsmiobra.config.Constantes;
 @Table(name="actividadobra",schema="modificacion")
 public class ActividadObraModificacion {
 
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Integer id;
@@ -92,11 +91,7 @@ public class ActividadObraModificacion {
     private BigDecimal newvalorunitario;
     
     @Column(name="newvalortotalactividadaiu",columnDefinition="numeric(20,6) null")
- 	private BigDecimal newvalortotalactividadaiu;
-    
-    
-    
-    
+ 	private BigDecimal newvalortotalactividadaiu; 
     
 	public Integer getId() {
 		return id;
@@ -147,6 +142,9 @@ public class ActividadObraModificacion {
 	}
 
 	public BigDecimal getFloatcantplanifao() {
+		if (floatcantplanifao == null) {
+			return new BigDecimal(0);
+		}
 		return floatcantplanifao;
 	}
 
@@ -174,6 +172,9 @@ public class ActividadObraModificacion {
 	}
 
 	public BigDecimal getValorunitario() {
+		if (valorunitario == null) {
+			return new BigDecimal(0);
+		}
 		return valorunitario;
 	}
 
@@ -182,6 +183,9 @@ public class ActividadObraModificacion {
 	}
 
 	public BigDecimal getNumvalorplanifao() {
+		if (numvalorplanifao == null) {
+			return new BigDecimal(0);
+		}
 		return numvalorplanifao;
 	}
 
@@ -206,6 +210,9 @@ public class ActividadObraModificacion {
 	}
 
 	public BigDecimal getValortotalactividadaiu() {
+		if (valortotalactividadaiu == null) {
+			return new BigDecimal(0);
+		}
 		return valortotalactividadaiu;
 	}
 
@@ -222,6 +229,9 @@ public class ActividadObraModificacion {
 	}
 
 	public BigDecimal getNumvalorejecutao() {
+		if (numvalorejecutao == null) {
+			return new BigDecimal(0);
+		}
 		return numvalorejecutao;
 	}
 
@@ -254,6 +264,9 @@ public class ActividadObraModificacion {
 	}
 
 	public BigDecimal getNewnumvalorplanifao() {
+		if (newnumvalorplanifao == null) {
+			return new BigDecimal(0);
+		}
 		return newnumvalorplanifao;
 	}
 
@@ -262,6 +275,9 @@ public class ActividadObraModificacion {
 	}
 
 	public BigDecimal getNewfloatcantplanifao() {
+		if (newfloatcantplanifao == null) {
+			return new BigDecimal(0);
+		}
 		return newfloatcantplanifao;
 	}
 
@@ -270,6 +286,9 @@ public class ActividadObraModificacion {
 	}
 
 	public BigDecimal getNewvalorunitario() {
+		if (newvalorunitario == null) {
+			return new BigDecimal(0);
+		}
 		return newvalorunitario;
 	}
 
@@ -278,6 +297,9 @@ public class ActividadObraModificacion {
 	}
 
 	public BigDecimal getNewvalortotalactividadaiu() {
+		if (newvalortotalactividadaiu == null) {
+			return new BigDecimal(0);
+		}
 		return newvalortotalactividadaiu;
 	}
 

@@ -2,14 +2,18 @@ package co.com.interkont.wsmiobra.api.request;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 
 public class ObraUpdateRequest {
 	
 	private int id;
 	
-	private Date newfechafin;
+	@JsonFormat(pattern="yyyy-MM-dd",locale="es_CO",shape=Shape.STRING)
+	private Date fechafin;
 	
-	private Integer newplazo;
+	private Integer plazo;
 
 	public int getId() {
 		return id;
@@ -19,22 +23,23 @@ public class ObraUpdateRequest {
 		this.id = id;
 	}
 
-	public Date getNewfechafin() {
-		return newfechafin;
+	public Date getFechafin() {
+		return fechafin;
 	}
 
-	public void setNewfechafin(Date newfechafin) {
-		this.newfechafin = newfechafin;
+	public void setFechafin(Date fechafin) {
+		this.fechafin = fechafin;
 	}
 
-	public Integer getNewplazo() {
-		return newplazo;
+	public Integer getPlazo() {
+		return plazo;
 	}
 
-	public void setNewplazo(Integer newplazo) {
-		this.newplazo = newplazo;
+	public void setPlazo(Integer plazo) {
+		this.plazo = plazo;
 	}
-	
+
+
 	
 	
 

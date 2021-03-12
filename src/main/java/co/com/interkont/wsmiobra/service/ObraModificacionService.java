@@ -35,7 +35,12 @@ public class ObraModificacionService implements IObraModificacion{
 	@Override
 	public ObraModificacion buscarPorId(Integer id) {
 		// TODO Auto-generated method stub
-		return repo.findById(id).get();
+		try {
+			return repo.findById(id).get();		
+		}catch (Exception e) {
+			return null;
+			// TODO: handle exception
+		}
 	}
 
 	@Override

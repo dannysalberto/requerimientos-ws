@@ -156,7 +156,7 @@ public class ActividadObraApi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Obra obra = serviceObra.buscarPorId(objRequest.getIdobra());
+		Obra obra = serviceObra.buscarPorId(actividad.getObra().getId());
 		if (obra==null) {
 			response.setStatus(false);
 			response.setMessage("Obra no existe");

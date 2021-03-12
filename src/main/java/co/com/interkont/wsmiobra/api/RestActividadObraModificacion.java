@@ -138,7 +138,7 @@ public class RestActividadObraModificacion {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Obra obra = serviceObra.buscarPorId(objRequest.getIdobra());
+		Obra obra = serviceObra.buscarPorId(actividad.getIntcodigoobra());
 		if (obra==null) {
 			response.setStatus(false);
 			response.setMessage("Obra no existe");
@@ -146,10 +146,9 @@ public class RestActividadObraModificacion {
 		}
 		
 		
-		ObraModificacion obraModificacion = serviceObraModificacion.buscarPorIdEstado(objRequest.getIdobra(),
+		ObraModificacion obraModificacion = serviceObraModificacion.buscarPorIdEstado(actividad.getIntcodigoobra(),
 				Constantes.MODIFICACION_INICIADA);
 		actividad.setObraModificacion(obraModificacion);
-		actividad.setIntcodigoobra(objRequest.getIdobra());
 		if (obraModificacion==null) {
 			response.setStatus(false);
 			response.setMessage("Obra en modificación no existe");

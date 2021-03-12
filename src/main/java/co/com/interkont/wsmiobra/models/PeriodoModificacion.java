@@ -32,10 +32,7 @@ public class PeriodoModificacion {
 	@NotNull
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Integer id;
-	
-	@Column(name="intidperiodo")
-	private Integer intidperiodo;
-	
+		
 	@NotNull
 	@Column(name="datefeciniperiodo",columnDefinition="DATE NOT NULL")
 	private Date fechainicio;
@@ -47,12 +44,6 @@ public class PeriodoModificacion {
 	@NotNull
 	@Column(name="numvaltotplanif",columnDefinition="NUMERIC")
 	private BigDecimal valtotplanif;
-	
-	@ManyToOne
-	@JsonIgnore
-	@NotNull
-	@JoinColumn(name="intcodigoobra",columnDefinition="integer")
-	private Obra obra;
 	
 	@ManyToOne
 	@JoinColumn(name="obra_id",columnDefinition="INTEGER NOT NULL")
@@ -86,18 +77,6 @@ public class PeriodoModificacion {
 		this.id = id;
 	}
 	
-	
-
-	public Integer getIntidperiodo() {
-		return intidperiodo;
-	}
-
-
-	public void setIntidperiodo(Integer intidperiodo) {
-		this.intidperiodo = intidperiodo;
-	}
-
-
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
 	public Date getFechainicio() {
 		return fechainicio;
@@ -122,14 +101,6 @@ public class PeriodoModificacion {
 
 	public void setValtotplanif(BigDecimal valtotplanif) {
 		this.valtotplanif = valtotplanif;
-	}
-
-	public Obra getObra() {
-		return obra;
-	}
-
-	public void setObra(Obra obra) {
-		this.obra = obra;
 	}
 
 	public List<ActividadObraPeriodoModificacion> getActividadObra() {
@@ -157,15 +128,12 @@ public class PeriodoModificacion {
 		this.obraModificacion = obraModificacion;
 	}
 
-
 	@Override
 	public String toString() {
-		return "PeriodoModificacion [id=" + id + ", intidperiodo=" + intidperiodo + ", fechainicio=" + fechainicio
-				+ ", fechafin=" + fechafin + ", valtotplanif=" + valtotplanif + ", obra=" + obra + ", obraModificacion="
-				+ obraModificacion + ", actividadObra=" + actividadObra + "]";
+		return "PeriodoModificacion [id=" + id + ", fechainicio=" + fechainicio + ", fechafin=" + fechafin
+				+ ", valtotplanif=" + valtotplanif + ", obraModificacion=" + obraModificacion + ", actividadObra="
+				+ actividadObra + "]";
 	}
-
-
 
 	
 }

@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import co.com.interkont.wsmiobra.auth.pojo.JsfUsuario;
 import co.com.interkont.wsmiobra.models.ActividadobraWS;
 import co.com.interkont.wsmiobra.models.Periodo;
@@ -130,7 +129,7 @@ public class Obra  implements java.io.Serializable {
      private Integer lineanegocio;
      private Integer intIdterceroConstructor;
      private Integer intidsubsector;
-     private Set<Actividadobra> actividadobras = new HashSet<Actividadobra>(0);
+     //private Set<Actividadobra> actividadobras = new HashSet<Actividadobra>(0);
      private List<ActividadobraWS> actividadesobras; 	 
      private Set<Periodo> periodos = new HashSet<Periodo>(0);
      private Set<Obra> obras = new HashSet<Obra>(0);
@@ -1049,16 +1048,8 @@ public class Obra  implements java.io.Serializable {
         this.intidsubsector = intidsubsector;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
-    public Set<Actividadobra> getActividadobras() {
-        return this.actividadobras;
-    }
-    
-    public void setActividadobras(Set<Actividadobra> actividadobras) {
-        this.actividadobras = actividadobras;
-    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
+   
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
     public Set<Periodo> getPeriodos() {
         return this.periodos;
     }
@@ -1098,11 +1089,20 @@ public class Obra  implements java.io.Serializable {
 		this.actividades = actividades;
 	}
 
+	
+	/*public Set<Actividadobra> getActividadobras() {
+		return actividadobras;
+	}
+
+
+	public void setActividadobras(Set<Actividadobra> actividadobras) {
+		this.actividadobras = actividadobras;
+	}*/
+
     @OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
 	public List<ActividadobraWS> getActividadesobras() {
 		return actividadesobras;
 	}
-
 
 	public void setActividadesobras(List<ActividadobraWS> actividadesobras) {
 		this.actividadesobras = actividadesobras;

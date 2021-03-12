@@ -2,6 +2,7 @@ package co.com.interkont.wsmiobra.models;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,9 +15,12 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 import co.com.interkont.wsmiobra.config.Constantes;
 
 
@@ -57,7 +61,7 @@ public class ObraModificacion implements Serializable{
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="obraModificacion",fetch=FetchType.EAGER)
-	private List<ActividadObraModificacion> actividades;
+	private List<ActividadObraModificacion> actividades = new ArrayList<>();;
 	
 
 	@NotNull
@@ -71,33 +75,18 @@ public class ObraModificacion implements Serializable{
 	@Column(name="estadomodificacion",columnDefinition="VARCHAR(1)")
 	private String estadoModificacion = Constantes.MODIFICACION_INICIADA;	
 	
+	@Transient
 	@JsonManagedReference
-	@OneToMany(mappedBy="obra")
-	private List<RelacionContratoObra> relacioncontratos;
+	@OneToMany(mappedBy="obra",fetch=FetchType.LAZY)
+	private List<RelacionContratoObra> relacioncontratos = new ArrayList<>();
 	
 	/**/
-	@NotNull
-	@Column(name="newdatefecfinobra",columnDefinition="DATE NOT NULL")
+	@Column(name="newdatefecfinobra",columnDefinition="DATE")
 	private Date newfechafin;
 	
-	@NotNull
-	@Column(name="newintplazoobra",columnDefinition="INTEGER NOT NULL")
+	@Column(name="newintplazoobra",columnDefinition="INTEGER")
 	private Integer newplazo;
 	
-    private boolean boolincluyeaiu;
-
-    private float floatporadmon;
-    
-    private float floatporimprevi;
-    
-    private float floatporutilidad;
-    
-    private float floatporivasobreutil;
-
-    private float floatporotros;
-
-    private BigDecimal numvaltotobra;
-
 	public Integer getId() {
 		return id;
 	}
@@ -189,62 +178,7 @@ public class ObraModificacion implements Serializable{
 		this.relacioncontratos = relacioncontratos;
 	}
 
-	public boolean isBoolincluyeaiu() {
-		return boolincluyeaiu;
-	}
-
-	public void setBoolincluyeaiu(boolean boolincluyeaiu) {
-		this.boolincluyeaiu = boolincluyeaiu;
-	}
-
-	public float getFloatporadmon() {
-		return floatporadmon;
-	}
-
-	public void setFloatporadmon(float floatporadmon) {
-		this.floatporadmon = floatporadmon;
-	}
-
-	public float getFloatporimprevi() {
-		return floatporimprevi;
-	}
-
-	public void setFloatporimprevi(float floatporimprevi) {
-		this.floatporimprevi = floatporimprevi;
-	}
-
-	public float getFloatporutilidad() {
-		return floatporutilidad;
-	}
-
-	public void setFloatporutilidad(float floatporutilidad) {
-		this.floatporutilidad = floatporutilidad;
-	}
-
-	public float getFloatporivasobreutil() {
-		return floatporivasobreutil;
-	}
-
-	public void setFloatporivasobreutil(float floatporivasobreutil) {
-		this.floatporivasobreutil = floatporivasobreutil;
-	}
-
-	public float getFloatporotros() {
-		return floatporotros;
-	}
-
-	public void setFloatporotros(float floatporotros) {
-		this.floatporotros = floatporotros;
-	}
-
-	public BigDecimal getNumvaltotobra() {
-		return numvaltotobra;
-	}
-
-	public void setNumvaltotobra(BigDecimal numvaltotobra) {
-		this.numvaltotobra = numvaltotobra;
-	}
-
+	@JsonFormat(pattern="yyyy-MM-dd",locale="es_CO",shape=Shape.STRING)
 	public Date getNewfechafin() {
 		return newfechafin;
 	}
