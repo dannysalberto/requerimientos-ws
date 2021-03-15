@@ -1,0 +1,4 @@
+alter table public.actividadobra add created_at DATE ;
+alter table public.actividadobra add updated_at DATE ;
+alter table public.actividadobra add create_by varchar(20) ;
+alter table public.actividadobra add update_by varchar(20) ;

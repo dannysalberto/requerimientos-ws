@@ -103,6 +103,9 @@ public class ActividadobraWS  extends BasicAuditoria implements java.io.Serializ
 
 
 	public BigDecimal getFloatcantplanifao() {
+		if (floatcantplanifao==null) {
+			return new BigDecimal(0);
+		}
 		return floatcantplanifao;
 	}
 
@@ -142,6 +145,9 @@ public class ActividadobraWS  extends BasicAuditoria implements java.io.Serializ
 
 
 	public BigDecimal getValorunitario() {
+		if (valorunitario==null) {
+			return new BigDecimal(0);
+		}
 		return valorunitario;
 	}
 
@@ -152,6 +158,9 @@ public class ActividadobraWS  extends BasicAuditoria implements java.io.Serializ
 
 
 	public BigDecimal getNumvalorplanifao() {
+		if (numvalorplanifao==null) {
+			return new BigDecimal(0);
+		}
 		return numvalorplanifao;
 	}
 
@@ -182,6 +191,9 @@ public class ActividadobraWS  extends BasicAuditoria implements java.io.Serializ
 
 
 	public BigDecimal getValortotalactividadaiu() {
+		if (valortotalactividadaiu==null) {
+			return new BigDecimal(0);
+		}
 		return valortotalactividadaiu;
 	}
 

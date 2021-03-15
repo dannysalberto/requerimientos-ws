@@ -55,6 +55,12 @@ public class PeriodoModificacion {
 	@OneToMany(mappedBy="periodoModificacion",fetch=FetchType.LAZY)
 	private List<ActividadObraPeriodoModificacion> actividadObra;
 
+
+	@NotNull
+	@Column(name="intcodigoobra",columnDefinition="integer")
+	private Integer obraOrigenId;
+	
+	
 	public Integer GenerarId(Obra obra, int i) {
 		
 		String sid = String.valueOf(obra.getId());
@@ -127,6 +133,17 @@ public class PeriodoModificacion {
 	public void setObraModificacion(ObraModificacion obraModificacion) {
 		this.obraModificacion = obraModificacion;
 	}
+
+	
+	public Integer getObraOrigenId() {
+		return obraOrigenId;
+	}
+
+
+	public void setObraOrigenId(Integer obraOrigenId) {
+		this.obraOrigenId = obraOrigenId;
+	}
+
 
 	@Override
 	public String toString() {
