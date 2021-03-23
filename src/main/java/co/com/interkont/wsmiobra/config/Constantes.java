@@ -30,8 +30,11 @@ public class Constantes {
 	public static final String MIGRATION_OK = "Migración concluida correctamente";
 	public static final String MODIFICACION_INICIADA_OK = "Modificación iniciada correctamente";
 	public static final String MODIFICACION_EXISTENTE_OK = "Modificación ya existe y esta iniciada";
-
+	public static final String MODIFICACION_DE_OBRA_CANCELADA = "Modificacion de Obra Cancelada";
 	public static final String MODIFICACION_INICIADA_NOTFOUND = "La obra no se encuentra en modificación";
+	public static final String MODIFICACION_DE_OBRA_FINALIZADA = "Modificacion de Obra Finalizada";
+	public static final int ESTADO_OBRA_MODIFICACION = 3;
+	public static final int ESTADO_OBRA_EJECUCION = 1;
 	
 	public static final String URLPROPERTIES = "./src/main/resources/application.properties";
 	public static final String TEMPORAL_EXTENSION = ".new";

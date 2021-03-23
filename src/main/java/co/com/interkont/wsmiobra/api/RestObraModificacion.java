@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,14 +53,9 @@ consumes="application/json")
 @RequestMapping("/obra")
 public class RestObraModificacion {
 	
-	protected static final int ESTADO_OBRA_MODIFICACION = 3;
 	public double por_totalAUI = 0;	
 	public int i=0;
 	public boolean itero = false;
-	
-	public static int getEstadoObraModificacion() {
-		return ESTADO_OBRA_MODIFICACION;
-	}
 
 	@Autowired
 	ObraModificacionService serviceObraModificacion;
@@ -85,7 +81,7 @@ public class RestObraModificacion {
 	@Autowired
 	PeriodoService servicePeriodo; 
 	
-	@Transactional
+	//@Transactional
 	@PostMapping(value="/iniciarModificacion")
 	@ApiOperation(value = "Inicia el proceso de copia de datos para modificación")
 	public ResponseEntity<?> IniciarModificacion(@RequestBody ObraModificacionRequest request){
@@ -127,7 +123,7 @@ public class RestObraModificacion {
 				actividadObraModificacion.setValortotalactividadaiu(actividadObra.getValortotalactividadaiu());
 				actividadObraModificacion.setFechainicio(actividadObra.getFechainicio());
 				actividadObraModificacion.setFechafin(actividadObra.getFechafin());
-				actividadObraModificacion.setIntcodigoobra(actividadObra.getObra().getId());
+				actividadObraModificacion.setIntcodigoobra(obra.getId());
 				actividadObraModificacion.setFloatcantidadejecutao(actividadObra.getFloatcantidadejecutao());
 				actividadObraModificacion.setNumvalorejecutao(actividadObra.getNumvalorplanifao());
 				serviceActividadObraModificacion.guardar(actividadObraModificacion);
@@ -140,7 +136,7 @@ public class RestObraModificacion {
 				periodoModificacion.setFechafin(periodo.getFechafin());
 				periodoModificacion.setFechainicio(periodo.getFechainicio());
 				periodoModificacion.setValtotplanif(periodo.getValtotplanif());
-				
+				periodoModificacion.setObraOrigenId(obra.getId());
 				servicePeriodoModificacion.guardar(periodoModificacion);
 				
 				
@@ -175,6 +171,12 @@ public class RestObraModificacion {
 		if (obraMod!=null) {
 			obraMod.setNewfechafin(request.getFechafin());
 			obraMod.setNewplazo(request.getPlazo());	
+			
+			/*ValorTotalObraActual
+			FechaInicioActual
+			FechaFinActual
+			PlazoActual*/
+			
 			return new ResponseEntity<ObraModificacion>(serviceObraModificacion.actualizar(obraMod), HttpStatus.OK);			
 		}else {
 			ResponseGeneric response = new ResponseGeneric(); 
@@ -193,7 +195,11 @@ public class RestObraModificacion {
 			ObraModificacion obraMod = serviceObraModificacion.buscarPorIdEstado(
 					idObra,Constantes.MODIFICACION_INICIADA);
 			this.calcularCostos(obraMod);
-
+			obraMod.setCantidadActividades(serviceObraModificacion.cantidadActividades(obraMod.getId()));
+			obraMod.setNewnumvaltotobra(new BigDecimal(serviceObraModificacion.totalPrecioActividades(obraMod.getId())));
+			obraMod.setNewcosto_directo(new BigDecimal(serviceObraModificacion.totalCostoDirecto(obraMod.getId())));
+			serviceObraModificacion.actualizar(obraMod);
+			
 			//pendiente
 			this.planeacionPorPeriodo(obraMod.getId());
 		
@@ -218,18 +224,20 @@ public class RestObraModificacion {
 			response.setMessage(Constantes.MODIFICACION_INICIADA_NOTFOUND);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);	
 		}
-		
+		System.out.println(obraModificacion.getRelacioncontratos());
         obraModificacion.getRelacioncontratos().removeIf(contrato->contrato
         		.getContrato().getTipoContrato()!=Constantes.CONTRATO_EJECUCION);
 		return new ResponseEntity<>(obraModificacion, HttpStatus.OK);		
 	}
-	
-	@GetMapping(value="/realizarModificacion/{idmodificacion}")
-	@ApiOperation(value = "Realiza las modificaciones en la persistencia original")
-	public ResponseEntity<?> realizarModificacion(@PathVariable("idmodificacion") Integer idmodificacion){
+		
+	//@Transactional
+	@PostMapping(value="/finalizarModificacion/{idModificacion}")
+	@ApiOperation(value = "Finaliza la modificación, actualizando los datos de la obra")
+	public ResponseEntity<?> realizarModificacion(@PathVariable("idModificacion") Integer idModificacion){
 		
 		ObraModificacion obraModificacion = new ObraModificacion();
-		obraModificacion = serviceObraModificacion.buscarPorId(idmodificacion);
+		System.out.println(idModificacion);
+		obraModificacion = serviceObraModificacion.buscarPorId(idModificacion);
 		if (obraModificacion==null) {
 			ResponseGeneric response = new ResponseGeneric(); 
 			response.setStatus(false);
@@ -237,6 +245,11 @@ public class RestObraModificacion {
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);	
 		}
 		Obra obra = serviceObra.buscarPorId(obraModificacion.getObraid());
+		obra.setIntplazoobra(obraModificacion.getPlazo());
+		obra.setDatefecfinobra(obraModificacion.getNewfechafin());
+		obra.setIntestadoobra(Constantes.ESTADO_OBRA_EJECUCION);
+		serviceObra.actualizar(obra);
+		
 		obraModificacion.getActividades().forEach((actividadObraModificacion)->{
 			
 			ActividadobraWS actividadobra = new ActividadobraWS();
@@ -247,12 +260,13 @@ public class RestObraModificacion {
 			  case Constantes.ACTIVIDAD_MODIFICADA:
 				    actividadobra = serviceActividadObraWS.buscarPorId(actividadObraModificacion.getOidactiviobra());
 				    if (actividadobra != null) {
-				    	assignData(obra, actividadObraModificacion, actividadobra);
+				    	actividadobra = assignData(actividadObraModificacion);
 					    serviceActividadObraWS.actualizar(actividadobra);	
 				    }
 				    break;
 			  case Constantes.ACTIVIDAD_AGREGADA:
-				  	assignData(obra, actividadObraModificacion, actividadobra);
+				  	actividadobra = assignData(actividadObraModificacion);
+				  	actividadobra.setObra(obra);
 				    serviceActividadObraWS.Guardar(actividadobra);
 			    	break;
 			  default:
@@ -261,28 +275,51 @@ public class RestObraModificacion {
 			}
 		});
 		
-        
-		return new ResponseEntity<>(obraModificacion, HttpStatus.OK);		
+		//falta periodos y relacionactividadobraperiodo
+		ResponseGeneric response = new ResponseGeneric();
+		response.setStatus(true);
+		response.setMessage(Constantes.MODIFICACION_DE_OBRA_FINALIZADA);
+		return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);		
+	}
+	
+	@DeleteMapping(value="/cancelarmodificacion/{idModificacion}")
+	@ApiOperation(value="Borra los datos de una modificación")
+	public ResponseEntity<ResponseGeneric> cancelarModificacion(@PathVariable("idModificacion") Integer idModificacion){
+		
+		try {
+			serviceObraModificacion.Eliminar(idModificacion);			
+		}catch (Exception e) {
+			ResponseGeneric response = new ResponseGeneric();
+			response.setStatus(false);
+			response.setMessage(Constantes.MODIFICACION_INICIADA_NOTFOUND);
+			return new ResponseEntity<> (response, HttpStatus.BAD_REQUEST);
+		}
+		
+		ResponseGeneric response = new ResponseGeneric();
+		response.setStatus(false);
+		response.setMessage(Constantes.MODIFICACION_DE_OBRA_CANCELADA);
+		return new ResponseEntity<> (response, HttpStatus.ACCEPTED);
+		
 	}
 
 
-	private void assignData(Obra obra, ActividadObraModificacion actividadObraModificacion,
-			ActividadobraWS actividadobra) {
-		
+	private ActividadobraWS assignData(ActividadObraModificacion actividadObraModificacion) {
+			
+			ActividadobraWS actividadobra = new ActividadobraWS();
 			actividadobra.setOidactiviobra(actividadObraModificacion.getOidactiviobra());
 			actividadobra.setStrdescactividad(actividadObraModificacion.getStrdescactividad());
 			actividadobra.setIdcategoria(actividadObraModificacion.getIdcategoria());
 			actividadobra.setStrtipounidadmed(actividadObraModificacion.getStrtipounidadmed());
-			actividadobra.setFloatcantidadejecutao(actividadObraModificacion.getFloatcantidadejecutao());
-			actividadobra.setFloatcantplanifao(actividadObraModificacion.getFloatcantplanifao());
-			actividadobra.setFechafin(actividadObraModificacion.getFechafin());
-			actividadobra.setFechainicio(actividadObraModificacion.getFechainicio());
-			actividadobra.setObra(obra);
-			actividadobra.setValorunitario(actividadObraModificacion.getValortotalactividadaiu());
-			actividadobra.setNumvalorplanifao(actividadObraModificacion.getNumvalorplanifao());
+			//actividadobra.setFloatcantidadejecutao(actividadObraModificacion.getn);
+			actividadobra.setFloatcantplanifao(actividadObraModificacion.getNewfloatcantplanifao());
+			actividadobra.setFechafin(actividadObraModificacion.getNewfechafin());
+			actividadobra.setFechainicio(actividadObraModificacion.getNewfechainicio());
+			actividadobra.setValorunitario(actividadObraModificacion.getNewvalortotalactividadaiu());
+			actividadobra.setNumvalorplanifao(actividadObraModificacion.getNewnumvalorplanifao());
 			actividadobra.setBoolaiu(actividadObraModificacion.isBoolaiu());
-			actividadobra.setValortotalactividadaiu(actividadObraModificacion.getValortotalactividadaiu());
-			actividadobra.setNumvalorplanifao(actividadObraModificacion.getNumvalorplanifao());
+			actividadobra.setValortotalactividadaiu(actividadObraModificacion.getNewvalortotalactividadaiu());
+			actividadobra.setNumvalorplanifao(actividadObraModificacion.getNewnumvalorplanifao());
+			return actividadobra;
 	}
 	
 	private Obra cambiarEstadoObra(ObraModificacionRequest request) {
@@ -295,7 +332,7 @@ public class RestObraModificacion {
 			// TODO: handle exception
 			logger.error(e.getMessage());
 		}
-		obra.setIntestadoobra(getEstadoObraModificacion());
+		obra.setIntestadoobra(Constantes.ESTADO_OBRA_MODIFICACION);
 		serviceObra.actualizar(obra);
 		return obra;
 	}
@@ -349,6 +386,7 @@ public class RestObraModificacion {
 	public void generarPeriodos(Obra obra) {
 		System.out.println("Generando Periodos");					
 		System.out.println(obra);
+		
 		if (obra.getIntidperiomedida()>0) {
 			PeriodoMedida periodoMedida = servicePeriodoMedida.buscarPorId(obra.getIntidperiomedida());
 			BigDecimal DiasObra = new BigDecimal(1 + ((obra.getDatefecfinobra().getTime()
@@ -395,7 +433,8 @@ public class RestObraModificacion {
 
 					periodo.GenerarId(obra, i);
 					System.out.println(periodo);
-					periodo.setObraOrigenId(obraMod.getObraid());
+					periodo.setObraOrigenId(obra.getId());
+
 					servicePeriodoModificacion.guardar(periodo);
 					itero = true;
 				}
@@ -408,7 +447,8 @@ public class RestObraModificacion {
 					periodo.setValtotplanif(new BigDecimal(0));
 					ObraModificacion obraMod = serviceObraModificacion.buscarPorIdEstado(obra.getId(), Constantes.MODIFICACION_INICIADA);
 					periodo.setObraModificacion(obraMod);
-					periodo.setObraOrigenId(obraMod.getObraid());
+					periodo.setObraOrigenId(obra.getId());
+
 					periodo.GenerarId(obra, 1);
 					servicePeriodoModificacion.guardar(periodo);
 				}else if (diasRestantes>0){
@@ -421,7 +461,7 @@ public class RestObraModificacion {
 
 					ObraModificacion obraMod = serviceObraModificacion.buscarPorIdEstado(obra.getId(), Constantes.MODIFICACION_INICIADA);
 					periodo.setObraModificacion(obraMod);
-					periodo.setObraOrigenId(obraMod.getObraid());
+					periodo.setObraOrigenId(obra.getId());
 					periodo.GenerarId(obra, i);
 					servicePeriodoModificacion.guardar(periodo);
 				}

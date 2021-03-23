@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.ForeignKey;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -26,7 +28,7 @@ public class RelacionContratoObra{
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="intcodigoobra",columnDefinition="integer NOT NULL",
-	referencedColumnName="intcodigoobra")
+		referencedColumnName="intcodigoobra")
 	private ObraModificacion obra;
 	
 	@ManyToOne(fetch=FetchType.EAGER)

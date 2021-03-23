@@ -14,12 +14,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.ForeignKey;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import co.com.interkont.wsmiobra.config.Constantes;
 
@@ -36,7 +42,9 @@ public class ObraModificacion implements Serializable{
 
 	@Id
 	@NotNull
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@SequenceGenerator(name="modificacion.obra_id_seq",sequenceName="modificacion.obra_id_seq",
+ 	allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="modificacion.obra_id_seq")
 	private Integer id;
 
 	@NotNull
@@ -75,7 +83,7 @@ public class ObraModificacion implements Serializable{
 	@Column(name="estadomodificacion",columnDefinition="VARCHAR(1)")
 	private String estadoModificacion = Constantes.MODIFICACION_INICIADA;	
 	
-	@Transient
+	//@Transient
 	@JsonManagedReference
 	@OneToMany(mappedBy="obra",fetch=FetchType.LAZY)
 	private List<RelacionContratoObra> relacioncontratos = new ArrayList<>();
@@ -86,6 +94,18 @@ public class ObraModificacion implements Serializable{
 	
 	@Column(name="newintplazoobra",columnDefinition="INTEGER")
 	private Integer newplazo;
+	
+    @Column(name="numvaltotobra", nullable=false, precision=20, scale=6)
+    private BigDecimal numvaltotobra;
+
+    @Column(name="newnumvaltotobra", nullable=false, precision=20, scale=6)
+    private BigDecimal newnumvaltotobra;
+    
+    @Column(name="newcosto_directo", columnDefinition="numeric(20,6)")
+	private BigDecimal newcosto_directo;
+    
+    @Transient
+	private Integer cantidadActividades;
 	
 	public Integer getId() {
 		return id;
@@ -103,6 +123,7 @@ public class ObraModificacion implements Serializable{
 		this.obraid = obraid;
 	}
 
+	@JsonProperty(value="plazoInicial")
 	public Integer getPlazo() {
 		return plazo;
 	}
@@ -112,6 +133,7 @@ public class ObraModificacion implements Serializable{
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
+	@JsonProperty(value="fechaInicioInicial")
 	public Date getFechainicio() {
 		return fechainicio;
 	}
@@ -121,6 +143,7 @@ public class ObraModificacion implements Serializable{
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
+	@JsonProperty(value="fechaFinInicial")
 	public Date getFechafin() {
 		return fechafin;
 	}
@@ -179,6 +202,7 @@ public class ObraModificacion implements Serializable{
 	}
 
 	@JsonFormat(pattern="yyyy-MM-dd",locale="es_CO",shape=Shape.STRING)
+	@JsonProperty(value="fechaFinActual")
 	public Date getNewfechafin() {
 		return newfechafin;
 	}
@@ -187,6 +211,7 @@ public class ObraModificacion implements Serializable{
 		this.newfechafin = newfechafin;
 	}
 
+	@JsonProperty(value="plazoActual")
 	public Integer getNewplazo() {
 		return newplazo;
 	}
@@ -194,6 +219,52 @@ public class ObraModificacion implements Serializable{
 	public void setNewplazo(Integer newplazo) {
 		this.newplazo = newplazo;
 	}
+
+	@JsonProperty(value="valorTotalObraInicial")
+	public BigDecimal getNumvaltotobra() {
+		return numvaltotobra;
+	}
+
+	public void setNumvaltotobra(BigDecimal numvaltotobra) {
+		this.numvaltotobra = numvaltotobra;
+	}
+
+	@JsonProperty(value="valorTotalObraActual")
+	public BigDecimal getNewnumvaltotobra() {
+		return newnumvaltotobra;
+	}
+
+	public void setNewnumvaltotobra(BigDecimal newnumvaltotobra) {
+		this.newnumvaltotobra = newnumvaltotobra;
+	}
+
+	@JsonIgnore
+	public BigDecimal getNewcosto_directo() {
+		return newcosto_directo;
+	}
+
+	public void setNewcosto_directo(BigDecimal costo_directo) {
+		if (costo_directo==null) {
+			this.newcosto_directo = new BigDecimal(0);
+		}else {
+			this.newcosto_directo = costo_directo;			
+		}
+	}
+
+	@JsonIgnore
+	public Integer getCantidadActividades() {
+		return cantidadActividades;
+	}
+
+	public void setCantidadActividades(Integer cantidadActividades) {
+		this.cantidadActividades = cantidadActividades;
+	}
+	
+	
+	
+	
+	
+	
 
 
 	

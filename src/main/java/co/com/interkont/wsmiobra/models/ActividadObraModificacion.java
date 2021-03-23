@@ -26,7 +26,7 @@ public class ActividadObraModificacion {
 	
 	@ManyToOne
 	@JsonBackReference
-	@JoinColumn(name="obra_id",columnDefinition="INTEGER NOT NULL")
+	@JoinColumn(name="obra_id",columnDefinition="INTEGER NOT NULL") //obramodificacion_id
 	private ObraModificacion obraModificacion;
 	
 	@NotNull

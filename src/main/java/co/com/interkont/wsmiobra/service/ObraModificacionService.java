@@ -17,6 +17,7 @@ public class ObraModificacionService implements IObraModificacion{
 	public ObraModificacion guardar(ObraModificacion obraModificacion) {
 		// TODO Auto-generated method stub
 		return repo.save(obraModificacion);
+		//return null;
 	}
 
 	@Override
@@ -52,7 +53,11 @@ public class ObraModificacionService implements IObraModificacion{
 	@Override
 	public Double totalCostoDirecto(Integer id) {
 		// TODO Auto-generated method stub
-		return repo.totalCostoDirecto(id);
+		Double ret = repo.totalCostoDirecto(id);
+		if (ret == null) {
+			return (double) 0;
+		}
+		return ret;
 	}
 
 	@Override

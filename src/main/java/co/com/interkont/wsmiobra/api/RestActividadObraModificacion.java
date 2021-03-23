@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,6 +46,7 @@ public class RestActividadObraModificacion {
 	@ApiOperation(value = "Guardar datos de modificación actividadobra")
 	public ResponseEntity<?> save(@RequestBody ActividadObraRequest objRequest) {
 
+		//validar si al agregar la actividad se supera el valor total disponible de la obra
 		ResponseGeneric response = new ResponseGeneric(); 
 		ActividadObraModificacion actividad = new ActividadObraModificacion();
 		
@@ -185,5 +187,7 @@ public class RestActividadObraModificacion {
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);
 		}
 	}
+
+	
 
 }

@@ -1,6 +1,9 @@
 package co.com.interkont.wsmiobra.api.request;
 
+import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Column;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
@@ -14,7 +17,8 @@ public class ObraUpdateRequest {
 	private Date fechafin;
 	
 	private Integer plazo;
-
+	
+ 
 	public int getId() {
 		return id;
 	}
