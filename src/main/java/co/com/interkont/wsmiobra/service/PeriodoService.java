@@ -33,6 +33,7 @@ public class PeriodoService implements IPeriodo {
 
 	@Override
 	public void guardar(Periodo periodo) {
+		System.out.println(periodo);
 		// TODO Auto-generated method stub
 		repository.save(periodo);
 	}
@@ -62,18 +63,9 @@ public class PeriodoService implements IPeriodo {
 	}
 
 	@Override
-	public boolean eliminarAll(Iterable<Periodo> periodo) {
-		// TODO Auto-generated method stub
-		try {
-			repository.deleteAll(periodo);
-			//repository.deleteInBatch(periodo);
-			return true;
-		}catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e.getMessage());
-			return false;
-		}
-	
+	public void eliminarAll(Iterable<Periodo> periodo) {
+		repository.deleteInBatch(periodo);
+		repository.flush();
 	}
 
 	@Override

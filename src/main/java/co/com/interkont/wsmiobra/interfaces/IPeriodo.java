@@ -17,7 +17,7 @@ public interface IPeriodo {
 	void actualizar(Periodo periodo);
 	Periodo buscarPorId(Integer id);
 	void eliminar(Integer id);
-	boolean eliminarAll(Iterable<Periodo> periodo);
+	void eliminarAll(Iterable<Periodo> periodo);
 	boolean eliminarByObra(Obra obra);
 
 }

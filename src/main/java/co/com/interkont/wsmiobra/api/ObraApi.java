@@ -335,8 +335,8 @@ public class ObraApi {
 			
 			int diasRestantes = 0;
 			System.out.println("Generando Periodos, iteraciones: "+iter);					
-			if (servicePeriodo.eliminarAll(servicePeriodo.ListarPorObra(obra.getId()))) {
-		
+			//servicePeriodo.eliminarAll(servicePeriodo.ListarPorObra(obra.getId()));		
+			servicePeriodo.eliminarByObra(obra);
 				Date fechaInicio = obra.getDatefeciniobra();
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(fechaInicio);
@@ -408,7 +408,7 @@ public class ObraApi {
 					
 				}
 
-			}
+			
 			
 		}
 	}
@@ -417,10 +417,11 @@ public class ObraApi {
 	@ApiOperation(value = "Realizar la planificación de actividades por periodos V2 Interkont.")
 	public ResponseEntity<?> planeacionPorPeriodo(@PathVariable(value="idObra") Integer idObra) {	
 		Obra obra = serviceObra.buscarPorId(idObra);
+		List<ActividadObraPeriodo> lstActivObraPeriodo = serviceActividadObraPeriodo.listarPorPeriodo(obra.getId());
+		serviceActividadObraPeriodo.eliminarAll(lstActivObraPeriodo);
 		this.generarPeriodos(obra);
-		serviceActividadObraPeriodo.eliminarAll(
-				serviceActividadObraPeriodo.listarPorPeriodo(obra.getId()));
 
+		
 		List<ActividadobraWS> lstactividadObra = serviceactividadWS.desplegarTodos(obra); 
 		lstactividadObra.forEach((actObra)-> {
 			System.out.println(actObra);
