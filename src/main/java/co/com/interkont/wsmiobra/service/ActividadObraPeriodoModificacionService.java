@@ -31,6 +31,20 @@ public class ActividadObraPeriodoModificacionService implements IActividadObraPe
 		// TODO Auto-generated method stub
 		return repository.findByPeriodoModificacion_Id(idPeriodo);
 	}
+
+	@Override
+	public List<ActividadObraPeriodoModificacion> listarPorModificacion(Integer idModificacion) {
+		// TODO Auto-generated method stub
+		return repository.findByListPeriodosModificacion(idModificacion);
+		
+	}
+
+	@Override
+	public void eliminarPorIdPeriodo(Integer idPeriodo) {
+		// TODO Auto-generated method stub
+		repository.deleteByPeriodoModificacion_Id(idPeriodo);
+		
+	}
 	
 	
 

@@ -3,6 +3,7 @@ package co.com.interkont.wsmiobra.models;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -36,7 +39,8 @@ public class ActividadObraPeriodoModificacion {
 	@Column(name="intidperiodo", columnDefinition="numeric(20,6)")
 	private Integer intidperiodo;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JsonIgnore
 	@JoinColumn(name="periodomodificacion",columnDefinition="integer NOT NULL")
 	private PeriodoModificacion periodoModificacion;
 	
@@ -98,12 +102,5 @@ public class ActividadObraPeriodoModificacion {
 		this.periodoModificacion = periodoModificacion;
 	}
 
-	@Override
-	public String toString() {
-		return "ActividadObraPeriodoModificacion [id=" + id + ", actividadObraPeriodo_id=" + actividadObraPeriodo_id
-				+ ", numvalplanif=" + numvalplanif + ", floatcantplanif=" + floatcantplanif + ", oidactiviobra="
-				+ oidactiviobra + ", intidperiodo=" + intidperiodo + ", periodoModificacion=" + periodoModificacion
-				+ "]";
-	}
 
 }

@@ -9,7 +9,7 @@ import co.com.interkont.wsmiobra.models.ActividadObraPeriodo;
 
 
 @Repository
-public interface ActividadObraPeriodoRepository extends JpaRepository<ActividadObraPeriodo, Integer> {
+public interface ActividadObraPeriodoRepository extends JpaRepository<ActividadObraPeriodo, Long> {
 
 	List<ActividadObraPeriodo> findByPeriodo_Id(Integer id);
 

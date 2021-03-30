@@ -1,10 +1,14 @@
 package co.com.interkont.wsmiobra.models;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -23,12 +27,19 @@ public class Contrato {
 	@Column(name="strnumcontrato")
 	private String numeroContrato;
 	
-	@Column(name="numvlrcontrato")
-	private String valorContrato;
+	@Column(name="valordisponible")
+	private BigDecimal valorDisponible;
 	
 	@Column(name="inttipocontrato")
 	private Integer tipoContrato;
-		
+	
+	@Column(name="numvlrsumaproyectos",columnDefinition="NUMERIC(20,6)")
+	private BigDecimal numvlrsumaproyectos;
+	
+	@Column(name="numvlrcontrato",columnDefinition="NUMERIC(20,6)")
+	private BigDecimal numvlrcontrato;
+	
+	
 
 	public String getNumeroContrato() {
 		return numeroContrato;
@@ -38,12 +49,15 @@ public class Contrato {
 		this.numeroContrato = numeroContrato;
 	}
 
-	public String getValorContrato() {
-		return valorContrato;
+	
+	public BigDecimal getValorDisponible() {
+		valorDisponible = numvlrcontrato.subtract(numvlrsumaproyectos)
+				.setScale(4,BigDecimal.ROUND_HALF_DOWN);
+		return valorDisponible;
 	}
 
-	public void setValorContrato(String valorContrato) {
-		this.valorContrato = valorContrato;
+	public void setValorDisponible(BigDecimal valorDisponible) {
+		this.valorDisponible = valorDisponible;
 	}
 
 	public Integer getId() {
@@ -62,14 +76,48 @@ public class Contrato {
 		this.tipoContrato = tipoContrato;
 	}
 
+	/**
+	 * @return the numvlrsumaproyectos
+	 */
+	@JsonIgnore
+	public BigDecimal getNumvlrsumaproyectos() {
+		return numvlrsumaproyectos;
+	}
+
+	/**
+	 * @param numvlrsumaproyectos the numvlrsumaproyectos to set
+	 */
+	public void setNumvlrsumaproyectos(BigDecimal numvlrsumaproyectos) {
+		this.numvlrsumaproyectos = numvlrsumaproyectos;
+	}
+
+	/**
+	 * @return the numvlrcontrato
+	 */
+	@JsonIgnore
+	public BigDecimal getNumvlrcontrato() {
+		return numvlrcontrato;
+	}
+
+	/**
+	 * @param numvlrcontrato the numvlrcontrato to set
+	 */
+	public void setNumvlrcontrato(BigDecimal numvlrcontrato) {
+		this.numvlrcontrato = numvlrcontrato;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "Contrato [id=" + id + ", numeroContrato=" + numeroContrato + ", valorContrato=" + valorContrato
-				+ ", tipoContrato=" + tipoContrato + "]";
+		return "Contrato [id=" + id + ", numeroContrato=" + numeroContrato + ", valorDisponible=" + valorDisponible
+				+ ", tipoContrato=" + tipoContrato + ", numvlrsumaproyectos=" + numvlrsumaproyectos
+				+ ", numvlrcontrato=" + numvlrcontrato + "]";
 	}
 
 	
-	
+
 	
 
 }

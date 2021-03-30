@@ -52,7 +52,13 @@ public class PeriodoService implements IPeriodo {
 	@Override
 	public Periodo buscarPorId(Integer id) {
 		// TODO Auto-generated method stub
-		return repository.findById(id).get();
+		try {
+			return repository.findById(id).get();			
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			return null;
+		}
 	}
 
 	@Override
@@ -95,5 +101,6 @@ public class PeriodoService implements IPeriodo {
 		// TODO Auto-generated method stub
 		return repository.findByObra_IdAndFechainicioGreaterThanEqualOrderByFechainicioAsc(idObra, fechaIni);
 	}
+
 
 }

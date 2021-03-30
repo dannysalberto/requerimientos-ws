@@ -57,7 +57,7 @@ public class ActividadobraWS  extends BasicAuditoria implements java.io.Serializ
  	private BigDecimal valortotalactividadaiu; //aqui va el (precio unitario + aiu + porcentaje float por otros) * cantidad 
  	
     @Column(name="intcedula",columnDefinition="INT8 NOT NULL")
-    private Integer intcedula;
+    private Integer intcedula =0;
 	
     public ActividadobraWS() {
     }

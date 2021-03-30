@@ -71,6 +71,7 @@ public class PeriodoModificacionService implements IPeriodoModificacion {
 	@Override
 	public List<PeriodoModificacion> ListarPorObraFecha(Integer idObra, Date FechaIni, Date FechaFin) {
 		// TODO Auto-generated method stub
+		//return repository.findByObraModificacion_Id(idObra);
 		return repository.findByObraModificacion_IdAndFechafinGreaterThanEqualAndFechainicioLessThanEqualOrderByFechainicioAsc(idObra, FechaIni, FechaFin);
 	}
 

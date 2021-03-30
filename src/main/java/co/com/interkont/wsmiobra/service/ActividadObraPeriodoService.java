@@ -33,6 +33,17 @@ public class ActividadObraPeriodoService implements IActividadObraPeriodo{
 		return repository.findByPeriodo_Id(idPeriodo);
 	}
 
+	@Override
+	public ActividadObraPeriodo buscarPorId(Long id) {
+		// TODO Auto-generated method stub
+		try {
+			return repository.findById(id).get();
+		}catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+	}
+
 	
 
 }

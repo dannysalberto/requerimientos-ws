@@ -10,7 +10,7 @@ public class ObraModificacionRequest {
 	private int id;
 	
 	@JsonFormat(pattern="yyyy-MM-dd",locale="es_CO",shape=Shape.STRING)
-	private Date fechaModificacion;
+	private String fechaModificacion;
 	
 	private String justificacionModificacion;
 
@@ -22,11 +22,11 @@ public class ObraModificacionRequest {
 		this.id = id;
 	}
 
-	public Date getFechaModificacion() {
+	public String getFechaModificacion() {
 		return fechaModificacion;
 	}
 
-	public void setFechaModificacion(Date fechaModificacion) {
+	public void setFechaModificacion(String fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
 

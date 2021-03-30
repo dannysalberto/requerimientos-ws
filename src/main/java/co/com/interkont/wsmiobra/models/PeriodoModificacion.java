@@ -46,21 +46,22 @@ public class PeriodoModificacion {
 	@Column(name="numvaltotplanif",columnDefinition="NUMERIC")
 	private BigDecimal valtotplanif;
 	
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
 	@JoinColumn(name="obra_id",columnDefinition="INTEGER NOT NULL")
 	private ObraModificacion obraModificacion;
 	
 
-	@JsonIgnore
-	@Transient
+	
 	@OneToMany(mappedBy="periodoModificacion",fetch=FetchType.LAZY)
-	private List<ActividadObraPeriodoModificacion> actividadObra;
+	private List<ActividadObraPeriodoModificacion> actividadObraPeriodoModificacion;
 
 
 	@NotNull
 	@Column(name="intcodigoobra",columnDefinition="integer")
 	private Integer obraOrigenId;
 	
+	@Column(name="intidperiodo",columnDefinition="integer")
+	private Integer periodo_id;
 	
 	public Integer GenerarId(Obra obra, int i) {
 		
@@ -110,19 +111,30 @@ public class PeriodoModificacion {
 		this.valtotplanif = valtotplanif;
 	}
 
-	public List<ActividadObraPeriodoModificacion> getActividadObra() {
-		return actividadObra;
+	
+
+	/**
+	 * @return the actividadObraPeriodoModificacion
+	 */
+	public List<ActividadObraPeriodoModificacion> getActividadObraPeriodoModificacion() {
+		return actividadObraPeriodoModificacion;
 	}
 
-	public void setActividadObra(List<ActividadObraPeriodoModificacion> actividadObra) {
-		this.actividadObra = actividadObra;
+
+	/**
+	 * @param actividadObraPeriodoModificacion the actividadObraPeriodoModificacion to set
+	 */
+	public void setActividadObraPeriodoModificacion(
+			List<ActividadObraPeriodoModificacion> actividadObraPeriodoModificacion) {
+		this.actividadObraPeriodoModificacion = actividadObraPeriodoModificacion;
 	}
+
 
 	public void addActividadObraPeriodo(ActividadObraPeriodoModificacion obj) {
-		if (this.actividadObra==null) {
-			this.actividadObra = new ArrayList<>();
+		if (this.actividadObraPeriodoModificacion==null) {
+			this.actividadObraPeriodoModificacion = new ArrayList<>();
 		}
-		this.actividadObra.add(obj);
+		this.actividadObraPeriodoModificacion.add(obj);
 	}
 
 
@@ -146,11 +158,20 @@ public class PeriodoModificacion {
 	}
 
 
-	@Override
-	public String toString() {
-		return "PeriodoModificacion [id=" + id + ", fechainicio=" + fechainicio + ", fechafin=" + fechafin
-				+ ", valtotplanif=" + valtotplanif + ", obraModificacion=" + obraModificacion + ", actividadObra="
-				+ actividadObra + "]";
+	
+	/**
+	 * @return the periodo_id
+	 */
+	public Integer getPeriodo_id() {
+		return periodo_id;
+	}
+
+
+	/**
+	 * @param periodo_id the periodo_id to set
+	 */
+	public void setPeriodo_id(Integer periodo_id) {
+		this.periodo_id = periodo_id;
 	}
 
 	

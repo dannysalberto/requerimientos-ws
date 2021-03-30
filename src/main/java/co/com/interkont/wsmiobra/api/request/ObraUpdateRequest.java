@@ -14,7 +14,7 @@ public class ObraUpdateRequest {
 	private int id;
 	
 	@JsonFormat(pattern="yyyy-MM-dd",locale="es_CO",shape=Shape.STRING)
-	private Date fechafin;
+	private String fechafin;
 	
 	private Integer plazo;
 	
@@ -27,11 +27,11 @@ public class ObraUpdateRequest {
 		this.id = id;
 	}
 
-	public Date getFechafin() {
+	public String getFechafin() {
 		return fechafin;
 	}
 
-	public void setFechafin(Date fechafin) {
+	public void setFechafin(String fechafin) {
 		this.fechafin = fechafin;
 	}
 

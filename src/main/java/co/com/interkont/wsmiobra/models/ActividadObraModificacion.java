@@ -29,23 +29,18 @@ public class ActividadObraModificacion {
 	@JoinColumn(name="obra_id",columnDefinition="INTEGER NOT NULL") //obramodificacion_id
 	private ObraModificacion obraModificacion;
 	
-	@NotNull
 	@Column(name="oidactiviobra",columnDefinition="OID NOT NULL")
 	private Integer oidactiviobra;
 	
-	@NotNull
 	@Column(name="strdescactividad",columnDefinition="VARCHAR(200) NOT NULL")
 	private String strdescactividad;
 	
-	@NotNull
 	@Column(name="idcategoria",columnDefinition="INTEGER NOT NULL")
 	private Integer idcategoria;
 	
-	@NotNull
 	@Column(name="strtipounidadmed",columnDefinition="VARCHAR(10) NOT NULL")
 	private String strtipounidadmed;
 	
-	@NotNull
 	@Column(name="floatcantplanifao",columnDefinition="DOUBLE PRECISION NOT NULL")
 	private BigDecimal floatcantplanifao;
 	
@@ -247,6 +242,7 @@ public class ActividadObraModificacion {
 		this.tipoModificacion = tipoModificacion;
 	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
 	public Date getNewfechainicio() {
 		return newfechainicio;
 	}
@@ -255,6 +251,7 @@ public class ActividadObraModificacion {
 		this.newfechainicio = newfechainicio;
 	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
 	public Date getNewfechafin() {
 		return newfechafin;
 	}

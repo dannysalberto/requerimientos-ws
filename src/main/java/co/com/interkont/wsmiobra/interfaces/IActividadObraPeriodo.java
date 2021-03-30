@@ -9,5 +9,6 @@ public interface IActividadObraPeriodo {
 	void guardar(ActividadObraPeriodo actividadObraPeriodo);
 	void eliminarAll(Iterable<ActividadObraPeriodo> actividadObraPeriodo);
 	List<ActividadObraPeriodo> listarPorPeriodo(Integer idPeriodo);
+	ActividadObraPeriodo buscarPorId(Long id);
 	
 }

@@ -9,6 +9,10 @@ public interface IActividadObraPeriodoModificacion {
 	void guardar(ActividadObraPeriodoModificacion actividadObraPeriodoModificacion);
 	void eliminarAll(Iterable<ActividadObraPeriodoModificacion> actividadObraPeriodoModificacion);
 	List<ActividadObraPeriodoModificacion> listarPorPeriodo(Integer idPeriodo);
+	List<ActividadObraPeriodoModificacion> listarPorModificacion(Integer idModificacion);
+	void eliminarPorIdPeriodo(Integer idPeriodo);
+	
+
 	
 }
 

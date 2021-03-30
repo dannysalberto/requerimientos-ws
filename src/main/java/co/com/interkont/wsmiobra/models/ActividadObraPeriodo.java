@@ -40,6 +40,7 @@ public class ActividadObraPeriodo {
 	@ManyToOne
 	@JoinColumn(name="intidperiodo",columnDefinition="integer NOT NULL")
 	private Periodo periodo;
+	
 
 	public long getId() {
 		return id;
@@ -81,6 +82,9 @@ public class ActividadObraPeriodo {
 	public void setPeriodo(Periodo periodo) {
 		this.periodo = periodo;
 	}
+
+	
+	
 
 	@Override
 	public String toString() {
