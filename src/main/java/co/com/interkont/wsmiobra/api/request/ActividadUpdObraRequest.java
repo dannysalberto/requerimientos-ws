@@ -31,11 +31,11 @@ public class ActividadUpdObraRequest {
 	@Column(name="valorunitario",columnDefinition="numeric(20,6) null")
 	private BigDecimal valorunitario; //crear valor q escribe el usuario
 	
-	@Column(name="numvalorplanifao",columnDefinition="numeric(20,6) null")
-	private BigDecimal valortotal; //aqui va el precio unitario + aiu + porcentaje float por otros
+	//@Column(name="numvalorplanifao",columnDefinition="numeric(20,6) null")
+	//private BigDecimal valortotal; //aqui va el precio unitario + aiu + porcentaje float por otros
 	
-	@Column(name="floatcantidadejecutao",columnDefinition="numeric(20,6) null")
-	private Double cantidadejecutada;
+	//@Column(name="floatcantidadejecutao",columnDefinition="numeric(20,6) null")
+	//private Double cantidadejecutada;
 
 
 
@@ -81,21 +81,21 @@ public class ActividadUpdObraRequest {
 		this.valorunitario = valorunitario;
 	}
 
-	public BigDecimal getValortotal() {
+	/*public BigDecimal getValortotal() {
 		return valortotal;
 	}
 
 	public void setValortotal(BigDecimal valortotal) {
 		this.valortotal = valortotal;
-	}
+	}*/
 
-	public Double getCantidadejecutada() {
+	/*public Double getCantidadejecutada() {
 		return cantidadejecutada;
 	}
 
 	public void setCantidadejecutada(Double cantidadejecutada) {
 		this.cantidadejecutada = cantidadejecutada;
-	}
+	}*/
 
 	
 

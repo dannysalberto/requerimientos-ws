@@ -31,6 +31,7 @@ import co.com.interkont.wsmiobra.models.ActividadObraModificacion;
 import co.com.interkont.wsmiobra.models.ActividadObraPeriodo;
 import co.com.interkont.wsmiobra.models.ActividadObraPeriodoModificacion;
 import co.com.interkont.wsmiobra.models.ActividadobraWS;
+import co.com.interkont.wsmiobra.models.ObraChangeDate;
 import co.com.interkont.wsmiobra.models.ObraModificacion;
 import co.com.interkont.wsmiobra.models.Periodo;
 import co.com.interkont.wsmiobra.models.PeriodoMedida;
@@ -40,6 +41,7 @@ import co.com.interkont.wsmiobra.service.ActividadObraModificacionService;
 import co.com.interkont.wsmiobra.service.ActividadObraPeriodoModificacionService;
 import co.com.interkont.wsmiobra.service.ActividadObraPeriodoService;
 import co.com.interkont.wsmiobra.service.ActividadObraWSService;
+import co.com.interkont.wsmiobra.service.CategoriaService;
 import co.com.interkont.wsmiobra.service.ObraModificacionService;
 import co.com.interkont.wsmiobra.service.ObrasService;
 import co.com.interkont.wsmiobra.service.PeriodoMedidaService;
@@ -87,7 +89,13 @@ public class RestObraModificacion {
 	@Autowired
 	PeriodoService servicePeriodo; 
 	
-	//@Transactional
+	@Autowired
+	CategoriaService serviceCategoria;
+	
+	public int cantidad=0;
+
+	
+	@Transactional
 	@PostMapping(value="/iniciarModificacion")
 	@ApiOperation(value = "Inicia el proceso de copia de datos para modificación")
 	public ResponseEntity<?> IniciarModificacion(@RequestBody ObraModificacionRequest request){
@@ -109,7 +117,12 @@ public class RestObraModificacion {
 			obraModificacion.setFechainicio(obra.getDatefeciniobra());
 			obraModificacion.setPlazo(obra.getIntplazoobra());
 			obraModificacion.setPeriodomedida(obra.getIntidperiomedida());
-			
+			obraModificacion.setValnumtotobra(obra.getNumvaltotobra());
+			obraModificacion.setNewcosto_directo(obra.getCosto_directo());
+			obraModificacion.setNewfechafin(obra.getDatefecfinobra());
+			obraModificacion.setNewnumvaltotobra(obra.getNumvaltotobra());
+			obraModificacion.setNewplazo(obra.getIntplazoobra());
+
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			
 			try {
@@ -128,7 +141,7 @@ public class RestObraModificacion {
 				ActividadObraModificacion actividadObraModificacion = new ActividadObraModificacion();
 				actividadObraModificacion.setObraModificacion(obraModificacion);
 				actividadObraModificacion.setOidactiviobra(actividadObra.getOidactiviobra());
-				actividadObraModificacion.setIdcategoria(actividadObra.getIdcategoria());
+				actividadObraModificacion.setCategoria(serviceCategoria.buscarPorId(actividadObra.getIdcategoria()));
 				actividadObraModificacion.setStrdescactividad(actividadObra.getStrdescactividad());
 				actividadObraModificacion.setStrtipounidadmed(actividadObra.getStrtipounidadmed());
 				actividadObraModificacion.setValorunitario(actividadObra.getValorunitario());
@@ -190,7 +203,7 @@ public class RestObraModificacion {
 	@ApiOperation(value = "Actualiza los datos de la obra")
 	public ResponseEntity<?> actualizarObraModificacion(@RequestBody ObraUpdateRequest request){
 		
-		ObraModificacion obraMod = serviceObraModificacion.buscarPorId(request.getId());
+		ObraModificacion obraMod = serviceObraModificacion.buscarPorId(request.getIdModificacion());
 		if (obraMod!=null) {
 			
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -202,7 +215,8 @@ public class RestObraModificacion {
 				e.printStackTrace();
 			}
 			obraMod.setNewplazo(request.getPlazo());	
-			return new ResponseEntity<ObraModificacion>(serviceObraModificacion.actualizar(obraMod), HttpStatus.OK);			
+			obraMod = serviceObraModificacion.actualizar(obraMod);
+			return new ResponseEntity<ObraModificacion>(this.reajustarCalculosModificacion(obraMod.getObraid()), HttpStatus.OK);			
 		}else {
 			ResponseGeneric response = new ResponseGeneric(); 
 			response.setStatus(false);
@@ -212,27 +226,25 @@ public class RestObraModificacion {
 		
 	}
 	
-	@Transactional
-	@PutMapping(value="/reajustarCalculos/{idObra}")
-	@ApiOperation(value = "Realiza el proceso de cálculos basado en las modificaciones")
-	public ResponseEntity<?> reajustarCalculosModificacion(@PathVariable("idObra") Integer idObra){
+	//@Transactional
+	//@PutMapping(value="/reajustarCalculos/{idObra}")
+	//@ApiOperation(value = "Realiza el proceso de cálculos basado en las modificaciones")
+	public ObraModificacion reajustarCalculosModificacion(@PathVariable("idObra") Integer idObra){
 			
 			ObraModificacion obraMod = serviceObraModificacion.buscarPorIdEstado(
 					idObra,Constantes.MODIFICACION_INICIADA);
 			this.calcularCostos(obraMod);
 			obraMod.setCantidadActividades(serviceObraModificacion.cantidadActividades(obraMod.getId()));
+			
+			double numtotobra = serviceObraModificacion.totalPrecioActividades(obraMod.getId());
+			System.out.println(numtotobra);
 			obraMod.setNewnumvaltotobra(new BigDecimal(serviceObraModificacion.totalPrecioActividades(obraMod.getId())));
 			obraMod.setNewcosto_directo(new BigDecimal(serviceObraModificacion.totalCostoDirecto(obraMod.getId())));
 			serviceObraModificacion.actualizar(obraMod);
 			
 			//pendiente
 			this.planeacionPorPeriodo(obraMod.getId());
-		
-		
-			ResponseGeneric response = new ResponseGeneric(); 
-			response.setStatus(true);
-			response.setMessage(Constantes.CALCULO_REALIZADO);
-			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);		
+			return obraMod;		
 	}
 		
 	
@@ -247,7 +259,7 @@ public class RestObraModificacion {
 			ResponseGeneric response = new ResponseGeneric(); 
 			response.setStatus(false);
 			response.setMessage(Constantes.MODIFICACION_INICIADA_NOTFOUND);
-			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);	
+			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);	
 		}
 		System.out.println(obraModificacion.getRelacioncontratos());
         obraModificacion.getRelacioncontratos().removeIf(contrato->contrato
@@ -379,7 +391,7 @@ public class RestObraModificacion {
 			ActividadobraWS actividadobra = new ActividadobraWS();
 			actividadobra.setOidactiviobra(actividadObraModificacion.getOidactiviobra());
 			actividadobra.setStrdescactividad(actividadObraModificacion.getStrdescactividad());
-			actividadobra.setIdcategoria(actividadObraModificacion.getIdcategoria());
+			actividadobra.setIdcategoria(actividadObraModificacion.getCategoria().getId());
 			actividadobra.setStrtipounidadmed(actividadObraModificacion.getStrtipounidadmed());
 			//actividadobra.setFloatcantidadejecutao(actividadObraModificacion.getn);
 			actividadobra.setFloatcantplanifao(actividadObraModificacion.getNewfloatcantplanifao());
@@ -643,6 +655,96 @@ public class RestObraModificacion {
 		rspconfirmacion.setMessage(Constantes.PLANIFICACION_COMPLETADA);
 		return new ResponseEntity<ResponseGeneric>(rspconfirmacion, HttpStatus.OK);
 		
+	}
+	
+	public ResponseGeneric valiChangeDate(ObraChangeDate objeto) {		
+		ResponseGeneric response = new ResponseGeneric();
+		if (objeto.getId()==null || objeto.getFechaFinObra()==null|| objeto.getFechaFinObra()=="" || objeto.getFechaInicioObra()==null|| objeto.getFechaInicioObra()=="") {
+			response.setStatus(false);
+			response.setMessage(Constantes.FALTAN_ATRIBUTOS);
+			return response;
+		}
+		return null;			
+	}
+	
+	@PutMapping(value="/ajustarfechamodificacion")
+	public ResponseEntity<?> ajustarfecha(@RequestBody(required=true) ObraChangeDate request) {
+		ResponseGeneric response = this.valiChangeDate(request) ; 
+		if (response!=null){
+			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);
+		}
+		ObraModificacion obra = serviceObraModificacion.buscarPorId(request.getId());
+		if (obra==null) {
+			ResponseGeneric response1 = new ResponseGeneric(); 
+			response1.setStatus(false);
+			response1.setMessage(Constantes.NO_EXISTE);
+			return new ResponseEntity<ResponseGeneric>(response1, HttpStatus.OK);
+		}
+		
+		ResponseGeneric rspconfirmacion = new ResponseGeneric();
+		if(obra.getFechainicio()!=null &&obra.getFechafin()!=null )
+		{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String FechainicioObra=null;
+			String FechaFinalObra=null;
+			FechainicioObra = format.format(obra.getFechainicio());	
+			FechaFinalObra = format.format(obra.getFechainicio());
+			Boolean ResponseFechaInicioObra=FechainicioObra.equals(request.getFechaInicioObra());		
+			Boolean ResponseFechaFinObra=FechaFinalObra.equals(request.getFechaFinObra());
+			cantidad = 0;
+			if(ResponseFechaInicioObra==false){
+				List<ActividadObraModificacion> lstactividad=obra.getActividades();			
+				lstactividad.forEach((result)->
+				{
+					Date fechainicio = null;
+					try {
+						fechainicio = format.parse(request.getFechaInicioObra());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}		
+					if(obra.getFechainicio()!=fechainicio)
+					{				
+						result.setFechainicio(fechainicio);		
+						cantidad++;					
+					}		
+					serviceActividadObraModificacion.guardar(result);
+				});		
+			}
+			if(ResponseFechaFinObra==false){
+				List<ActividadObraModificacion> lstactividad=obra.getActividades();
+				lstactividad.forEach((result)->
+				{
+					Date fechafin = null;
+					try {
+						fechafin = format.parse(request.getFechaFinObra());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace(); 
+					}			
+					if(obra.getFechafin()!=fechafin)
+					{
+						result.setFechafin(fechafin);
+						cantidad++;	
+					}			
+					serviceActividadObraModificacion.guardar(result);
+				});				
+			}if(cantidad==0){
+				rspconfirmacion.setStatus(false);
+				rspconfirmacion.setMessage(Constantes.NO_EXISTE_ACTIVIDAD );	
+			}else{
+				rspconfirmacion.setStatus(true);
+				rspconfirmacion.setMessage(Constantes.ACTIVIDAD_ACTUALIZADA+cantidad+" registros" );
+			}
+			return new ResponseEntity<ResponseGeneric>(rspconfirmacion, HttpStatus.OK);			
+		}
+		else
+		{
+			rspconfirmacion.setStatus(false);
+			rspconfirmacion.setMessage(Constantes.FALTAN_ATRIBUTOS);
+			return new ResponseEntity<ResponseGeneric>(rspconfirmacion, HttpStatus.OK);	
+		}		
+					
 	}
 
 	

@@ -1,0 +1,1 @@
+alter table  modificacion.obra add valnumtotobra numeric(20,6);

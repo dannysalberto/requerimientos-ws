@@ -1,8 +1,6 @@
 package co.com.interkont.wsmiobra.interfaces;
 
 import java.util.List;
-
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import co.com.interkont.wsmiobra.dto.Obra;

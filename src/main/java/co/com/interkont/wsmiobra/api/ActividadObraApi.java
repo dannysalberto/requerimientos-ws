@@ -165,7 +165,7 @@ public class ActividadObraApi {
 		
 		actividad.setObra(obra);
 		actividad.setValorunitario(objRequest.getValorunitario());
-		actividad.setFloatcantidadejecutao(objRequest.getCantidadejecutada());
+		actividad.setFloatcantidadejecutao( (double) 0);
 		//actividad.setNumvalorplanifao(objRequest.getValorunitario());
 		//actividad.setValortotalactividadaiu(
 		//			actividad.getNumvalorplanifao().multiply(

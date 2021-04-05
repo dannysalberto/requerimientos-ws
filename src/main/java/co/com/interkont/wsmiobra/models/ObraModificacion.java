@@ -107,7 +107,11 @@ public class ObraModificacion implements Serializable{
     @Transient
 	private Integer cantidadActividades;
 	
-	public Integer getId() {
+    @Column(name="valnumtotobra", nullable=false, precision=20, scale=6)
+    private BigDecimal valnumtotobra;
+    
+
+    public Integer getId() {
 		return id;
 	}
 
@@ -222,6 +226,9 @@ public class ObraModificacion implements Serializable{
 
 	@JsonProperty(value="valorTotalObraInicial")
 	public BigDecimal getNumvaltotobra() {
+		if (numvaltotobra == null) {
+			return new BigDecimal(0);
+		}
 		return numvaltotobra;
 	}
 
@@ -231,6 +238,9 @@ public class ObraModificacion implements Serializable{
 
 	@JsonProperty(value="valorTotalObraActual")
 	public BigDecimal getNewnumvaltotobra() {
+		if (newnumvaltotobra == null) {
+			return new BigDecimal(0);
+		}
 		return newnumvaltotobra;
 	}
 
@@ -240,6 +250,9 @@ public class ObraModificacion implements Serializable{
 
 	@JsonIgnore
 	public BigDecimal getNewcosto_directo() {
+		if (newcosto_directo == null) {
+			return new BigDecimal(0);
+		}
 		return newcosto_directo;
 	}
 
@@ -259,14 +272,23 @@ public class ObraModificacion implements Serializable{
 	public void setCantidadActividades(Integer cantidadActividades) {
 		this.cantidadActividades = cantidadActividades;
 	}
-	
-	
-	
-	
-	
-	
 
+	/**
+	 * @return the valnumtotobra
+	 */
+	public BigDecimal getValnumtotobra() {
+		if (valnumtotobra == null) {
+			return new BigDecimal(0);
+		}
+		return valnumtotobra;
+	}
 
-	
+	/**
+	 * @param valnumtotobra the valnumtotobra to set
+	 */
+	public void setValnumtotobra(BigDecimal valnumtotobra) {
+		this.valnumtotobra = valnumtotobra;
+	}
+
 
 }

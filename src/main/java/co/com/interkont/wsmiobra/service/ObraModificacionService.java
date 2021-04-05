@@ -47,7 +47,11 @@ public class ObraModificacionService implements IObraModificacion{
 	@Override
 	public Double totalPrecioActividades(Integer id) {
 		// TODO Auto-generated method stub
-		return repo.totalActividades(id);
+		Double ret = repo.totalActividades(id);
+		if (ret == null) {
+			return (double) 0;
+		}
+		return ret;
 	}
 
 	@Override
@@ -63,7 +67,12 @@ public class ObraModificacionService implements IObraModificacion{
 	@Override
 	public Integer cantidadActividades(Integer idObra) {
 		// TODO Auto-generated method stub
-		return repo.cantidadActividades(idObra);
+		Integer ret = repo.cantidadActividades(idObra);
+		if (ret == null) {
+			return  0;
+		}
+		return ret;
+		
 	}
 
 	@Override

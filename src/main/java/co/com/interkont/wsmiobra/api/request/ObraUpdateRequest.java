@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 public class ObraUpdateRequest {
 	
-	private int id;
+	private int idModificacion;
 	
 	@JsonFormat(pattern="yyyy-MM-dd",locale="es_CO",shape=Shape.STRING)
 	private String fechafin;
@@ -19,12 +19,19 @@ public class ObraUpdateRequest {
 	private Integer plazo;
 	
  
-	public int getId() {
-		return id;
+	
+	/**
+	 * @return the idModificacion
+	 */
+	public int getIdModificacion() {
+		return idModificacion;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	/**
+	 * @param idModificacion the idModificacion to set
+	 */
+	public void setIdModificacion(int idModificacion) {
+		this.idModificacion = idModificacion;
 	}
 
 	public String getFechafin() {

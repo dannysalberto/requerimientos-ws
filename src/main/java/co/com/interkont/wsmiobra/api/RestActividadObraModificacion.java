@@ -22,13 +22,14 @@ import co.com.interkont.wsmiobra.models.ActividadObraModificacion;
 import co.com.interkont.wsmiobra.models.ObraModificacion;
 import co.com.interkont.wsmiobra.models.ResponseGeneric;
 import co.com.interkont.wsmiobra.service.ActividadObraModificacionService;
+import co.com.interkont.wsmiobra.service.CategoriaService;
 import co.com.interkont.wsmiobra.service.ObraModificacionService;
 import co.com.interkont.wsmiobra.service.ObrasService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @CrossOrigin (origins="*")
-@RequestMapping("/actividadobra")
+@RequestMapping("/modificacion")
 @ApiOperation(value = "Modificacion de Activdad Obra", consumes="applications/json")
 public class RestActividadObraModificacion {
 	
@@ -41,6 +42,8 @@ public class RestActividadObraModificacion {
 	@Autowired
 	ObraModificacionService serviceObraModificacion;
 	
+	@Autowired
+	CategoriaService serviceCategoria;
  
 	@RequestMapping(value="/agregaractividad", method=RequestMethod.POST)
 	@ApiOperation(value = "Guardar datos de modificación actividadobra")
@@ -52,7 +55,7 @@ public class RestActividadObraModificacion {
 		
 		actividad.setOidactiviobra(objRequest.getId());
 		actividad.setStrdescactividad(objRequest.getNombre());
-		actividad.setIdcategoria(objRequest.getIdcategoria());
+		actividad.setCategoria(serviceCategoria.buscarPorId(objRequest.getIdcategoria()));
 		actividad.setStrtipounidadmed(objRequest.getUnidadMedida());
 	    
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
@@ -159,7 +162,7 @@ public class RestActividadObraModificacion {
 		
 		actividad.setNewvalorunitario(objRequest.getValorunitario());
 		actividad.setNewfloatcantplanifao(objRequest.getCantidad());
-		actividad.setNewnumvalorplanifao(objRequest.getValortotal());
+		actividad.setNewnumvalorplanifao(new BigDecimal(0));
 		
 		return new ResponseEntity<ActividadObraModificacion>(serviceActividadObraMod.actualizar(actividad), HttpStatus.OK);			
 	}

@@ -10,7 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -35,8 +36,10 @@ public class ActividadObraModificacion {
 	@Column(name="strdescactividad",columnDefinition="VARCHAR(200) NOT NULL")
 	private String strdescactividad;
 	
-	@Column(name="idcategoria",columnDefinition="INTEGER NOT NULL")
-	private Integer idcategoria;
+	@ManyToOne
+	@JoinColumn(name="idcategoria",columnDefinition="INTEGER NOT NULL")
+	private Categoria categoria;
+	
 	
 	@Column(name="strtipounidadmed",columnDefinition="VARCHAR(10) NOT NULL")
 	private String strtipounidadmed;
@@ -53,17 +56,17 @@ public class ActividadObraModificacion {
 	@Column(name="intcodigoobra",columnDefinition="integer NOT NULL")
     private Integer intcodigoobra;
     
-	private BigDecimal valorunitario;
-    private BigDecimal numvalorplanifao;
+	private BigDecimal valorunitario = new BigDecimal(0);
+    private BigDecimal numvalorplanifao = new BigDecimal(0);
     private boolean boolaiu;
 
-    private Double floatcantidadejecutao;
+    private Double floatcantidadejecutao = (double) 0;
     
     @Column(name="valortotalactividadaiu",columnDefinition="numeric(20,6) null")
- 	private BigDecimal valortotalactividadaiu; //aqui va el (precio unitario + aiu + porcentaje float por otros) * cantidad 
+ 	private BigDecimal valortotalactividadaiu  = new BigDecimal(0); //aqui va el (precio unitario + aiu + porcentaje float por otros) * cantidad 
  	
     @Column(name="numvalorejecutao",columnDefinition="numeric(20,6) null")
-    private BigDecimal numvalorejecutao;
+    private BigDecimal numvalorejecutao  = new BigDecimal(0);
     
     @Column(name="tipomodificacion",columnDefinition="VARCHAR(1)")
     private String tipoModificacion = Constantes.ACTIVIDAD_CLONADA;
@@ -77,17 +80,23 @@ public class ActividadObraModificacion {
 	private Date newfechafin;
 
     @Column(name="newnumvalorplanifao")
-    private BigDecimal newnumvalorplanifao;
+    private BigDecimal newnumvalorplanifao = new BigDecimal(0);
     
     @Column(name="newfloatcantplanifao")
-    private BigDecimal newfloatcantplanifao;
+    private BigDecimal newfloatcantplanifao = new BigDecimal(0);
     
     @Column(name="newvalorunitario",columnDefinition="numeric(20,6) null")
-    private BigDecimal newvalorunitario;
+    private BigDecimal newvalorunitario = new BigDecimal(0);
     
     @Column(name="newvalortotalactividadaiu",columnDefinition="numeric(20,6) null")
- 	private BigDecimal newvalortotalactividadaiu; 
-    
+ 	private BigDecimal newvalortotalactividadaiu = new BigDecimal(0); 
+
+	@Transient   
+	private BigDecimal porcentajeavance;
+	
+	@Transient   
+	private BigDecimal newporcentajeavance;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -120,13 +129,7 @@ public class ActividadObraModificacion {
 		this.strdescactividad = strdescactividad;
 	}
 
-	public Integer getIdcategoria() {
-		return idcategoria;
-	}
-
-	public void setIdcategoria(Integer idcategoria) {
-		this.idcategoria = idcategoria;
-	}
+	
 
 	public String getStrtipounidadmed() {
 		return strtipounidadmed;
@@ -308,10 +311,75 @@ public class ActividadObraModificacion {
 		this.tipoModificacion = tipoModificacion;
 	}
 
+	/**
+	 * @return the categoria
+	 */
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	/**
+	 * @param categoria the categoria to set
+	 */
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+	
+	public BigDecimal getPorcentajeavance() {
+		
+		if (floatcantidadejecutao == null) {
+			floatcantidadejecutao = (double) 0;
+		}
+		if (floatcantplanifao == null) {
+			floatcantplanifao = new BigDecimal(0);
+		}
+		if (floatcantplanifao.doubleValue()>0) {
+			porcentajeavance = new BigDecimal(((floatcantidadejecutao*100)/floatcantplanifao.doubleValue()));
+			return porcentajeavance ;
+		}else {
+			return  new BigDecimal(0);
+			
+		}
+	}
+
+	public void setPorcentajeavance(BigDecimal porcentajeavance) {
+		this.porcentajeavance = porcentajeavance;
+	}
+	
+
+	/**
+	 * @return the newporcentajeavance
+	 */
+	public BigDecimal getNewporcentajeavance() {
+		if (floatcantidadejecutao == null) {
+			floatcantidadejecutao = (double) 0;
+		}
+		if (newfloatcantplanifao == null) {
+			newfloatcantplanifao = new BigDecimal(0);
+		}
+		if (newfloatcantplanifao.doubleValue()>0) {
+			newporcentajeavance = new BigDecimal(((floatcantidadejecutao*100)/newfloatcantplanifao.doubleValue()));
+			return newporcentajeavance ;
+		}else {
+			return  new BigDecimal(0);
+			
+		}
+	}
+
+	/**
+	 * @param newporcentajeavance the newporcentajeavance to set
+	 */
+	public void setNewporcentajeavance(BigDecimal newporcentajeavance) {
+		this.newporcentajeavance = newporcentajeavance;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "ActividadObraModificacion [id=" + id + ", obraModificacion=" + obraModificacion + ", oidactiviobra="
-				+ oidactiviobra + ", strdescactividad=" + strdescactividad + ", idcategoria=" + idcategoria
+				+ oidactiviobra + ", strdescactividad=" + strdescactividad + ", categoria=" + categoria
 				+ ", strtipounidadmed=" + strtipounidadmed + ", floatcantplanifao=" + floatcantplanifao
 				+ ", fechainicio=" + fechainicio + ", fechafin=" + fechafin + ", intcodigoobra=" + intcodigoobra
 				+ ", valorunitario=" + valorunitario + ", numvalorplanifao=" + numvalorplanifao + ", boolaiu=" + boolaiu
@@ -320,9 +388,12 @@ public class ActividadObraModificacion {
 				+ tipoModificacion + ", newfechainicio=" + newfechainicio + ", newfechafin=" + newfechafin
 				+ ", newnumvalorplanifao=" + newnumvalorplanifao + ", newfloatcantplanifao=" + newfloatcantplanifao
 				+ ", newvalorunitario=" + newvalorunitario + ", newvalortotalactividadaiu=" + newvalortotalactividadaiu
-				+ "]";
+				+ ", porcentajeavance=" + porcentajeavance + ", newporcentajeavance=" + newporcentajeavance + "]";
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	
 
 	
