@@ -32,7 +32,7 @@ public class CobraWsApplication {
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(CobraWsApplication.class, args);
-		
+		/*
 		Properties properties= new Properties();
 		properties.load(new FileInputStream(new File(Constantes.URLPROPERTIES)));
 		String ruta = (String) properties.get(Constantes.FIELD_FILE_CRONOGRAMA);
@@ -74,7 +74,7 @@ public class CobraWsApplication {
 		}
         
 		
-		//**//GALERIA DE VIDEOS
+		//GALERIA DE VIDEOS
 		File archivoGaleria = new File(rutaGaleria);
 		File archivoDestinoGaleria = new File(rutaDestinoGaleria);
 		BufferedWriter bwGaleria;
@@ -113,7 +113,7 @@ public class CobraWsApplication {
 
 	    ObjectMapper om = new ObjectMapper();
 	    om.setFilterProvider(filterProvider);
-		 
+		 */
 	}
 	
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
