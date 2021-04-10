@@ -10,6 +10,7 @@ public interface IObraWS {
 	Double totalPrecioActividades(Integer id);
 	Double totalCostoDirecto(Integer id);
 	Integer cantidadActividades(Integer idObra); //cabecera de totales cronograma Web
-	
+	boolean tieneContratoObra(Integer idObra);
+
 
 }

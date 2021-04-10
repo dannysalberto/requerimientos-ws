@@ -53,7 +53,7 @@ public class RestActividadObraModificacion {
 		ResponseGeneric response = new ResponseGeneric(); 
 		ActividadObraModificacion actividad = new ActividadObraModificacion();
 		
-		actividad.setOidactiviobra(objRequest.getId());
+		actividad.setOidactiviobra(0);
 		actividad.setStrdescactividad(objRequest.getNombre());
 		actividad.setCategoria(serviceCategoria.buscarPorId(objRequest.getIdcategoria()));
 		actividad.setStrtipounidadmed(objRequest.getUnidadMedida());
@@ -95,6 +95,8 @@ public class RestActividadObraModificacion {
 		actividad.setNewfloatcantplanifao(objRequest.getCantidad());
 		actividad.setNewvalorunitario(objRequest.getValorunitario());
 		actividad.setNewnumvalorplanifao(new BigDecimal(0));
+		
+		//ojo error
 		actividad.setNewvalortotalactividadaiu(objRequest.getValortotal());
 		
 		actividad.setBoolaiu(false);

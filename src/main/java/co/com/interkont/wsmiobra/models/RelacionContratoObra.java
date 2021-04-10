@@ -7,12 +7,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ForeignKey;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import co.com.interkont.wsmiobra.dto.Obra;
 
 @Entity
 @Table(name="relacioncontratoobra",schema="public")
@@ -64,10 +67,6 @@ public class RelacionContratoObra{
 	public void setContrato(Contrato contrato) {
 		this.contrato = contrato;
 	}
-
-
-	
-
 	
 		
 }

@@ -33,8 +33,12 @@ public class ActividadObraModificacionService implements IActividadObraModificac
 	public void eliminar(Integer id) {
 		// TODO Auto-generated method stub
 		ActividadObraModificacion act = repo.findById(id).get();
-		act.setTipomodificacion(Constantes.ACTIVIDAD_ELIMINADA);
-		repo.save(act);
+		if (act.getOidactiviobra()==0) {
+			repo.deleteById(id);
+		}else {
+			act.setTipomodificacion(Constantes.ACTIVIDAD_ELIMINADA);
+			repo.save(act);			
+		}
 	}
 
 	@Override

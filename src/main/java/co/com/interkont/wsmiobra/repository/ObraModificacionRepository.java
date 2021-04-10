@@ -9,13 +9,13 @@ import co.com.interkont.wsmiobra.models.ObraModificacion;
 @Repository
 public interface ObraModificacionRepository extends JpaRepository<ObraModificacion, Integer> {
 
-	@Query("SELECT SUM(m.newvalortotalactividadaiu) FROM ActividadObraModificacion m where m.obraModificacion.id = ?1")
+	@Query("SELECT SUM(m.newvalortotalactividadaiu) FROM V_ActividadObraModificacion m where m.obraModificacion.id = ?1")
 	Double totalActividades(Integer idObra);
 	
-	@Query("SELECT SUM(m.newfloatcantplanifao*m.newvalorunitario) FROM ActividadObraModificacion m where m.obraModificacion.id = ?1")
+	@Query("SELECT SUM(m.newfloatcantplanifao*m.newvalorunitario) FROM V_ActividadObraModificacion m where m.obraModificacion.id = ?1")
 	Double totalCostoDirecto(Integer idObra);
 
-	@Query("SELECT COUNT(m) FROM ActividadObraModificacion m "
+	@Query("SELECT COUNT(m) FROM V_ActividadObraModificacion m "
 			+ " inner join ObraModificacion o on m.obraModificacion.id = o.id where m.obraModificacion.id = ?1")
 	Integer cantidadActividades(Integer idObra);
 	

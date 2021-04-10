@@ -77,6 +77,17 @@ public class ObrasService implements IObraWS {
 		}
 		return total;
 	}
+
+	@Override
+	public boolean tieneContratoObra(Integer idObra) {
+		// TODO Auto-generated method stub
+		int count = obrasRepository.tieneContratoObra(idObra);
+		if (count==0) {
+			return false;			
+		}else {
+			return true;
+		}
+	}
 	
 	
 }

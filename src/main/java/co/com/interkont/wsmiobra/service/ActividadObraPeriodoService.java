@@ -22,9 +22,12 @@ public class ActividadObraPeriodoService implements IActividadObraPeriodo{
 	}
 
 	@Override
-	public void eliminarAll(Iterable<ActividadObraPeriodo> actividadObraPeriodo) {
+	public void eliminarAll(List<ActividadObraPeriodo> actividadObraPeriodo) {
 		// TODO Auto-generated method stub
-		repository.deleteInBatch(actividadObraPeriodo);		
+		actividadObraPeriodo.forEach((act)->{
+			repository.deleteById(act.getId());
+		});
+		//repository.deleteInBatch(actividadObraPeriodo);		
 	}
 
 	@Override

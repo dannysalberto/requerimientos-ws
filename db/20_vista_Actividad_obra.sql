@@ -1,0 +1,1 @@
+CREATE view modificacion.v_actividadobra as select * from modificacion.actividadobra where tipomodificacion!='D'

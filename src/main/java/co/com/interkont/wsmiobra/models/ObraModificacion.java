@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import co.com.interkont.wsmiobra.config.Constantes;
 
@@ -33,6 +34,7 @@ import co.com.interkont.wsmiobra.config.Constantes;
 @Entity
 @Table(name="obra",schema="modificacion",indexes = 
 	{@Index(name = "idx_obra", unique=false ,columnList = "intcodigoobra")})
+@JsonIgnoreProperties({ "actividadesObra" })
 public class ObraModificacion implements Serializable{
 	
 	/**
@@ -69,9 +71,13 @@ public class ObraModificacion implements Serializable{
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="obraModificacion",fetch=FetchType.EAGER)
-	private List<ActividadObraModificacion> actividades = new ArrayList<>();;
+	private List<V_ActividadObraModificacion> actividades = new ArrayList<>();;
 	
-
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy="obraModificacion",fetch=FetchType.LAZY)
+	private List<ActividadObraModificacion> actividadesObra = new ArrayList<>();;
+	
 	@NotNull
 	@Column(name="fechamodificacion",columnDefinition="DATE NOT NULL")
 	private Date fechaModificacion;
@@ -107,8 +113,8 @@ public class ObraModificacion implements Serializable{
     @Transient
 	private Integer cantidadActividades;
 	
-    @Column(name="valnumtotobra", nullable=false, precision=20, scale=6)
-    private BigDecimal valnumtotobra;
+    /*@Column(name="valnumtotobra", nullable=false, precision=20, scale=6)
+    private BigDecimal valnumtotobra;*/
     
 
     public Integer getId() {
@@ -164,14 +170,39 @@ public class ObraModificacion implements Serializable{
 		this.periodomedida = periodomedida;
 	}
 
-	public List<ActividadObraModificacion> getActividades() {
+	
+	
+	
+	
+	/**
+	 * @return the actividades
+	 */
+	public List<V_ActividadObraModificacion> getActividades() {
 		return actividades;
 	}
 
-	public void setActividades(List<ActividadObraModificacion> actividades) {
+	/**
+	 * @param actividades the actividades to set
+	 */
+	public void setActividades(List<V_ActividadObraModificacion> actividades) {
 		this.actividades = actividades;
 	}
+
+	/**
+	 * @return the actividadesObra
+	 */
 	
+	public List<ActividadObraModificacion> getActividadesObra() {
+		return actividadesObra;
+	}
+
+	/**
+	 * @param actividadesObra the actividadesObra to set
+	 */
+	public void setActividadesObra(List<ActividadObraModificacion> actividadesObra) {
+		this.actividadesObra = actividadesObra;
+	}
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "es_CO")
 	public Date getFechaModificacion() {
 		return fechaModificacion;
@@ -276,7 +307,7 @@ public class ObraModificacion implements Serializable{
 	/**
 	 * @return the valnumtotobra
 	 */
-	public BigDecimal getValnumtotobra() {
+	/*public BigDecimal getValnumtotobra() {
 		if (valnumtotobra == null) {
 			return new BigDecimal(0);
 		}
@@ -286,9 +317,9 @@ public class ObraModificacion implements Serializable{
 	/**
 	 * @param valnumtotobra the valnumtotobra to set
 	 */
-	public void setValnumtotobra(BigDecimal valnumtotobra) {
+	/*public void setValnumtotobra(BigDecimal valnumtotobra) {
 		this.valnumtotobra = valnumtotobra;
-	}
+	}*/
 
 
 }

@@ -13,7 +13,7 @@ public interface ActividadObraPeriodoModificacionRepository extends JpaRepositor
 
 	List<ActividadObraPeriodoModificacion> findByPeriodoModificacion_Id(Integer idPeriodo);
 	
-	@Query("select u.id from ActividadObraPeriodoModificacion u where u.periodoModificacion.obraModificacion.id = ?1")
+	@Query("select u from ActividadObraPeriodoModificacion u where u.periodoModificacion.obraModificacion.id = ?1")
 	List<ActividadObraPeriodoModificacion> findByListPeriodosModificacion(Integer idModificacion);
 	
 	void deleteByPeriodoModificacion_Id(Integer idPeriodo);
