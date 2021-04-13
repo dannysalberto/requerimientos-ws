@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -40,7 +41,7 @@ public class ActividadObraModificacion {
 	@JoinColumn(name="idcategoria",columnDefinition="INTEGER NOT NULL")
 	private Categoria categoria;
 	
-	
+	@NotNull
 	@Column(name="strtipounidadmed",columnDefinition="VARCHAR(10) NOT NULL")
 	private String strtipounidadmed;
 	

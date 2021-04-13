@@ -8,6 +8,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +26,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpStatusCodeException;
+
 import co.com.interkont.wsmiobra.api.request.ObraModificacionRequest;
 import co.com.interkont.wsmiobra.api.request.ObraUpdateRequest;
+import co.com.interkont.wsmiobra.api.response.ObraSoloFechasResponse;
 import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.dto.Obra;
 import co.com.interkont.wsmiobra.models.ActividadObraModificacion;
@@ -103,25 +109,32 @@ public class RestObraModificacion {
 	@Transactional
 	@PostMapping(value="/iniciarModificacion")
 	@ApiOperation(value = "Inicia el proceso de copia de datos para modificación")
-	public ResponseEntity<?> IniciarModificacion(@RequestBody ObraModificacionRequest request){
-		
-		
-		Obra obra = cambiarEstadoObra(request);
+	public ResponseEntity<?> IniciarModificacion(@RequestBody ObraModificacionRequest request) {
+
+
 		ObraModificacion obraMod = serviceObraModificacion.buscarPorIdEstado(request.getId()
 				,Constantes.MODIFICACION_INICIADA);
-		/*if (!serviceObra.tieneContratoObra(request.getId())) {
+		if (!serviceObra.tieneContratoObra(request.getId())) {
 			ResponseGeneric response = new ResponseGeneric(); 
 			response.setStatus(false);
 			response.setMessage(Constantes.NO_TIENE_CONTRATO_OBRA);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK); 
-		}*/
+		}
 
+		//cuando se inicia la modificacion buscmos la fecha masxima de periodo alimentado
+		//la cual sera la fecha min de finalizacion y se guarda en la tabla modificacion
+		//si no existe alimenyacipn la fecha sera la fecha inicio de la obra
+		
 		if (obraMod!=null) {
 			ResponseGeneric response = new ResponseGeneric(); 
 			response.setStatus(true);
 			response.setMessage(Constantes.MODIFICACION_EXISTENTE_OK);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.ACCEPTED); 
 		}else {
+			
+		}
+			Obra obra = cambiarEstadoObra(request.getId(),Constantes.ESTADO_OBRA_MODIFICACION);
+
 			ObraModificacion obraModificacion = new ObraModificacion(); 
 			obraModificacion.setObraid(request.getId());
 			obraModificacion.setFechafin(obra.getDatefecfinobra());
@@ -134,9 +147,25 @@ public class RestObraModificacion {
 			obraModificacion.setNewfechafin(obra.getDatefecfinobra());
 			obraModificacion.setNewnumvaltotobra(obra.getNumvaltotobra());
 			obraModificacion.setNewplazo(obra.getIntplazoobra());
-
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			
+			String fechaMaxAlim = null;
+			System.out.println(request.getId());
+			try {
+				fechaMaxAlim = serviceObra.fechaMaxAlimentacion(request.getId()).toString();
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+				if (fechaMaxAlim == null) {
+					fechaMaxAlim = obra.getDatefeciniobra().toString();
+				}
+			}
+			
+			try {
+				obraModificacion.setFechaMinimaFin(format.parse(fechaMaxAlim));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			try {
 				obraModificacion.setFechaModificacion(format.parse(request.getFechaModificacion()));
 			} catch (ParseException e) {
@@ -145,7 +174,6 @@ public class RestObraModificacion {
 			}
 			obraModificacion.setJustificacionModificacion(request.getJustificacionModificacion());
 			
-			System.out.println(obraModificacion);
 			serviceObraModificacion.guardar(obraModificacion);
 			List<ActividadobraWS> listaActividades = obra.getActividadesobras();
 			listaActividades.forEach(actividadObra->{
@@ -153,7 +181,13 @@ public class RestObraModificacion {
 				ActividadObraModificacion actividadObraModificacion = new ActividadObraModificacion();
 				actividadObraModificacion.setObraModificacion(obraModificacion);
 				actividadObraModificacion.setOidactiviobra(actividadObra.getOidactiviobra());
-				actividadObraModificacion.setCategoria(serviceCategoria.buscarPorId(actividadObra.getIdcategoria()));
+				try {
+					actividadObraModificacion.setCategoria(serviceCategoria.buscarPorId(actividadObra.getIdcategoria()));					
+				}catch (Exception e) {
+					System.out.println("El id de categoria para la actividad: "+actividadObra.getOidactiviobra()+ " Es incorrecto o nulo");
+					// TODO: handle exception
+				}
+				
 				actividadObraModificacion.setStrdescactividad(actividadObra.getStrdescactividad());
 				actividadObraModificacion.setStrtipounidadmed(actividadObra.getStrtipounidadmed());
 				actividadObraModificacion.setValorunitario(actividadObra.getValorunitario());
@@ -206,9 +240,9 @@ public class RestObraModificacion {
 			response.setStatus(true);
 			response.setMessage(Constantes.MODIFICACION_INICIADA_OK);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);		
-		}
-		
 	}
+		
+
 	
 	@Transactional
 	@PutMapping(value="/actualizarObraModificacion")
@@ -296,11 +330,23 @@ public class RestObraModificacion {
 		ObraModificacion obraModificacion = new ObraModificacion();
 		obraModificacion = serviceObraModificacion
 				.buscarPorIdEstado(idobra,Constantes.MODIFICACION_INICIADA);
+		ResponseGeneric response = new ResponseGeneric(); 
+
 		if (obraModificacion==null) {
-			ResponseGeneric response = new ResponseGeneric(); 
+			Obra obra = serviceObra.buscarPorId(idobra);
+			if (obra!=null) {
+				ObraSoloFechasResponse Obra = new ObraSoloFechasResponse();
+				Obra.setId(obra.getId());
+				Obra.setFechaFin(obra.getDatefecfinobra());
+				Obra.setFechaInicio(obra.getDatefeciniobra());
+				Object ret = Obra;			
+				response.setObj(ret);
+
+			}
 			response.setStatus(false);
 			response.setMessage(Constantes.MODIFICACION_INICIADA_NOTFOUND);
-			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);	
+			
+			return new ResponseEntity<>(response, HttpStatus.OK);	
 		}
 		System.out.println(obraModificacion.getRelacioncontratos());
         obraModificacion.getRelacioncontratos().removeIf(contrato->contrato
@@ -411,9 +457,12 @@ public class RestObraModificacion {
 	
 	@DeleteMapping(value="/cancelarmodificacion/{idModificacion}")
 	@ApiOperation(value="Borra los datos de una modificación")
+	//@Transactional
 	public ResponseEntity<ResponseGeneric> cancelarModificacion(@PathVariable("idModificacion") Integer idModificacion){
-		
+	
 		try {
+			ObraModificacion obraMod = serviceObraModificacion.buscarPorId(idModificacion);
+			this.cambiarEstadoObra(obraMod.getObraid(), Constantes.ESTADO_OBRA_EJECUCION);
 			serviceObraModificacion.Eliminar(idModificacion);			
 		}catch (Exception e) {
 			ResponseGeneric response = new ResponseGeneric();
@@ -468,18 +517,18 @@ public class RestObraModificacion {
 		return actividadobra;
 }
 	
-	private Obra cambiarEstadoObra(ObraModificacionRequest request) {
+	private Obra cambiarEstadoObra(Integer idObra,Integer estado) {
 		
 	    Logger logger = LoggerFactory.getLogger(RestObraModificacion.class);
 	    Obra obra = null;
 		try {
-			obra = serviceObra.buscarPorId(request.getId());
+			obra = serviceObra.buscarPorId(idObra);
+			obra.setIntestadoobra(estado);
+			return serviceObra.actualizar(obra);
 		}catch (Exception e) {
 			// TODO: handle exception
 			logger.error(e.getMessage());
 		}
-		obra.setIntestadoobra(Constantes.ESTADO_OBRA_MODIFICACION);
-		serviceObra.actualizar(obra);
 		return obra;
 	}
 	

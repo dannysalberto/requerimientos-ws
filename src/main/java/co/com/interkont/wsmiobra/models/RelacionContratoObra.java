@@ -32,7 +32,7 @@ public class RelacionContratoObra{
 	@ManyToOne
 	@JoinColumn(name="intcodigoobra",columnDefinition="integer NOT NULL",
 		referencedColumnName="intcodigoobra")
-	private ObraModificacion obra;
+	private Obra obra; //Se cambio, original tenia ObraModificacion
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="intidcontrato",columnDefinition="integer NOT NULL")
@@ -49,12 +49,12 @@ public class RelacionContratoObra{
 	}
 
 
-	public ObraModificacion getObra() {
+	public Obra getObra() {
 		return obra;
 	}
 
 
-	public void setObra(ObraModificacion obra) {
+	public void setObra(Obra obra) {
 		this.obra = obra;
 	}
 

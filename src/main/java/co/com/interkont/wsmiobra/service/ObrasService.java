@@ -1,6 +1,8 @@
 
 package co.com.interkont.wsmiobra.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +29,9 @@ public class ObrasService implements IObraWS {
 	}
 
 	@Override
-	public void actualizar(Obra obra) {
+	public Obra actualizar(Obra obra) {
 		// TODO Auto-generated method stub
-		obrasRepository.save(obra);
-		System.out.println("Actualizado");		
+		return obrasRepository.save(obra);
 	}
 	
 	@Override
@@ -82,10 +83,22 @@ public class ObrasService implements IObraWS {
 	public boolean tieneContratoObra(Integer idObra) {
 		// TODO Auto-generated method stub
 		int count = obrasRepository.tieneContratoObra(idObra);
+		System.out.println(count);
 		if (count==0) {
 			return false;			
 		}else {
 			return true;
+		}
+	}
+
+	@Override
+	public Date fechaMaxAlimentacion(Integer idObra) {
+		// TODO Auto-generated method stub
+		try {
+			return obrasRepository.fechaMaxAlimentacion(idObra);			
+		}catch (Exception e) {
+			return null;
+			// TODO: handle exception
 		}
 	}
 	

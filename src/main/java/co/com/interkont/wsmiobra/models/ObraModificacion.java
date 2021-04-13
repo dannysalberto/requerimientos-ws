@@ -113,6 +113,9 @@ public class ObraModificacion implements Serializable{
     @Transient
 	private Integer cantidadActividades;
 	
+	@Column(name="fechaminimafin",columnDefinition="DATE")
+    private Date fechaMinimaFin;
+    
     /*@Column(name="valnumtotobra", nullable=false, precision=20, scale=6)
     private BigDecimal valnumtotobra;*/
     
@@ -305,8 +308,21 @@ public class ObraModificacion implements Serializable{
 	}
 
 	/**
-	 * @return the valnumtotobra
+	 * @return the fechaMinimaFin
 	 */
+	@JsonFormat(pattern="yyyy-MM-dd",locale="es_CO",shape=Shape.STRING)
+	public Date getFechaMinimaFin() {
+		return fechaMinimaFin;
+	}
+
+	/**
+	 * @param fechaMinimaFin the fechaMinimaFin to set
+	 */
+	public void setFechaMinimaFin(Date fechaMinimaFin) {
+		this.fechaMinimaFin = fechaMinimaFin;
+	}
+
+	
 	/*public BigDecimal getValnumtotobra() {
 		if (valnumtotobra == null) {
 			return new BigDecimal(0);
@@ -320,6 +336,8 @@ public class ObraModificacion implements Serializable{
 	/*public void setValnumtotobra(BigDecimal valnumtotobra) {
 		this.valnumtotobra = valnumtotobra;
 	}*/
+	
+	
 
 
 }
