@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.dto.Obra;
 import co.com.interkont.wsmiobra.interfaces.IObraWS;
 import co.com.interkont.wsmiobra.repository.ObrasRepository;
@@ -82,7 +83,7 @@ public class ObrasService implements IObraWS {
 	@Override
 	public boolean tieneContratoObra(Integer idObra) {
 		// TODO Auto-generated method stub
-		int count = obrasRepository.tieneContratoObra(idObra);
+		int count = obrasRepository.tieneContratoObra(idObra,Constantes.CONTRATO_EJECUCION);
 		System.out.println(count);
 		if (count==0) {
 			return false;			

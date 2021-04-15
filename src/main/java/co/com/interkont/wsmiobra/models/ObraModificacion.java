@@ -91,7 +91,7 @@ public class ObraModificacion implements Serializable{
 	
 	//@Transient
 	@JsonManagedReference
-	@OneToMany(mappedBy="obra",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="obraModificacion",fetch=FetchType.LAZY)
 	private List<RelacionContratoObra> relacioncontratos = new ArrayList<>();
 	
 	/**/
@@ -115,10 +115,7 @@ public class ObraModificacion implements Serializable{
 	
 	@Column(name="fechaminimafin",columnDefinition="DATE")
     private Date fechaMinimaFin;
-    
-    /*@Column(name="valnumtotobra", nullable=false, precision=20, scale=6)
-    private BigDecimal valnumtotobra;*/
-    
+   
 
     public Integer getId() {
 		return id;

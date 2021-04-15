@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Query;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -112,8 +113,10 @@ public class RestObraModificacion {
 	public ResponseEntity<?> IniciarModificacion(@RequestBody ObraModificacionRequest request) {
 
 
-		ObraModificacion obraMod = serviceObraModificacion.buscarPorIdEstado(request.getId()
-				,Constantes.MODIFICACION_INICIADA);
+		ObraModificacion obraMod = serviceObraModificacion.buscarPorIdEstado(request.getId(),Constantes.MODIFICACION_INICIADA);
+		Obra obraContrato = serviceObra.buscarPorId(request.getId());
+		//System.out.println(obraContrato.getRelacioncontratos());
+			
 		if (!serviceObra.tieneContratoObra(request.getId())) {
 			ResponseGeneric response = new ResponseGeneric(); 
 			response.setStatus(false);
@@ -867,8 +870,6 @@ public class RestObraModificacion {
 		}		
 					
 	}
-
-	
 
 }
 

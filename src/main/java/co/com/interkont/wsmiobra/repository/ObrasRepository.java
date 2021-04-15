@@ -22,8 +22,8 @@ public interface ObrasRepository extends JpaRepository<Obra, Integer>{
 	Integer cantidadActividades(Integer idObra);
 	
 	@Query("SELECT COUNT(c) FROM RelacionContratoObra rc inner join Contrato c on rc.contrato.id = c.id "
-			+ " where rc.obra.id = ?1 and c.tipoContrato=1")
-	Integer tieneContratoObra(Integer idObra);
+			+ " where rc.obraid = ?1 and c.tipoContrato=?2")
+	Integer tieneContratoObra(Integer idObra,Integer status);
 	
 	@Query("SELECT MAX(c.datefecha) FROM Alimentacion c where c.intcodigoobra = ?1")
 	Date fechaMaxAlimentacion(Integer idObra);
