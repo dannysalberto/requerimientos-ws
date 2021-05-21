@@ -16,7 +16,8 @@ public class Constantes {
 	
 	public static final String OBRA_INCORRECTA = "Obra Inválida";
 	public static final String ELEMENTO_INCORRECTO = "Elemento Inválido";
-	
+	public static final String ESTADO_OBRA_INCORRECTO = "El estado de la obra es incorrecto";
+
 	public static final String ACTIVIDAD_INCORRECTO = "Actividad Inválida";
 	
 
@@ -36,6 +37,8 @@ public class Constantes {
 	public static final String NO_TIENE_CONTRATO_OBRA = "No existe contrato de obra";
 	public static final int ESTADO_OBRA_MODIFICACION = 3;
 	public static final int ESTADO_OBRA_EJECUCION = 1;
+	public static final int ESTADO_OBRA_POR_INICIAR = 0;
+
 	
 	public static final String URLPROPERTIES = "./src/main/resources/application.properties";
 	public static final String TEMPORAL_EXTENSION = ".new";

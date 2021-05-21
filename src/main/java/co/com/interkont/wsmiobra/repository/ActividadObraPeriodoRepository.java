@@ -13,6 +13,6 @@ import co.com.interkont.wsmiobra.models.ActividadObraPeriodo;
 public interface ActividadObraPeriodoRepository extends JpaRepository<ActividadObraPeriodo, Long> {
 
 	List<ActividadObraPeriodo> findByPeriodo_Id(Integer id);
-
+	ActividadObraPeriodo findByPeriodo_IdAndActividadObra_oidactiviobra(Integer idPeriodo,Integer idActividad);
 
 }

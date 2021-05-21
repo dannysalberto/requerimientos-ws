@@ -58,7 +58,6 @@ public class PeriodoModificacionService implements IPeriodoModificacion {
 		// TODO Auto-generated method stub
 		try {
 			repository.deleteAll(periodo);
-			//repository.deleteInBatch(periodo);
 			return true;
 		}catch (Exception e) {
 			// TODO: handle exception

@@ -1,5 +1,6 @@
 package co.com.interkont.wsmiobra.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -28,20 +29,38 @@ public class PeriodoService implements IPeriodo {
 	@Override
 	public List<Periodo> ListarPorObra(Integer idObra) {
 		// TODO Auto-generated method stub
-		return repository.findByObra_Id(idObra);
+		return repository.findByObra_IdOrderByFechainicioAsc(idObra);
 	}
 
 	@Override
 	public void guardar(Periodo periodo) {
-		System.out.println(periodo);
-		// TODO Auto-generated method stub
 		repository.save(periodo);
 	}
 
 	@Override
-	public void eliminar(Integer id) {
+	public boolean eliminar(Periodo per) {
 		// TODO Auto-generated method stub
-		repository.deleteById(id);
+		try {
+			per.setValtotplanif(new BigDecimal(0));
+			repository.save(per);
+			return true;
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			// TODO: handle exception
+			return false;
+		}
+	}
+	
+	@Override
+	public void eliminar(int per) {
+		// TODO Auto-generated method stub
+		try {
+			repository.deleteById(per);
+		}catch (Exception e) {
+			Periodo periodo = buscarPorId(per);
+			periodo.setValtotplanif(new BigDecimal(0));
+			repository.save(periodo);
+		}
 	}
 
 	@Override
@@ -63,9 +82,8 @@ public class PeriodoService implements IPeriodo {
 	}
 
 	@Override
-	public void eliminarAll(Iterable<Periodo> periodo) {
-		repository.deleteInBatch(periodo);
-		repository.flush();
+	public void eliminarAll(List<Periodo> lstperiodos) {
+		repository.deleteInBatch(lstperiodos);
 	}
 
 	@Override
@@ -92,6 +110,17 @@ public class PeriodoService implements IPeriodo {
 	public List<Periodo> ListarPeriodosPorObraFechaInicio(Integer idObra, Date fechaIni) {
 		// TODO Auto-generated method stub
 		return repository.findByObra_IdAndFechainicioGreaterThanEqualOrderByFechainicioAsc(idObra, fechaIni);
+	}
+
+	@Override
+	public Periodo buscarPorObraFecha(Integer idObra, Date fechaIni) {
+		// TODO Auto-generated method stub
+		try {
+			return repository.findByObra_IdAndFechainicio(idObra, fechaIni);			
+		}catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
 	}
 
 

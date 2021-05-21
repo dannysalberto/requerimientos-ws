@@ -16,6 +16,17 @@ public class ResponseGeneric implements Serializable {
 	private String message;
 	
 	private Object obj;
+	
+	
+	public ResponseGeneric() {
+		
+	}
+	
+	public ResponseGeneric(boolean status, String message) {
+		super();
+		this.status = status;
+		this.message = message;
+	}
 
 	public boolean isStatus() {
 		return status;

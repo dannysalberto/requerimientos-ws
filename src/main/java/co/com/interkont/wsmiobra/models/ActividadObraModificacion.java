@@ -331,11 +331,11 @@ public class ActividadObraModificacion {
 		if (floatcantidadejecutao == null) {
 			floatcantidadejecutao = (double) 0;
 		}
-		if (floatcantplanifao == null) {
-			floatcantplanifao = new BigDecimal(0);
+		if (newfloatcantplanifao == null) {
+			newfloatcantplanifao = new BigDecimal(0);
 		}
-		if (floatcantplanifao.doubleValue()>0) {
-			porcentajeavance = new BigDecimal(((floatcantidadejecutao*100)/floatcantplanifao.doubleValue()));
+		if (newfloatcantplanifao.doubleValue()>0) {
+			porcentajeavance = new BigDecimal(((floatcantidadejecutao*100)/newfloatcantplanifao.doubleValue()));
 			return porcentajeavance ;
 		}else {
 			return  new BigDecimal(0);

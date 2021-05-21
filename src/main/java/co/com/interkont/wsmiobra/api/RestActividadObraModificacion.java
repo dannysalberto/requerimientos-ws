@@ -118,7 +118,6 @@ public class RestActividadObraModificacion {
 			response.setMessage("Imposible actualizar sin id");
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);
 		}
-		System.out.println(objRequest.getId());
 		ActividadObraModificacion actividad = new ActividadObraModificacion();
 		actividad = serviceActividadObraMod.buscarPorId(objRequest.getId());
 		if (actividad==null) {
@@ -127,11 +126,7 @@ public class RestActividadObraModificacion {
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);
 		}
 		
-		actividad.setOidactiviobra(objRequest.getId());
-		actividad.setNewfloatcantplanifao(objRequest.getCantidad());
-
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-
 		try {
 			actividad.setNewfechainicio(formato.parse(objRequest.getFechainicio()));
 		} catch (ParseException e) {
@@ -165,8 +160,12 @@ public class RestActividadObraModificacion {
 		actividad.setNewvalorunitario(objRequest.getValorunitario());
 		actividad.setNewfloatcantplanifao(objRequest.getCantidad());
 		actividad.setNewnumvalorplanifao(new BigDecimal(0));
+		actividad.setTipoModificacion(Constantes.ACTIVIDAD_MODIFICADA);
+		serviceActividadObraMod.actualizar(actividad);
 		
-		return new ResponseEntity<ActividadObraModificacion>(serviceActividadObraMod.actualizar(actividad), HttpStatus.OK);			
+		response.setStatus(true);
+		response.setMessage("Actualizado con éxito");
+		return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);		
 	}
 	
 	@RequestMapping(value="/eliminaractividad/{id}", method=RequestMethod.DELETE)

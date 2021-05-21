@@ -42,7 +42,12 @@ public class ActividadObraWSService implements IActividadObraWS {
 	@Override
 	public void eliminar(Integer id) {
 		// TODO Auto-generated method stub
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);			
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Override

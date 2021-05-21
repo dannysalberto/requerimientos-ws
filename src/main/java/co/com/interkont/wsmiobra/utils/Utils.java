@@ -75,5 +75,17 @@ public class Utils {
 		Path path = Paths.get(pathFile);
 		Files.write(path, fotoPrincipal);
 	}
+	
+	@SuppressWarnings("unused")
+	public static BigDecimal truncateDecimal(double x,int numberofDecimals)
+	{
+	       if ( x > 0) {
+	           return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, 
+	        		   BigDecimal.ROUND_HALF_DOWN);
+	       } else {
+	           return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, BigDecimal.ROUND_CEILING);
+	       }
+	}
+	
 
 }

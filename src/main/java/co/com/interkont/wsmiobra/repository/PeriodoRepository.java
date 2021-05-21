@@ -13,9 +13,11 @@ import co.com.interkont.wsmiobra.models.Periodo;
 @Repository
 public interface PeriodoRepository extends JpaRepository<Periodo, Integer> {
 
-	List<Periodo> findByObra_Id(Integer id);
+	List<Periodo> findByObra_IdOrderByFechainicioAsc(Integer id);
 	void deleteByObra(Obra obra);
 	List<Periodo> findByObra_IdAndFechafinGreaterThanEqualAndFechainicioLessThanEqualOrderByFechainicioAsc(Integer idObra, Date FechaIni,Date FechaFin);
 	List<Periodo> findByObra_IdAndFechainicioGreaterThanEqualOrderByFechainicioAsc(Integer idObra, Date FechaIni);
+	Periodo findByObra_IdAndFechainicio(Integer idObra, Date FechaIni);
+
 
 }

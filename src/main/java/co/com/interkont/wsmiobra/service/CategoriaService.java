@@ -25,7 +25,12 @@ public class CategoriaService implements ICategoria{
 	@Override
 	public Categoria buscarPorId(Integer id) {
 		// TODO Auto-generated method stub
-		return repo.findById(id).get();
+		try {
+			return repo.findById(id).get();
+		}catch (Exception e) {
+			// TODO: handle exception
+			throw e;
+		}
 	}
 	
 }

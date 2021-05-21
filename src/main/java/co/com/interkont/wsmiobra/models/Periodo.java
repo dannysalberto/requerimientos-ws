@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -48,7 +49,7 @@ public class Periodo {
 	private Obra obra;
 
 	@JsonIgnore
-	//@Transient
+	@Transient
 	@OneToMany(mappedBy="periodo",fetch=FetchType.EAGER)
 	private List<ActividadObraPeriodo> actividadObra;
 
@@ -122,11 +123,11 @@ public class Periodo {
 		this.actividadObra.add(obj);
 	}
 	
-	@Override
+	/*@Override
 	public String toString() {
 		return "Periodo [id=" + id + ", fechainicio=" + fechainicio + ", fechafin=" + fechafin + ", valtotplanif="
 				+ valtotplanif + ", obra=" + obra + ", actividadObra=" + actividadObra + "]";
-	}
+	}*/
 
 
 

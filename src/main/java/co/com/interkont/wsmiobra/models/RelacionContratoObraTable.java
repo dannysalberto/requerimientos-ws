@@ -1,5 +1,7 @@
 package co.com.interkont.wsmiobra.models;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,16 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
-@Table(name="v_relacioncontratoobra",schema="modificacion")
-@JsonIgnoreProperties(value = { "obra" })
-public class RelacionContratoObra{
+@Table(name="relacioncontratoobra",schema="public")
+public class RelacionContratoObraTable{
 
 	@Id
 	@NotNull
+	@Column(name="intidserial")
 	private Integer id;
 
 	@Column(name="intcodigoobra")
@@ -26,6 +27,8 @@ public class RelacionContratoObra{
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="intidcontrato",columnDefinition="integer NOT NULL")
 	private Contrato contrato;
+
+	private BigDecimal numvalorrelacion;
 
 	/**
 	 * @return the id
@@ -69,6 +72,20 @@ public class RelacionContratoObra{
 		this.contrato = contrato;
 	}
 
+	/**
+	 * @return the numvalorrelacion
+	 */
+	public BigDecimal getNumvalorrelacion() {
+		return numvalorrelacion;
+	}
+
+	/**
+	 * @param numvalorrelacion the numvalorrelacion to set
+	 */
+	public void setNumvalorrelacion(BigDecimal numvalorrelacion) {
+		this.numvalorrelacion = numvalorrelacion;
+	}
+	
 	
 		
 }

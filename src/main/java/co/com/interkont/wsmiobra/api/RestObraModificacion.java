@@ -4,14 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.Query;
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +24,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpStatusCodeException;
-
 import co.com.interkont.wsmiobra.api.request.ObraModificacionRequest;
 import co.com.interkont.wsmiobra.api.request.ObraUpdateRequest;
 import co.com.interkont.wsmiobra.api.response.ObraSoloFechasResponse;
+import co.com.interkont.wsmiobra.components.OperacionPeriodoServices;
 import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.dto.Obra;
 import co.com.interkont.wsmiobra.models.ActividadObraModificacion;
@@ -43,6 +39,8 @@ import co.com.interkont.wsmiobra.models.ObraModificacion;
 import co.com.interkont.wsmiobra.models.Periodo;
 import co.com.interkont.wsmiobra.models.PeriodoMedida;
 import co.com.interkont.wsmiobra.models.PeriodoModificacion;
+import co.com.interkont.wsmiobra.models.RelacionContratoObra;
+import co.com.interkont.wsmiobra.models.RelacionContratoObraTable;
 import co.com.interkont.wsmiobra.models.ResponseGeneric;
 import co.com.interkont.wsmiobra.models.V_ActividadObraModificacion;
 import co.com.interkont.wsmiobra.service.ActividadObraModificacionService;
@@ -50,11 +48,14 @@ import co.com.interkont.wsmiobra.service.ActividadObraPeriodoModificacionService
 import co.com.interkont.wsmiobra.service.ActividadObraPeriodoService;
 import co.com.interkont.wsmiobra.service.ActividadObraWSService;
 import co.com.interkont.wsmiobra.service.CategoriaService;
+import co.com.interkont.wsmiobra.service.ContratoService;
 import co.com.interkont.wsmiobra.service.ObraModificacionService;
 import co.com.interkont.wsmiobra.service.ObrasService;
 import co.com.interkont.wsmiobra.service.PeriodoMedidaService;
 import co.com.interkont.wsmiobra.service.PeriodoModificacionService;
 import co.com.interkont.wsmiobra.service.PeriodoService;
+import co.com.interkont.wsmiobra.service.RelacionContraObraService;
+import co.com.interkont.wsmiobra.service.RelacionContraObraTableService;
 import co.com.interkont.wsmiobra.service.V_ActividadObraModificacionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -104,6 +105,19 @@ public class RestObraModificacion {
 	@Autowired
 	V_ActividadObraModificacionService serviceVActividadObraModificacion;
 	
+	@Autowired
+	RelacionContraObraService serviceRelacionContratoObra;
+	
+	@Autowired
+	OperacionPeriodoServices serviceOperacionPeriodos;
+	
+	@Autowired
+	RelacionContraObraTableService serviceRelacionContraObraTable;
+	
+	@Autowired
+	ContratoService serviceContrato;
+	
+	
 	public int cantidad=0;
 
 	
@@ -111,11 +125,10 @@ public class RestObraModificacion {
 	@PostMapping(value="/iniciarModificacion")
 	@ApiOperation(value = "Inicia el proceso de copia de datos para modificación")
 	public ResponseEntity<?> IniciarModificacion(@RequestBody ObraModificacionRequest request) {
-
-
+		
 		ObraModificacion obraMod = serviceObraModificacion.buscarPorIdEstado(request.getId(),Constantes.MODIFICACION_INICIADA);
-		Obra obraContrato = serviceObra.buscarPorId(request.getId());
-		//System.out.println(obraContrato.getRelacioncontratos());
+
+		System.out.println(serviceObra.tieneContratoObra(request.getId()));
 			
 		if (!serviceObra.tieneContratoObra(request.getId())) {
 			ResponseGeneric response = new ResponseGeneric(); 
@@ -133,8 +146,6 @@ public class RestObraModificacion {
 			response.setStatus(true);
 			response.setMessage(Constantes.MODIFICACION_EXISTENTE_OK);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.ACCEPTED); 
-		}else {
-			
 		}
 			Obra obra = cambiarEstadoObra(request.getId(),Constantes.ESTADO_OBRA_MODIFICACION);
 
@@ -179,72 +190,44 @@ public class RestObraModificacion {
 			
 			serviceObraModificacion.guardar(obraModificacion);
 			List<ActividadobraWS> listaActividades = obra.getActividadesobras();
-			listaActividades.forEach(actividadObra->{
-
-				ActividadObraModificacion actividadObraModificacion = new ActividadObraModificacion();
-				actividadObraModificacion.setObraModificacion(obraModificacion);
-				actividadObraModificacion.setOidactiviobra(actividadObra.getOidactiviobra());
-				try {
-					actividadObraModificacion.setCategoria(serviceCategoria.buscarPorId(actividadObra.getIdcategoria()));					
-				}catch (Exception e) {
-					System.out.println("El id de categoria para la actividad: "+actividadObra.getOidactiviobra()+ " Es incorrecto o nulo");
-					// TODO: handle exception
-				}
-				
-				actividadObraModificacion.setStrdescactividad(actividadObra.getStrdescactividad());
-				actividadObraModificacion.setStrtipounidadmed(actividadObra.getStrtipounidadmed());
-				actividadObraModificacion.setValorunitario(actividadObra.getValorunitario());
-				actividadObraModificacion.setNumvalorplanifao(actividadObra.getNumvalorplanifao());
-				actividadObraModificacion.setFloatcantplanifao(actividadObra.getFloatcantplanifao());
-				actividadObraModificacion.setValortotalactividadaiu(actividadObra.getValortotalactividadaiu());
-				actividadObraModificacion.setFechainicio(actividadObra.getFechainicio());
-				actividadObraModificacion.setFechafin(actividadObra.getFechafin());
-				actividadObraModificacion.setIntcodigoobra(obra.getId());
-				actividadObraModificacion.setFloatcantidadejecutao(actividadObra.getFloatcantidadejecutao());
-				actividadObraModificacion.setNumvalorejecutao( new BigDecimal(0));
-				
-				actividadObraModificacion.setNewfechafin(actividadObra.getFechafin());
-				actividadObraModificacion.setNewfechainicio(actividadObra.getFechainicio());
-				actividadObraModificacion.setNewfloatcantplanifao(actividadObra.getFloatcantplanifao());
-				actividadObraModificacion.setNewnumvalorplanifao(actividadObra.getNumvalorplanifao());
-				actividadObraModificacion.setNewvalortotalactividadaiu(actividadObra.getValortotalactividadaiu());
-				actividadObraModificacion.setNewvalorunitario(actividadObra.getValorunitario());
-				
-				serviceActividadObraModificacion.guardar(actividadObraModificacion);
-			});
 			
-			Set<Periodo> listaPeriodos = obra.getPeriodos();
-			listaPeriodos.forEach(periodo->{
-				PeriodoModificacion periodoModificacion = new PeriodoModificacion();
-				periodoModificacion.setObraModificacion(obraModificacion);
-				periodoModificacion.setFechafin(periodo.getFechafin());
-				periodoModificacion.setPeriodo_id(periodo.getId());
-				periodoModificacion.setFechainicio(periodo.getFechainicio());
-				periodoModificacion.setValtotplanif(periodo.getValtotplanif());
-				periodoModificacion.setObraOrigenId(obra.getId());
-				servicePeriodoModificacion.guardar(periodoModificacion);
-				
-				
-				List<ActividadObraPeriodo> listaActividadPeriodos = periodo.getActividadObra();
-				listaActividadPeriodos.forEach(actividadObraPeriodo->{
-					ActividadObraPeriodoModificacion actividadObraPeriodoModificacion = new ActividadObraPeriodoModificacion();
-					actividadObraPeriodoModificacion.setActividadObraPeriodo_id(actividadObraPeriodo.getId());
-					actividadObraPeriodoModificacion.setOidactiviobra(actividadObraPeriodo.getActividadObra().getOidactiviobra());
-					actividadObraPeriodoModificacion.setFloatcantplanif(actividadObraPeriodo.getCantidadPlanif());
-					actividadObraPeriodoModificacion.setIntidperiodo(actividadObraPeriodo.getPeriodo().getId());
-					actividadObraPeriodoModificacion.setNumvalplanif(actividadObraPeriodo.getValPlanif());
-					actividadObraPeriodoModificacion.setPeriodoModificacion(periodoModificacion);
-					
-					serviceActividadObraPeriodoModificacion.guardar(actividadObraPeriodoModificacion);
-				});
-			});
 			
+			try {
+					listaActividades.forEach(actividadObra->{
+		
+						ActividadObraModificacion actividadObraModificacion = new ActividadObraModificacion();
+						actividadObraModificacion.setObraModificacion(obraModificacion);
+						actividadObraModificacion.setOidactiviobra(actividadObra.getOidactiviobra());
+						actividadObraModificacion.setCategoria(serviceCategoria.buscarPorId(actividadObra.getIdcategoria()));						
+						actividadObraModificacion.setStrdescactividad(actividadObra.getStrdescactividad());
+						actividadObraModificacion.setStrtipounidadmed(actividadObra.getStrtipounidadmed());
+						actividadObraModificacion.setValorunitario(actividadObra.getValorunitario());
+						actividadObraModificacion.setNumvalorplanifao(actividadObra.getNumvalorplanifao());
+						actividadObraModificacion.setFloatcantplanifao(actividadObra.getFloatcantplanifao());
+						actividadObraModificacion.setValortotalactividadaiu(actividadObra.getValortotalactividadaiu());
+						actividadObraModificacion.setFechainicio(actividadObra.getFechainicio());
+						actividadObraModificacion.setFechafin(actividadObra.getFechafin());
+						actividadObraModificacion.setIntcodigoobra(obra.getId());
+						actividadObraModificacion.setFloatcantidadejecutao(actividadObra.getFloatcantidadejecutao());
+						actividadObraModificacion.setNumvalorejecutao( new BigDecimal(0));
+						actividadObraModificacion.setNewfechafin(actividadObra.getFechafin());
+						actividadObraModificacion.setNewfechainicio(actividadObra.getFechainicio());
+						actividadObraModificacion.setNewfloatcantplanifao(actividadObra.getFloatcantplanifao());
+						actividadObraModificacion.setNewnumvalorplanifao(actividadObra.getNumvalorplanifao());
+						actividadObraModificacion.setNewvalortotalactividadaiu(actividadObra.getValortotalactividadaiu());
+						actividadObraModificacion.setNewvalorunitario(actividadObra.getValorunitario());
+						
+						serviceActividadObraModificacion.guardar(actividadObraModificacion);
+					});
+			}catch (Exception e) {
+				 throw new RuntimeException(e.getMessage());
+			}
+						
 			ResponseGeneric response = new ResponseGeneric(); 
 			response.setStatus(true);
 			response.setMessage(Constantes.MODIFICACION_INICIADA_OK);
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);		
 	}
-		
 
 	
 	@Transactional
@@ -265,7 +248,8 @@ public class RestObraModificacion {
 			}
 			obraMod.setNewplazo(request.getPlazo());	
 			obraMod = serviceObraModificacion.actualizar(obraMod);
-			return new ResponseEntity<ObraModificacion>(this.reajustarCalculosModificacion(obraMod.getObraid()), HttpStatus.OK);			
+			obraMod = this.reajustarCalculosModificacion(obraMod.getObraid());
+			return new ResponseEntity<ObraModificacion>(obraMod, HttpStatus.OK);			
 		}else {
 			ResponseGeneric response = new ResponseGeneric(); 
 			response.setStatus(false);
@@ -303,25 +287,19 @@ public class RestObraModificacion {
 		
 	}
 	
-	//@Transactional
-	//@PutMapping(value="/reajustarCalculos/{idObra}")
-	//@ApiOperation(value = "Realiza el proceso de cálculos basado en las modificaciones")
 	public ObraModificacion reajustarCalculosModificacion(@PathVariable("idObra") Integer idObra){
 			
 			ObraModificacion obraMod = serviceObraModificacion.buscarPorIdEstado(
 					idObra,Constantes.MODIFICACION_INICIADA);
-			System.out.println(idObra);
+			//System.out.println(idObra);
 			this.calcularCostos(obraMod);
 			obraMod.setCantidadActividades(serviceObraModificacion.cantidadActividades(obraMod.getId()));
 			
-			double numtotobra = serviceObraModificacion.totalPrecioActividades(obraMod.getId());
-			System.out.println(numtotobra);
+			serviceObraModificacion.totalPrecioActividades(obraMod.getId());
 			obraMod.setNewnumvaltotobra(new BigDecimal(serviceObraModificacion.totalPrecioActividades(obraMod.getId())));
 			obraMod.setNewcosto_directo(new BigDecimal(serviceObraModificacion.totalCostoDirecto(obraMod.getId())));
 			serviceObraModificacion.actualizar(obraMod);
 			
-			//pendiente
-			this.planeacionPorPeriodo(obraMod.getId());
 			return obraMod;		
 	}
 		
@@ -334,6 +312,7 @@ public class RestObraModificacion {
 		obraModificacion = serviceObraModificacion
 				.buscarPorIdEstado(idobra,Constantes.MODIFICACION_INICIADA);
 		ResponseGeneric response = new ResponseGeneric(); 
+		List<RelacionContratoObra> lstRelacionContObra = new ArrayList<>();
 
 		if (obraModificacion==null) {
 			Obra obra = serviceObra.buscarPorId(idobra);
@@ -344,123 +323,108 @@ public class RestObraModificacion {
 				Obra.setFechaInicio(obra.getDatefeciniobra());
 				Object ret = Obra;			
 				response.setObj(ret);
-
 			}
 			response.setStatus(false);
 			response.setMessage(Constantes.MODIFICACION_INICIADA_NOTFOUND);
 			
 			return new ResponseEntity<>(response, HttpStatus.OK);	
 		}
-		System.out.println(obraModificacion.getRelacioncontratos());
-        obraModificacion.getRelacioncontratos().removeIf(contrato->contrato
-        		.getContrato().getTipoContrato()!=Constantes.CONTRATO_EJECUCION);
+		List<RelacionContratoObra> lstRelacionContratoObra = 
+				serviceRelacionContratoObra.desplegarPorObra(obraModificacion.getObraid());
+
+		lstRelacionContratoObra.forEach(relacionContratoObra->{
+			lstRelacionContObra.add(relacionContratoObra);
+		});
+		obraModificacion.setRelacioncontratos(lstRelacionContObra);
 		return new ResponseEntity<>(obraModificacion, HttpStatus.OK);		
 	}
 		
-	@Transactional
+	//@Transactional
 	@PostMapping(value="/finalizarModificacion/{idModificacion}")
 	@ApiOperation(value = "Finaliza la modificación, actualizando los datos de la obra")
 	public ResponseEntity<?> realizarModificacion(@PathVariable("idModificacion") Integer idModificacion){
 		
 		ObraModificacion obraModificacion = new ObraModificacion();
 		obraModificacion = serviceObraModificacion.buscarPorId(idModificacion);
-		if (obraModificacion==null) {
-			ResponseGeneric response = new ResponseGeneric(); 
-			response.setStatus(false);
-			response.setMessage(Constantes.MODIFICACION_INICIADA_NOTFOUND);
-			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);	
+	
+		if (obraModificacion==null || obraModificacion.getEstadoModificacion().equals(Constantes.MODIFICACION_FINALIZADA)){
+			ResponseGeneric responseNotFound = new ResponseGeneric(); 
+			responseNotFound.setStatus(false);
+			responseNotFound.setMessage(Constantes.MODIFICACION_INICIADA_NOTFOUND);
+			return new ResponseEntity<ResponseGeneric>(responseNotFound, HttpStatus.NOT_FOUND);	
 		}
 		Obra obra = serviceObra.buscarPorId(obraModificacion.getObraid());
-		obra.setIntplazoobra(obraModificacion.getPlazo());
-		obra.setDatefecfinobra(obraModificacion.getNewfechafin());
-		obra.setIntestadoobra(Constantes.ESTADO_OBRA_EJECUCION);
-		serviceObra.actualizar(obra);
-		
+
 		obraModificacion.getActividadesObra().forEach((actividadObraModificacion)->{
-			
+			System.out.println("Entro al ciclo");
 			ActividadobraWS actividadobra = new ActividadobraWS();
-			switch(actividadObraModificacion.getTipoModificacion()) {
-			  case Constantes.ACTIVIDAD_ELIMINADA:
+			
+			if (actividadObraModificacion.getTipoModificacion().equals( Constantes.ACTIVIDAD_ELIMINADA)) {
 					serviceActividadObraWS.eliminar(actividadObraModificacion.getOidactiviobra());
-				    break;
-			  case Constantes.ACTIVIDAD_MODIFICADA:
-				    actividadobra = serviceActividadObraWS.buscarPorId(actividadObraModificacion.getOidactiviobra());
+			}else if (actividadObraModificacion.getTipoModificacion().equals(Constantes.ACTIVIDAD_MODIFICADA)) {
+				 actividadobra = serviceActividadObraWS.buscarPorId(actividadObraModificacion.getOidactiviobra());
 				    if (actividadobra != null) {
-				    	actividadobra = assignData(actividadObraModificacion);
+						actividadobra.setFloatcantplanifao(actividadObraModificacion.getNewfloatcantplanifao());
+						actividadobra.setFechafin(actividadObraModificacion.getNewfechafin());
+						actividadobra.setFechainicio(actividadObraModificacion.getNewfechainicio());
+						actividadobra.setValorunitario(actividadObraModificacion.getNewvalorunitario());
+						
+						actividadobra.setNumvalorplanifao(actividadObraModificacion.getNewnumvalorplanifao());
+						actividadobra.setValortotalactividadaiu(actividadObraModificacion.getNewvalortotalactividadaiu());
+						actividadobra.setNumvalorplanifao(actividadObraModificacion.getNewnumvalorplanifao());
+						
+				    	System.out.println(actividadobra);
 					    serviceActividadObraWS.actualizar(actividadobra);	
 				    }
-				    break;
-			  case Constantes.ACTIVIDAD_AGREGADA:
-				  	actividadobra = assignData(actividadObraModificacion);
+			}else if (actividadObraModificacion.getTipoModificacion().equals(Constantes.ACTIVIDAD_AGREGADA)){
+					actividadobra = assignData(actividadObraModificacion);
 				  	actividadobra.setObra(obra);
-				  	actividadobra.setOidactiviobra(null);
+				  	actividadobra.setOidactiviobra(null); //ID PRIMARY
 				    serviceActividadObraWS.Guardar(actividadobra);
-			    	break;
-			  default:
-					System.out.println(actividadObraModificacion);
-					break;
-			}
-		});
-		
-		List<PeriodoModificacion> lstPeriodos = servicePeriodoModificacion
-				.ListarPorObra(obraModificacion.getId());
-		
-		i = 0;
-		lstPeriodos.forEach((periodo)->{
-			i = i +1;
-			System.out.println(periodo.getId());
-			
-			Periodo periodoOrigen = new  Periodo();
-			periodoOrigen = servicePeriodo.buscarPorId(periodoOrigen.GenerarId(obra, i));
-			int idPeriodo;
-			if (periodoOrigen != null) {
-				periodoOrigen.setFechainicio(periodo.getFechainicio());
-				periodoOrigen.setFechafin(periodo.getFechafin());
-				periodoOrigen.setValtotplanif(periodo.getValtotplanif());
-				servicePeriodo.actualizar(periodoOrigen);
-				idPeriodo = periodoOrigen.getId();
 			}else {
-				Periodo periodoNew = new  Periodo();
-				periodoNew.setId(periodoNew.GenerarId(obra,i));
-				periodoNew.setObra(obra);
-				periodoNew.setFechainicio(periodo.getFechainicio());
-				periodoNew.setFechafin(periodo.getFechafin());
-				periodoNew.setValtotplanif(periodo.getValtotplanif());
-				servicePeriodo.guardar(periodoNew);
-				idPeriodo = periodoNew.getId();
+			    	System.out.println("Default");
+					System.out.println(actividadObraModificacion);
 			}
-			serviceActividadObraPeriodo.eliminarAll(
-					serviceActividadObraPeriodo.listarPorPeriodo(idPeriodo));
-		
-			List<ActividadObraPeriodoModificacion> lstActividadPeriodo = periodo.getActividadObraPeriodoModificacion();			
-		
-			lstActividadPeriodo.forEach((actividadObraPeriodoModificacion)->{
-				
-				ActividadObraPeriodo actividadObraPeriodo = new ActividadObraPeriodo(); 
-				actividadObraPeriodo.setActividadObra(serviceActividadObraWS
-						.buscarPorId((int) actividadObraPeriodoModificacion.getOidactiviobra()));
-
-				actividadObraPeriodo.setPeriodo(servicePeriodo.buscarPorId(idPeriodo));
-				actividadObraPeriodo.setCantidadPlanif(actividadObraPeriodoModificacion.getFloatcantplanif());
-				actividadObraPeriodo.setValPlanif(actividadObraPeriodoModificacion.getNumvalplanif());
-				serviceActividadObraPeriodo.guardar(actividadObraPeriodo);	
-
-			});
-			
 		});
+		this.reajustarCalculosModificacion(obraModificacion.getObraid());
+		obra.setIntplazoobra(obraModificacion.getNewplazo());
+		obra.setDatefecfinobra(obraModificacion.getNewfechafin());
+		obra.setCosto_directo(obraModificacion.getNewcosto_directo());
+		obra.setNumvaltotobra(obraModificacion.getNewnumvaltotobra());
+		obra.setDateusuModifica(new Date());
+		serviceObra.actualizar(obra);
+		
+		serviceOperacionPeriodos.planeacionPorPeriodo(obra.getId());
 		obraModificacion.setEstadoModificacion(Constantes.MODIFICACION_FINALIZADA);
 		serviceObraModificacion.actualizar(obraModificacion);
 		
-		//falta periodos y relacionactividadobraperiodo
+		obra.setIntestadoobra(Constantes.ESTADO_OBRA_EJECUCION);
+		serviceObra.actualizar(obra);
+
+		//vamos a actualizar los datos de contratoObra
+		RelacionContratoObra relaConObra = obraModificacion.getRelacioncontratos().get(0);
+		RelacionContratoObraTable relaConObrTab = 
+				serviceRelacionContraObraTable.buscarPorObraContrato(obra.getId(), 
+					relaConObra.getContrato().getId());
+		relaConObrTab.setNumvalorrelacion(obra.getNumvaltotobra());
+		serviceRelacionContraObraTable.guardar(relaConObrTab);
+		
+		relaConObra.getContrato().setNumvlrsumaproyectos(
+					relaConObra.getContrato().getNumvlrsumaproyectos()
+					.add(obraModificacion.getNewnumvaltotobra()
+							.subtract(obraModificacion.getNumvaltotobra())));
+		serviceContrato.guardar(relaConObra.getContrato());
+		//fin actualización		
+		
 		ResponseGeneric response = new ResponseGeneric();
 		response.setStatus(true);
 		response.setMessage(Constantes.MODIFICACION_DE_OBRA_FINALIZADA);
 		return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);		
 	}
 	
+	@Transactional
 	@DeleteMapping(value="/cancelarmodificacion/{idModificacion}")
 	@ApiOperation(value="Borra los datos de una modificación")
-	//@Transactional
 	public ResponseEntity<ResponseGeneric> cancelarModificacion(@PathVariable("idModificacion") Integer idModificacion){
 	
 		try {
@@ -489,11 +453,12 @@ public class RestObraModificacion {
 			actividadobra.setStrdescactividad(actividadObraModificacion.getStrdescactividad());
 			actividadobra.setIdcategoria(actividadObraModificacion.getCategoria().getId());
 			actividadobra.setStrtipounidadmed(actividadObraModificacion.getStrtipounidadmed());
-			//actividadobra.setFloatcantidadejecutao(actividadObraModificacion.getn);
+			
 			actividadobra.setFloatcantplanifao(actividadObraModificacion.getNewfloatcantplanifao());
 			actividadobra.setFechafin(actividadObraModificacion.getNewfechafin());
 			actividadobra.setFechainicio(actividadObraModificacion.getNewfechainicio());
-			actividadobra.setValorunitario(actividadObraModificacion.getNewvalortotalactividadaiu());
+			actividadobra.setValorunitario(actividadObraModificacion.getNewvalorunitario());
+			
 			actividadobra.setNumvalorplanifao(actividadObraModificacion.getNewnumvalorplanifao());
 			actividadobra.setBoolaiu(actividadObraModificacion.isBoolaiu());
 			actividadobra.setValortotalactividadaiu(actividadObraModificacion.getNewvalortotalactividadaiu());
@@ -529,32 +494,27 @@ public class RestObraModificacion {
 			obra.setIntestadoobra(estado);
 			return serviceObra.actualizar(obra);
 		}catch (Exception e) {
-			// TODO: handle exception
 			logger.error(e.getMessage());
 		}
 		return obra;
 	}
 	
 	public void calcularCostos(ObraModificacion obra) {
-		System.out.println(obra);
 		Obra obraOrigen = serviceObra.buscarPorId(obra.getObraid());
 		
 		List<ActividadObraModificacion> lst = serviceActividadObraModificacion.desplegarTodos(obra);
 		if (obraOrigen.isBoolincluyeaiu()) {
 			lst.forEach((act)->{
 				if (act.getTipoModificacion()!=Constantes.ACTIVIDAD_ELIMINADA) {
-					System.out.println("incluye aiu");
 					act.setNewnumvalorplanifao(act.getNewvalorunitario());
 					act.setNewvalortotalactividadaiu(
 							act.getNewfloatcantplanifao().multiply(act.getNewnumvalorplanifao()));
-					//act.setNewporcentajeavance(act.getPorcentajeavance());
 					serviceActividadObraModificacion.actualizar(act);
 				}				
 			});
 		}else {
 			lst.forEach((act)->{
 				if (act.getTipoModificacion()!=Constantes.ACTIVIDAD_ELIMINADA) {
-					System.out.println("no incluye aiu");
 					this.por_totalAUI = ((
 							obraOrigen.getFloatporadmon() 
 							+ obraOrigen.getFloatporimprevi() 
@@ -562,7 +522,6 @@ public class RestObraModificacion {
 							+ obraOrigen.getFloatporotros() +
 							((obraOrigen.getFloatporutilidad()*obraOrigen.getFloatporivasobreutil())/100)));
 					BigDecimal porAIU = truncateDecimal(por_totalAUI,2);
-					//ActividadObraModificacion act = assignData(actNew);
 					act.setNewnumvalorplanifao(act.getNewvalorunitario().multiply(
 							new BigDecimal(1).add(porAIU.divide(new BigDecimal(100)))));
 					act.setNewnumvalorplanifao(truncateDecimal(act.getNewnumvalorplanifao().doubleValue(),2));
@@ -587,30 +546,30 @@ public class RestObraModificacion {
 	       }
 	}
 	
-	public boolean generarPeriodos(ObraModificacion obraMod, Obra obra) {
+	/*public boolean generarPeriodos(ObraModificacion obraMod, Obra obra) {
 		System.out.println("Generando Periodos");					
-		System.out.println(obra);
 		
 		if (obra.getIntidperiomedida()>0) {
 			PeriodoMedida periodoMedida = servicePeriodoMedida.buscarPorId(obra.getIntidperiomedida());
 			BigDecimal DiasObra = new BigDecimal(1 + ((obraMod.getNewfechafin().getTime()
 					-obra.getDatefeciniobra().getTime()) / 1000/3600/24));
-			System.out.println("Dias obra: "+DiasObra.doubleValue());
+			//System.out.println("Dias obra: "+DiasObra.doubleValue());
 
 			BigDecimal ciclos = DiasObra.divide(new BigDecimal(Math.max(periodoMedida.getDiasPeriodo(),1)),6,RoundingMode.HALF_EVEN) ;
-			System.out.println("Generando Periodos, ciclos: "+ciclos);					
+			//System.out.println("Generando Periodos, ciclos: "+ciclos);					
 
 			int iter  = ciclos.intValue();
 			
 			int diasRestantes = 0;
-			System.out.println("Generando Periodos, iteraciones: "+iter);		
+			//System.out.println("Generando Periodos, iteraciones: "+iter);		
 			//eliminar todos menos los que tengan alimentación
 			List<PeriodoModificacion> lstPeriodoModDelete = servicePeriodoModificacion.ListarPorObra(obraMod.getId());
 			lstPeriodoModDelete.forEach(periodoDele->{
 				serviceActividadObraPeriodoModificacion.eliminarPorIdPeriodo(periodoDele.getId());
+				System.out.println("borrando");
 			});
 			
-			if (servicePeriodoModificacion.eliminarAll(lstPeriodoModDelete )) {
+			if (servicePeriodoModificacion.eliminarAll(lstPeriodoModDelete)) {
 		
 				Date fechaInicio = obra.getDatefeciniobra();
 				Calendar calendar = Calendar.getInstance();
@@ -626,9 +585,9 @@ public class RestObraModificacion {
 					PeriodoModificacion periodo = new PeriodoModificacion();
 					if (i==1) {
 						periodo.setFechainicio(calendar.getTime());
-						System.out.println("Caso 1");					
+						//System.out.println("Caso 1");					
 					}else {
-						System.out.println("Caso 2");
+						//System.out.println("Caso 2");
 						calendar.add(calendar.DAY_OF_YEAR,1);
 						
 						periodo.setFechainicio(calendar.getTime());
@@ -640,16 +599,15 @@ public class RestObraModificacion {
 					periodo.setObraModificacion(obraMod);
 					diasRestantes = diasRestantes - (periodoMedida.getDiasPeriodo());
 					periodo.GenerarId(obra, i);
-					System.out.println(periodo);
+					//System.out.println(periodo);
 					periodo.setObraOrigenId(obra.getId());
 					//periodo.setPeriodo_id(periodo_id);
 
 					servicePeriodoModificacion.guardar(periodo);
 					itero = true;
 				}
-				
 				if (itero == false) {
-					System.out.println("Sin interaciones por periodo");	
+					//System.out.println("Sin interaciones por periodo");	
 					PeriodoModificacion periodo = new PeriodoModificacion();
 					periodo.setFechainicio(obra.getDatefeciniobra());
 					periodo.setFechafin(obraMod.getNewfechafin());
@@ -661,7 +619,7 @@ public class RestObraModificacion {
 					periodo.GenerarId(obra, 1);
 					servicePeriodoModificacion.guardar(periodo);
 				}else if (diasRestantes>0){
-					System.out.println("Con interaciones por periodo");
+					//System.out.println("Con interaciones por periodo");
 					PeriodoModificacion periodo = new PeriodoModificacion();
 					calendar.add(calendar.DAY_OF_YEAR,1);
 					periodo.setFechainicio(calendar.getTime());
@@ -681,23 +639,18 @@ public class RestObraModificacion {
 		return true;
 	}
 	
-	//@PutMapping("/planificacion/{idObra}")
-	//@ApiOperation(value = "Realizar la planificación de actividades por periodos V2 Interkont.")
 	public ResponseEntity<?> planeacionPorPeriodo(@PathVariable(value="idObra") Integer idObra) {	
 		ObraModificacion obra = serviceObraModificacion.buscarPorId(idObra);
 		Obra obraOrigen = serviceObra.buscarPorId(obra.getObraid());
 		
 		List<ActividadObraPeriodoModificacion> lstactPeriodo = serviceActividadObraPeriodoModificacion.listarPorModificacion(obra.getId());
-		System.out.println(lstactPeriodo);
 		serviceActividadObraPeriodoModificacion.eliminarAll(lstactPeriodo);
 		
 		if (this.generarPeriodos(obra, obraOrigen)){
 			List<ActividadObraModificacion> lstactividadObra = serviceActividadObraModificacion.desplegarTodos(obra); 
 			lstactividadObra.forEach((actObra)-> {
-				System.out.println(actObra);
 				List<PeriodoModificacion> lstPeriodos = servicePeriodoModificacion
 						.ListarPorObraFecha(obra.getId(), actObra.getNewfechainicio(), actObra.getNewfechafin());
-				
 				long DiasPeriodo = 0;
 				double porcionDiasPeriodo = 0;
 				
@@ -707,9 +660,10 @@ public class RestObraModificacion {
 				double diasTotalActividad = 
 						1+ ((actObra.getNewfechafin().getTime() - actObra.getNewfechainicio().getTime())
 						/ 1000 / 3600 / 24);
-				diarioActividad = actObra.getValortotalactividadaiu().divide(new BigDecimal(diasTotalActividad),6,RoundingMode.HALF_EVEN);
-				//System.out.println(lstPeriodos.size());
+				diarioActividad = actObra.getNewvalortotalactividadaiu().divide(new BigDecimal(diasTotalActividad),6,RoundingMode.HALF_EVEN);
+				System.out.println(lstPeriodos.size());
 				for (int i = 0; i < lstPeriodos.size(); i++) {
+					System.out.println(lstPeriodos.get(i));
 
 					if (lstPeriodos.get(i).getFechainicio().after(actObra.getFechafin())) {
 						break;
@@ -748,7 +702,7 @@ public class RestObraModificacion {
 						actividadObraPeriodoMod.setNumvalplanif(actObra.getNewvalortotalactividadaiu().subtract(acumvalPlanif));
 					}else {
 						//PERIODOS INTERMEDIOS
-						System.out.println(porcionDiasPeriodo);
+						//System.out.println(porcionDiasPeriodo);
 						actividadObraPeriodoMod.setFloatcantplanif(new BigDecimal(porcionDiasPeriodo));
 						
 						actividadObraPeriodoMod.setNumvalplanif(diarioActividad.multiply(new BigDecimal(DiasPeriodo)));
@@ -757,6 +711,7 @@ public class RestObraModificacion {
 					}
 
 					actividadObraPeriodoMod.setIntidperiodo(lstPeriodos.get(i).getPeriodo_id());
+
 					if (actividadObraPeriodoMod.getFloatcantplanif().doubleValue()>0) {
 						serviceActividadObraPeriodoModificacion.guardar(actividadObraPeriodoMod);
 						
@@ -774,12 +729,12 @@ public class RestObraModificacion {
 		
 		
 		/**FIN PROCESO DE PLANIFICACION DE ACTIVIDADES POR CADA PERIODO**/
-		ResponseGeneric rspconfirmacion = new ResponseGeneric();
+	/*	ResponseGeneric rspconfirmacion = new ResponseGeneric();
 		rspconfirmacion.setStatus(true);
 		rspconfirmacion.setMessage(Constantes.PLANIFICACION_COMPLETADA);
 		return new ResponseEntity<ResponseGeneric>(rspconfirmacion, HttpStatus.OK);
 		
-	}
+	}*/
 	
 	public ResponseGeneric valiChangeDate(ObraChangeDate objeto) {		
 		ResponseGeneric response = new ResponseGeneric();

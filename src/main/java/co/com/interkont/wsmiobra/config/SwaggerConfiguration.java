@@ -3,6 +3,8 @@ package co.com.interkont.wsmiobra.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -37,5 +39,5 @@ public class SwaggerConfiguration {
                 .build();
 
     }
-
+ 
 }

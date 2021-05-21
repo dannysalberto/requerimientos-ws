@@ -47,6 +47,12 @@ public class ActividadObraPeriodoService implements IActividadObraPeriodo{
 		}
 	}
 
+	@Override
+	public ActividadObraPeriodo buscarPorPeriodoActividad(Integer idPeriodo, Integer idActividad) {
+		// TODO Auto-generated method stub
+		return repository.findByPeriodo_IdAndActividadObra_oidactiviobra(idPeriodo, idActividad);
+	}
+
 	
 
 }

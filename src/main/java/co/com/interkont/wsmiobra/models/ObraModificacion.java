@@ -71,7 +71,7 @@ public class ObraModificacion implements Serializable{
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="obraModificacion",fetch=FetchType.EAGER)
-	private List<V_ActividadObraModificacion> actividades = new ArrayList<>();;
+	private List<V_ActividadObraModificacion> actividades = new ArrayList<>();
 	
 	
 	@JsonManagedReference
@@ -89,8 +89,7 @@ public class ObraModificacion implements Serializable{
 	@Column(name="estadomodificacion",columnDefinition="VARCHAR(1)")
 	private String estadoModificacion = Constantes.MODIFICACION_INICIADA;	
 	
-	//@Transient
-	@JsonManagedReference
+	@Transient
 	@OneToMany(mappedBy="obraModificacion",fetch=FetchType.LAZY)
 	private List<RelacionContratoObra> relacioncontratos = new ArrayList<>();
 	
@@ -317,6 +316,17 @@ public class ObraModificacion implements Serializable{
 	 */
 	public void setFechaMinimaFin(Date fechaMinimaFin) {
 		this.fechaMinimaFin = fechaMinimaFin;
+	}
+	
+	public void addRelacioncontratos(RelacionContratoObra relacion) {
+		
+		if (this.relacioncontratos==null) {
+			this.relacioncontratos = new ArrayList<>();
+		}else {
+			this.relacioncontratos.add(relacion);
+		}
+		
+		
 	}
 
 	
