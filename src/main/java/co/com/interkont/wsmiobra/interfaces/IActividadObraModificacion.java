@@ -1,9 +1,7 @@
 package co.com.interkont.wsmiobra.interfaces;
 
 import java.util.List;
-
 import co.com.interkont.wsmiobra.models.ActividadObraModificacion;
-import co.com.interkont.wsmiobra.models.ObraModificacion;
 
 public interface IActividadObraModificacion {
 
@@ -11,8 +9,8 @@ public interface IActividadObraModificacion {
 	ActividadObraModificacion actualizar(ActividadObraModificacion actividadObraModificacion);
 	ActividadObraModificacion buscarPorId(Integer id);
 	List<ActividadObraModificacion> desplegarTodos();
-	List<ActividadObraModificacion> desplegarTodos(ObraModificacion obra);
 	void eliminar(Integer id);
+	List<ActividadObraModificacion> desplegarTodos(Integer id, String tipo);
 
 	
 }

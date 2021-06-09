@@ -11,6 +11,8 @@ import co.com.interkont.wsmiobra.models.V_ActividadObraModificacion;
 @Repository
 public interface V_ActividadObraModificacionRepository extends JpaRepository<V_ActividadObraModificacion,Integer> {
 
+	List<V_ActividadObraModificacion> findByObraModificacion_Id(Integer id);
+
 	List<V_ActividadObraModificacion> findByObraModificacion(ObraModificacion obra);
 	
 }

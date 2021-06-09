@@ -12,5 +12,7 @@ import co.com.interkont.wsmiobra.models.ObraModificacion;
 public interface ActividadObraModificacionRepository extends JpaRepository<ActividadObraModificacion,Integer> {
 
 	List<ActividadObraModificacion> findByObraModificacion(ObraModificacion obra);
+
+	List<ActividadObraModificacion> findByObraModificacion_IdAndTipoModificacionNot(Integer id, String tipo);
 	
 }

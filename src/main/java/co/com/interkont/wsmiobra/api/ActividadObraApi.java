@@ -78,7 +78,7 @@ public class ActividadObraApi {
 		actividad.setIdcategoria(objRequest.getIdcategoria());
 		actividad.setStrtipounidadmed(objRequest.getUnidadMedida());
 		actividad.setFloatcantplanifao(objRequest.getCantidad());
-	    
+		actividad.setIntcedula(Integer.parseInt(objRequest.getIdusuario()));
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         
 		try {

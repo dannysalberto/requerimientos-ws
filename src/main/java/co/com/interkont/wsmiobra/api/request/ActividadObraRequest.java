@@ -27,6 +27,8 @@ public class ActividadObraRequest {
 	private BigDecimal valortotal; //aqui va el precio unitario + aiu + porcentaje float por otros
 	
 	private Double cantidadejecutada;
+	
+	private String idusuario;
 
 
 
@@ -113,12 +115,31 @@ public class ActividadObraRequest {
 	}
 
 	public Double getCantidadejecutada() {
+		if (cantidadejecutada==null) {
+			return (double) 0;
+		}
 		return cantidadejecutada;
 	}
 
 	public void setCantidadejecutada(Double cantidadejecutada) {
 		this.cantidadejecutada = cantidadejecutada;
 	}
+
+	/**
+	 * @return the idusuario
+	 */
+	public String getIdusuario() {
+		return idusuario;
+	}
+
+	/**
+	 * @param idusuario the idusuario to set
+	 */
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
+	}
+
+	
 
 	
 

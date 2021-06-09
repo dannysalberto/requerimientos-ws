@@ -9,7 +9,9 @@ import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.interfaces.IActividadObraModificacion;
 import co.com.interkont.wsmiobra.models.ActividadObraModificacion;
 import co.com.interkont.wsmiobra.models.ObraModificacion;
+import co.com.interkont.wsmiobra.models.V_ActividadObraModificacion;
 import co.com.interkont.wsmiobra.repository.ActividadObraModificacionRepository;
+import co.com.interkont.wsmiobra.repository.V_ActividadObraModificacionRepository;
 
 @Service
 public class ActividadObraModificacionService implements IActividadObraModificacion{
@@ -54,9 +56,9 @@ public class ActividadObraModificacionService implements IActividadObraModificac
 	}
 
 	@Override
-	public List<ActividadObraModificacion> desplegarTodos(ObraModificacion obra) {
+	public List<ActividadObraModificacion> desplegarTodos(Integer id,String tipo) {
 		// TODO Auto-generated method stub
-		return repo.findByObraModificacion(obra);
+		return repo.findByObraModificacion_IdAndTipoModificacionNot(id,tipo);
 	}
 	
 	

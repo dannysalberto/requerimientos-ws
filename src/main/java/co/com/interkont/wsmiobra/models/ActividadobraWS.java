@@ -171,6 +171,9 @@ public class ActividadobraWS  extends BasicAuditoria implements java.io.Serializ
 
 
 	public Double getFloatcantidadejecutao() {
+		if (floatcantidadejecutao==null) {
+			return (double) 0;
+		}
 		return floatcantidadejecutao;
 	}
 

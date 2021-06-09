@@ -7,6 +7,12 @@ public class ObraChangeDate{
 	private String fechaInicioObra; 
 
 	private String fechaFinObra;
+	
+	public ObraChangeDate(Integer id,String fechaInicioObra,String fechaFinObra) {
+		this.id = id;
+		this.fechaInicioObra = fechaInicioObra;
+		this.fechaFinObra = fechaFinObra;
+	}
 
 	public Integer getId() {
 		return id;

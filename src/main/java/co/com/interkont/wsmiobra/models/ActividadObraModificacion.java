@@ -98,6 +98,43 @@ public class ActividadObraModificacion {
 	@Transient   
 	private BigDecimal newporcentajeavance;
 	
+	@Column(name="create_by")
+	private String idusuario;
+	
+	public ActividadObraModificacion() {
+		
+	}
+	
+	public ActividadObraModificacion(V_ActividadObraModificacion obj) {
+		this.id = obj.getId();
+		this.obraModificacion = obj.getObraModificacion();
+		this.oidactiviobra = obj.getOidactiviobra();
+		this.strdescactividad = obj.getStrdescactividad();
+		this.categoria = obj.getCategoria();
+		this.strtipounidadmed = obj.getStrtipounidadmed();
+		this.floatcantplanifao = obj.getFloatcantplanifao();
+		this.fechainicio = obj.getFechainicio();
+		this.fechafin = obj.getFechafin();
+		this.intcodigoobra = obj.getIntcodigoobra();
+	    this.valorunitario = obj.getValorunitario();
+	    this.numvalorplanifao = obj.getNumvalorplanifao();
+	    this.boolaiu = obj.isBoolaiu();
+	    this.floatcantidadejecutao = obj.getFloatcantidadejecutao();
+	    this.valortotalactividadaiu  = obj.getValortotalactividadaiu();
+	 	this.numvalorejecutao  = obj.getNumvalorejecutao();
+	    this.tipoModificacion = obj.getTipoModificacion();
+	    this.newfechainicio = obj.getNewfechainicio();
+		this.newfechafin = obj.getNewfechafin();
+		this.newnumvalorplanifao = obj.getNumvalorplanifao();
+	    this.newfloatcantplanifao = obj.getFloatcantplanifao();
+	    this.newvalorunitario = obj.getNewvalorunitario();
+	    this.newvalortotalactividadaiu = obj.getNewvalortotalactividadaiu(); 
+	    this.porcentajeavance = obj.getPorcentajeavance();
+		this.newporcentajeavance = obj.getNewporcentajeavance();
+		this.idusuario = obj.getIdusuario();
+	}
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -193,6 +230,9 @@ public class ActividadObraModificacion {
 	}
 
 	public Double getFloatcantidadejecutao() {
+		if (floatcantidadejecutao == null) {
+			return (double) 0;
+		}
 		return floatcantidadejecutao;
 	}
 
@@ -374,6 +414,21 @@ public class ActividadObraModificacion {
 		this.newporcentajeavance = newporcentajeavance;
 	}
 
+	
+	/**
+	 * @return the idusuario
+	 */
+	public String getIdusuario() {
+		return idusuario;
+	}
+
+	/**
+	 * @param idusuario the idusuario to set
+	 */
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -392,10 +447,11 @@ public class ActividadObraModificacion {
 				+ ", porcentajeavance=" + porcentajeavance + ", newporcentajeavance=" + newporcentajeavance + "]";
 	}
 
+
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
-	
 
 	
     

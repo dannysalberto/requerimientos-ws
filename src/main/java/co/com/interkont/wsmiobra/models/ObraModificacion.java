@@ -275,7 +275,11 @@ public class ObraModificacion implements Serializable{
 	}
 
 	public void setNewnumvaltotobra(BigDecimal newnumvaltotobra) {
-		this.newnumvaltotobra = newnumvaltotobra;
+		if (newnumvaltotobra==null) {
+			this.newnumvaltotobra = new BigDecimal(0);
+		}else {
+			this.newnumvaltotobra = newnumvaltotobra;			
+		}
 	}
 
 	@JsonIgnore
@@ -328,23 +332,5 @@ public class ObraModificacion implements Serializable{
 		
 		
 	}
-
-	
-	/*public BigDecimal getValnumtotobra() {
-		if (valnumtotobra == null) {
-			return new BigDecimal(0);
-		}
-		return valnumtotobra;
-	}
-
-	/**
-	 * @param valnumtotobra the valnumtotobra to set
-	 */
-	/*public void setValnumtotobra(BigDecimal valnumtotobra) {
-		this.valnumtotobra = valnumtotobra;
-	}*/
-	
-	
-
 
 }

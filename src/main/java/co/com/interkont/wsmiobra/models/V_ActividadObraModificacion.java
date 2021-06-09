@@ -98,6 +98,10 @@ public class V_ActividadObraModificacion {
 	@Transient
 	private BigDecimal newporcentajeavance;
 	
+	@Column(name="create_by")
+	private String idusuario;
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -372,6 +376,23 @@ public class V_ActividadObraModificacion {
 	 */
 	public void setNewporcentajeavance(BigDecimal newporcentajeavance) {
 		this.newporcentajeavance = newporcentajeavance;
+	}
+	
+	
+	
+
+	/**
+	 * @return the idusuario
+	 */
+	public String getIdusuario() {
+		return idusuario;
+	}
+
+	/**
+	 * @param idusuario the idusuario to set
+	 */
+	public void setIdusuario(String idusuario) {
+		this.idusuario = idusuario;
 	}
 
 	/* (non-Javadoc)

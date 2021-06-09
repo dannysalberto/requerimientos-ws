@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,6 +56,7 @@ public class RestActividadObraModificacion {
 		actividad.setStrdescactividad(objRequest.getNombre());
 		actividad.setCategoria(serviceCategoria.buscarPorId(objRequest.getIdcategoria()));
 		actividad.setStrtipounidadmed(objRequest.getUnidadMedida());
+	    actividad.setIdusuario(objRequest.getIdusuario().toString());
 	    
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         
@@ -91,10 +91,10 @@ public class RestActividadObraModificacion {
 		actividad.setFloatcantidadejecutao((double) 0);
 		actividad.setNumvalorplanifao(new BigDecimal(0));
 		actividad.setValortotalactividadaiu(new BigDecimal(0));
-		
+		actividad.setFloatcantidadejecutao((double) 0);
 		actividad.setNewfloatcantplanifao(objRequest.getCantidad());
 		actividad.setNewvalorunitario(objRequest.getValorunitario());
-		actividad.setNewnumvalorplanifao(new BigDecimal(0));
+		actividad.setNewnumvalorplanifao(objRequest.getValorunitario());
 		
 		//ojo error
 		actividad.setNewvalortotalactividadaiu(objRequest.getValortotal());
@@ -159,8 +159,11 @@ public class RestActividadObraModificacion {
 		
 		actividad.setNewvalorunitario(objRequest.getValorunitario());
 		actividad.setNewfloatcantplanifao(objRequest.getCantidad());
-		actividad.setNewnumvalorplanifao(new BigDecimal(0));
-		actividad.setTipoModificacion(Constantes.ACTIVIDAD_MODIFICADA);
+		actividad.setNewnumvalorplanifao(objRequest.getValorunitario());
+		
+		if (actividad.getOidactiviobra()> 0) {
+			actividad.setTipoModificacion(Constantes.ACTIVIDAD_MODIFICADA);
+		}
 		serviceActividadObraMod.actualizar(actividad);
 		
 		response.setStatus(true);

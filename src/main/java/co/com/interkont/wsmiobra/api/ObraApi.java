@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.interkont.wsmiobra.api.response.ObraResponse;
-import co.com.interkont.wsmiobra.components.OperacionPeriodoServices;
+import co.com.interkont.wsmiobra.businnes.BusinnesPeriodoServices;
 import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.dto.Obra;
 import co.com.interkont.wsmiobra.models.*;
@@ -45,7 +45,7 @@ public class ObraApi {
 	ActividadObraWSService serviceactividadWS;
 	
 	@Autowired
-	OperacionPeriodoServices serviceOperacionPeriodos;
+	BusinnesPeriodoServices serviceOperacionPeriodos;
 	
 	
 	public int cantidad=0;
@@ -90,95 +90,12 @@ public class ObraApi {
 		
 	}
 	
-	public ResponseGeneric valiChangeDate(ObraChangeDate objeto) {		
-		ResponseGeneric response = new ResponseGeneric();
-		if (objeto.getId()==null || objeto.getFechaFinObra()==null|| objeto.getFechaFinObra()=="" || objeto.getFechaInicioObra()==null|| objeto.getFechaInicioObra()=="") {
-			response.setStatus(false);
-			response.setMessage(Constantes.FALTAN_ATRIBUTOS);
-			return response;
-		}
-		return null;			
-	}
-	
 	@PutMapping(value="/ajustarfecha")
 	public ResponseEntity<?> ajustarfecha(@RequestBody(required=true) ObraChangeDate request) {
-		ResponseGeneric response = this.valiChangeDate(request) ; 
-		if (response!=null){
-			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);
-		}
-		Obra obra = serviceObra.buscarPorId(request.getId());
-		if (obra==null) {
-			ResponseGeneric response1 = new ResponseGeneric(); 
-			response1.setStatus(false);
-			response1.setMessage(Constantes.NO_EXISTE);
-			return new ResponseEntity<ResponseGeneric>(response1, HttpStatus.OK);
-		}
-		
-		ResponseGeneric rspconfirmacion = new ResponseGeneric();
-		if(obra.getDatefeciniobra()!=null &&obra.getDatefecfinobra()!=null )
-		{
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			String FechainicioObra=null;
-			String FechaFinalObra=null;
-			FechainicioObra = format.format(obra.getDatefeciniobra());	
-			FechaFinalObra = format.format(obra.getDatefecfinobra());
-			Boolean ResponseFechaInicioObra=FechainicioObra.equals(request.getFechaInicioObra());		
-			Boolean ResponseFechaFinObra=FechaFinalObra.equals(request.getFechaFinObra());
-			cantidad = 0;
-			if(ResponseFechaInicioObra==false){
-				List<ActividadobraWS> lstactividad=obra.getActividadesobras();			
-				lstactividad.forEach((result)->
-				{
-					Date fechainicio = null;
-					try {
-						fechainicio = format.parse(request.getFechaInicioObra());
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}		
-					if(obra.getDatefeciniobra()!=fechainicio)
-					{				
-						result.setFechainicio(fechainicio);		
-						cantidad++;					
-					}		
-					serviceactividadWS.Guardar(result);
-				});		
-			}
-			if(ResponseFechaFinObra==false){
-				List<ActividadobraWS> lstactividad=obra.getActividadesobras();
-				lstactividad.forEach((result)->
-				{
-					Date fechafin = null;
-					try {
-						fechafin = format.parse(request.getFechaFinObra());
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace(); 
-					}			
-					if(obra.getDatefecfinobra()!=fechafin)
-					{
-						result.setFechafin(fechafin);
-						cantidad++;	
-					}			
-					serviceactividadWS.Guardar(result);
-				});				
-			}if(cantidad==0){
-				rspconfirmacion.setStatus(false);
-				rspconfirmacion.setMessage(Constantes.NO_EXISTE_ACTIVIDAD );	
-			}else{
-				rspconfirmacion.setStatus(true);
-				rspconfirmacion.setMessage(Constantes.ACTIVIDAD_ACTUALIZADA+cantidad+" registros" );
-			}
-			return new ResponseEntity<ResponseGeneric>(rspconfirmacion, HttpStatus.OK);			
-		}
-		else
-		{
-			rspconfirmacion.setStatus(false);
-			rspconfirmacion.setMessage(Constantes.FALTAN_ATRIBUTOS);
-			return new ResponseEntity<ResponseGeneric>(rspconfirmacion, HttpStatus.OK);	
-		}		
+		return serviceOperacionPeriodos.ajustarFechaObra(request);		
 					
 	}
+	
 	
 	public ResponseGeneric valid(ObraUpdRequest objeto) {
 		
@@ -307,4 +224,93 @@ public class ObraApi {
 		return new ResponseEntity<Object>(serviceOperacionPeriodos.planeacionPorPeriodo(idObra), HttpStatus.OK);
 	}
 
+	/*public ResponseGeneric valiChangeDate(ObraChangeDate objeto) {		
+		ResponseGeneric response = new ResponseGeneric();
+		if (objeto.getId()==null || objeto.getFechaFinObra()==null|| objeto.getFechaFinObra()=="" || objeto.getFechaInicioObra()==null|| objeto.getFechaInicioObra()=="") {
+			response.setStatus(false);
+			response.setMessage(Constantes.FALTAN_ATRIBUTOS);
+			return response;
+		}
+		return null;			
+	}
+	
+	@PutMapping(value="/ajustarfecha")
+	public ResponseEntity<?> ajustarfecha(@RequestBody(required=true) ObraChangeDate request) {
+		ResponseGeneric response = this.valiChangeDate(request) ; 
+		if (response!=null){
+			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.OK);
+		}
+		Obra obra = serviceObra.buscarPorId(request.getId());
+		if (obra==null) {
+			ResponseGeneric response1 = new ResponseGeneric(); 
+			response1.setStatus(false);
+			response1.setMessage(Constantes.NO_EXISTE);
+			return new ResponseEntity<ResponseGeneric>(response1, HttpStatus.OK);
+		}
+		
+		ResponseGeneric rspconfirmacion = new ResponseGeneric();
+		if(obra.getDatefeciniobra()!=null &&obra.getDatefecfinobra()!=null )
+		{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String FechainicioObra=null;
+			String FechaFinalObra=null;
+			FechainicioObra = format.format(obra.getDatefeciniobra());	
+			FechaFinalObra = format.format(obra.getDatefecfinobra());
+			Boolean ResponseFechaInicioObra=FechainicioObra.equals(request.getFechaInicioObra());		
+			Boolean ResponseFechaFinObra=FechaFinalObra.equals(request.getFechaFinObra());
+			cantidad = 0;
+			if(ResponseFechaInicioObra==false){
+				List<ActividadobraWS> lstactividad=obra.getActividadesobras();			
+				lstactividad.forEach((result)->
+				{
+					Date fechainicio = null;
+					try {
+						fechainicio = format.parse(request.getFechaInicioObra());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}		
+					if(obra.getDatefeciniobra()!=fechainicio)
+					{				
+						result.setFechainicio(fechainicio);		
+						cantidad++;					
+					}		
+					serviceactividadWS.Guardar(result);
+				});		
+			}
+			if(ResponseFechaFinObra==false){
+				List<ActividadobraWS> lstactividad=obra.getActividadesobras();
+				lstactividad.forEach((result)->
+				{
+					Date fechafin = null;
+					try {
+						fechafin = format.parse(request.getFechaFinObra());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace(); 
+					}			
+					if(obra.getDatefecfinobra()!=fechafin)
+					{
+						result.setFechafin(fechafin);
+						cantidad++;	
+					}			
+					serviceactividadWS.Guardar(result);
+				});				
+			}if(cantidad==0){
+				rspconfirmacion.setStatus(false);
+				rspconfirmacion.setMessage(Constantes.NO_EXISTE_ACTIVIDAD );	
+			}else{
+				rspconfirmacion.setStatus(true);
+				rspconfirmacion.setMessage(Constantes.ACTIVIDAD_ACTUALIZADA+cantidad+" registros" );
+			}
+			return new ResponseEntity<ResponseGeneric>(rspconfirmacion, HttpStatus.OK);			
+		}
+		else
+		{
+			rspconfirmacion.setStatus(false);
+			rspconfirmacion.setMessage(Constantes.FALTAN_ATRIBUTOS);
+			return new ResponseEntity<ResponseGeneric>(rspconfirmacion, HttpStatus.OK);	
+		}		
+					
+	}*/
 }

@@ -21,7 +21,7 @@ public class BasicAuditoria {
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreatedDate
 	@Column(name="created_at", nullable=false, updatable=false)
-	private Date craetedAt;
+	private Date createdAt;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@LastModifiedDate
@@ -36,12 +36,20 @@ public class BasicAuditoria {
 	@LastModifiedBy
 	private String update_by;
 
-	public Date getCraetedAt() {
-		return craetedAt;
+	
+
+	/**
+	 * @return the createdAt
+	 */
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCraetedAt(Date craetedAt) {
-		this.craetedAt = craetedAt;
+	/**
+	 * @param createdAt the createdAt to set
+	 */
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public Date getUpdatedAt() {
