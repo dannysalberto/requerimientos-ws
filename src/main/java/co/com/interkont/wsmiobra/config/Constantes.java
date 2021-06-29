@@ -38,7 +38,7 @@ public class Constantes {
 	public static final int ESTADO_OBRA_MODIFICACION = 3;
 	public static final int ESTADO_OBRA_EJECUCION = 1;
 	public static final int ESTADO_OBRA_POR_INICIAR = 0;
-
+	public static final int ESTADO_OBRA_SUSPENDIDA = 6;
 	
 	public static final String URLPROPERTIES = "./src/main/resources/application.properties";
 	public static final String TEMPORAL_EXTENSION = ".new";

@@ -123,11 +123,11 @@ public class Periodo {
 		this.actividadObra.add(obj);
 	}
 	
-	/*@Override
+	@Override
 	public String toString() {
 		return "Periodo [id=" + id + ", fechainicio=" + fechainicio + ", fechafin=" + fechafin + ", valtotplanif="
-				+ valtotplanif + ", obra=" + obra + ", actividadObra=" + actividadObra + "]";
-	}*/
+				+ valtotplanif + "]";
+	}
 
 
 

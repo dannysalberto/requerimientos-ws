@@ -1,4 +1,4 @@
-package co.com.interkont.wsmiobra.api.request;
+package co.com.interkont.wsmiobra.controller;
 
 import java.util.ArrayList;
 
@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +29,7 @@ import co.com.interkont.wsmiobra.models.AuthenticationResponse;
 import co.com.interkont.wsmiobra.utils.JWTUtils;
 
 @RestController
+@CrossOrigin(origins="*")
 public class LoginController {
 	
 	
@@ -52,10 +56,11 @@ public class LoginController {
 	
 	private static Boolean bContinue;
 	
-	@RequestMapping(value=Constantes.LOGIN_URL, method=RequestMethod.POST)
+	@RequestMapping(value=Constantes.LOGIN_URL, method=RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response )
 		throws Exception{
-		
 		bContinue = false;  //validamos si debe continuar la authenticación
 	    String token = null;
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsuario());
@@ -95,7 +100,7 @@ public class LoginController {
 	    @SuppressWarnings("unused")
 		AuthenticationResponse Authenticate = new AuthenticationResponse(token);
 	    return ResponseEntity.ok()
-	      .headers(responseHeaders).body("Authenticated succesfull");
+	      .headers(responseHeaders).body("Authenticated succesfull: "+token);
 		
 	}
 	
