@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>co.com.interkont</groupId>
-	<artifactId>miobraweb-cronograma</artifactId>
+	<artifactId>miobraweb-cronograma-pre</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
@@ -152,6 +152,14 @@
 			       <artifactId>commons-lang</artifactId>
 			       <version>2.6</version>
 			</dependency>
+			
+			<!-- https://mvnrepository.com/artifact/io.springfox/springfox-bean-validators -->
+			<dependency>
+			    <groupId>io.springfox</groupId>
+			    <artifactId>springfox-bean-validators</artifactId>
+			    <version>2.9.2</version>
+			</dependency>
+						
 	</dependencies>
 	
 	<build>

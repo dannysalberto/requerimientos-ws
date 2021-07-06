@@ -20,4 +20,5 @@ public interface PeriodoRepository extends JpaRepository<Periodo, Integer> {
 	Periodo findByObra_IdAndFechainicio(Integer idObra, Date FechaIni);
 
 
+
 }
