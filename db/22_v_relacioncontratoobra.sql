@@ -8,4 +8,4 @@ SELECT o.intcodigoobra,o.intcodigoobra,
 	FROM "public"."relacioncontratoobra" rco
  		INNER JOIN "public"."contrato" pc ON rco.intidcontrato=pc.intidcontrato 
         WHERE pc.booltipocontratoconvenio=False AND pc.inttipocontrato IS NOT NULL 
-        GROUP BY rco.intcodigoobra) cto on o.intcodigoobra=cto.intcodigoobra
+        GROUP BY rco.intcodigoobra) cto on o.intcodigoobra=cto.intcodigoobra;
