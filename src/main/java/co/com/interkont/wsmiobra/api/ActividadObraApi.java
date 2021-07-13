@@ -107,7 +107,6 @@ public class ActividadObraApi {
 		actividad.setNumvalorplanifao(new BigDecimal(0));
 		actividad.setValortotalactividadaiu(objRequest.getValortotal());
 		actividad.setBoolaiu(false);
-		actividad.setIntcedula( 0 );
 		
 		//this.calcularCostos(actividad, obra);
 		serviceactividadWS.Guardar(actividad);
@@ -166,12 +165,7 @@ public class ActividadObraApi {
 		actividad.setObra(obra);
 		actividad.setValorunitario(objRequest.getValorunitario());
 		actividad.setFloatcantidadejecutao( (double) 0);
-		//actividad.setNumvalorplanifao(objRequest.getValorunitario());
-		//actividad.setValortotalactividadaiu(
-		//			actividad.getNumvalorplanifao().multiply(
-		//					new BigDecimal(actividad.getFloatcantidadejecutao())));
 		actividad.setBoolaiu(false);
-		actividad.setIntcedula( 0 );
 
 		//this.calcularCostos(actividad, obra);
 		serviceactividadWS.actualizar(actividad);

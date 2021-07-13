@@ -62,12 +62,13 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 	@Override
 	public boolean generarPeriodos(Obra obra) {
 		System.out.println("REGENERANDO PERIODOS "+obra.getIntestadoobra());
-		if (obra.getIntestadoobra() == Constantes.ESTADO_OBRA_MODIFICACION ||
+		if ((obra.getIntestadoobra() == Constantes.ESTADO_OBRA_MODIFICACION && obra.getSuspensionesobra().isEmpty() ) ||
 				obra.getIntestadoobra()==Constantes.ESTADO_OBRA_POR_INICIAR ) {
 			System.out.println("Actualizando Periodo");
 			this.regenerarPeriodos(obra);
 			return true;
-		}else if (obra.getIntestadoobra() == Constantes.ESTADO_OBRA_SUSPENDIDA) {
+		}
+		if (obra.getIntestadoobra() == Constantes.ESTADO_OBRA_MODIFICACION && !obra.getSuspensionesobra().isEmpty() ) {
 			PeriodoMedida periodoMedida = servicePeriodoMedida.buscarPorId(obra.getIntidperiomedida());
 			validateSuspension(obra,periodoMedida);	
 			return true;
@@ -433,7 +434,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 	 * @param periodo
 	 */
 	private void validateSuspension(Obra obra, PeriodoMedida periodoMedida) {
-		
+		System.out.println("ESTAMOS VALIDANDO");
 		obra.getPeriodos().forEach(periodo->{
 			periodo.setValtotplanif(new BigDecimal(0));
 			servicePeriodo.guardar(periodo);
@@ -446,6 +447,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 			fechaFinUltimoPeriodo = null;
 			ultimoIdPeriodo = 0;
 			Set<SuspensionObra> lstSuspensiones = obra.getSuspensionesobra();
+			System.out.println(lstSuspensiones.toString());
 			fechaFinUltimaSusp = lstSuspensiones.stream().map(u -> u.getFechaFin()).max(Date::compareTo).get();
 			System.out.println("Fecha de ultim suspension "+fechaFinUltimaSusp+" "+obra.getId());
 
@@ -457,7 +459,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 				servicePeriodo.eliminar(per.getId());
 				fechaFinUltimoPeriodo = per.getFechafin();
 				ultimoIdPeriodo = per.getId();
-				System.out.println("Ciclo 1");
+				//System.out.println("Ciclo 1");
 
 
 			});
@@ -478,7 +480,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 				calendar.setTime(per.getFechafin());
 				fechaFinUltimoPeriodo = per.getFechafin();
 				ultimoIdPeriodo = per.getId();
-				System.out.println("Ciclo 2");
+				//System.out.println("Ciclo 2");
 
 			});
 			
@@ -509,7 +511,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 					periodoNuevo.setObra(obra);
 					ultimoIdPeriodo++;
 					periodoNuevo.setId(ultimoIdPeriodo);	
-					System.out.println(periodoNuevo.toString());
+					//System.out.println(periodoNuevo.toString());
 					servicePeriodo.guardar(periodoNuevo);
 					fechaFinUltimoPeriodo = periodoNuevo.getFechafin();
 					ultimoIdPeriodo = periodoNuevo.getId();
