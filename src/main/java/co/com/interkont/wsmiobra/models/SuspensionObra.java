@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,8 +36,9 @@ public class SuspensionObra {
 	
 	@ManyToOne
 	@JsonIgnore
-	@JoinColumn(name="intcodigoobra",columnDefinition="integer NOT NULL")
-    private Obra obra;
+	@NotNull
+	@JoinColumn(name="intcodigoobra",columnDefinition="integer")
+	private Obra obra;
 
 	/**
 	 * @return the id

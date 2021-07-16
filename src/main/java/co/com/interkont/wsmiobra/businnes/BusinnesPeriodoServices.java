@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ import co.com.interkont.wsmiobra.service.ActividadObraWSService;
 import co.com.interkont.wsmiobra.service.ObrasService;
 import co.com.interkont.wsmiobra.service.PeriodoMedidaService;
 import co.com.interkont.wsmiobra.service.PeriodoService;
+import co.com.interkont.wsmiobra.service.SuspensionObraService;
 import co.com.interkont.wsmiobra.utils.Utils;
 
 @Component
@@ -50,6 +52,9 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 	@Autowired
 	ActividadObraWSService serviceactividadWS;
 	
+	@Autowired
+	SuspensionObraService serviceSuspensionObra;
+	
 	public int i,j=0;
 	public boolean itero = false;
 	public int cantidad=0;
@@ -57,6 +62,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 	double diasSusp = 0;
 	Date fechaFinUltimaSusp;
 	Date fechaFinUltimoPeriodo;
+	Date fechainicio;
 	int ultimoIdPeriodo = 0;
 	
 	@Override
@@ -433,100 +439,121 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 	 * @param obra
 	 * @param periodo
 	 */
+	@SuppressWarnings({ "unused", "null" })
 	private void validateSuspension(Obra obra, PeriodoMedida periodoMedida) {
-		System.out.println("ESTAMOS VALIDANDO");
-		obra.getPeriodos().forEach(periodo->{
-			periodo.setValtotplanif(new BigDecimal(0));
-			servicePeriodo.guardar(periodo);
-		});	
-		if (obra.getSuspensionesobra().isEmpty()) {
-			System.out.println("No tiene suspensiones");
-		}else {
-			System.out.println("Calculo de periodos por suspensión");
-			fechaFinUltimaSusp = null;
-			fechaFinUltimoPeriodo = null;
-			ultimoIdPeriodo = 0;
-			Set<SuspensionObra> lstSuspensiones = obra.getSuspensionesobra();
-			System.out.println(lstSuspensiones.toString());
-			fechaFinUltimaSusp = lstSuspensiones.stream().map(u -> u.getFechaFin()).max(Date::compareTo).get();
-			System.out.println("Fecha de ultim suspension "+fechaFinUltimaSusp+" "+obra.getId());
-
-			List<Periodo> periodos = servicePeriodo
-					.ListarPeriodosPorObraFechaInicio(obra.getId(),fechaFinUltimaSusp);
-			
-			System.out.println(periodos);
-			periodos.forEach((per) -> {
-				servicePeriodo.eliminar(per.getId());
-				fechaFinUltimoPeriodo = per.getFechafin();
-				ultimoIdPeriodo = per.getId();
-				//System.out.println("Ciclo 1");
-
-
-			});
-			
-			List<Periodo> periodosRestantes = servicePeriodo
-					.ListarPeriodosPorObraFechaInicio(obra.getId(),fechaFinUltimaSusp);
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(fechaFinUltimaSusp);
-			
-			periodosRestantes.forEach((per) -> {
-				
-				calendar.add(calendar.DAY_OF_YEAR, 1);
-				per.setFechainicio(calendar.getTime());
-				calendar.add(calendar.DAY_OF_YEAR, periodoMedida.getDiasPeriodo() - 1);
-				per.setFechafin(calendar.getTime());
-				
-				servicePeriodo.guardar(per);
-				calendar.setTime(per.getFechafin());
-				fechaFinUltimoPeriodo = per.getFechafin();
-				ultimoIdPeriodo = per.getId();
-				//System.out.println("Ciclo 2");
-
-			});
-			
-			if (periodosRestantes.isEmpty()) {
-				List<Periodo> periodoUltimo = servicePeriodo.ListarPorObra(obra.getId());
-				fechaFinUltimoPeriodo = periodoUltimo.get(periodoUltimo.size()-1).getFechafin();
-				ultimoIdPeriodo = periodoUltimo.get(periodoUltimo.size()-1).getId();
-
-			}
-			
 		
-			if (fechaFinUltimoPeriodo.after(obra.getDatefecfinobra()) || fechaFinUltimoPeriodo.compareTo(obra.getDatefecfinobra())==0) {
-				Periodo per = servicePeriodo.buscarPorId(ultimoIdPeriodo);
-				per.setFechafin(obra.getDatefecfinobra());
-				servicePeriodo.guardar(per);
+		Calendar calendar = Calendar.getInstance();
+		fechainicio = null;
+		Stream<Periodo> periodosTodos = obra.getPeriodos().stream()
+				.sorted(Comparator.comparing(Periodo::getFechainicio));		
+		/*
+		 * Suspensiones
+		 * */
+		
+		Stream<SuspensionObra> lstSuspensiones = obra.getSuspensionesobra().stream()
+				.sorted(Comparator.comparing(SuspensionObra::getFechaInicio));		
+		
+		periodosTodos.forEach(periodo->{
+			periodo.setValtotplanif(new BigDecimal(0));
+			
+			SuspensionObra suspensionCaso1 = serviceSuspensionObra.getPorObraCaso1(obra.getId(),
+					periodo.getFechainicio(),periodo.getFechafin());
+
+			SuspensionObra suspensionCaso2 = serviceSuspensionObra.getPorObraCaso2(obra.getId(),
+					periodo.getFechainicio(),periodo.getFechafin());
+
+			SuspensionObra suspensionCaso3 = serviceSuspensionObra.getPorObraCaso3(obra.getId(),
+					periodo.getFechainicio(),periodo.getFechafin());
+			
+			SuspensionObra suspensionCaso4 = serviceSuspensionObra.getPorObraCaso4(obra.getId(),
+					periodo.getFechafin());
+			
+			SuspensionObra suspensionCaso5 = serviceSuspensionObra.getPorObraCaso5(obra.getId(),
+					periodo.getFechainicio());
+			
+			System.out.println(periodo.getFechainicio()+" "+periodo.getFechafin());
+			if (suspensionCaso1!=null) {
+				
+				calendar.setTime(periodo.getFechafin());
+				servicePeriodo.eliminar(periodo.getId());
+				fechainicio = (calendar.getTime());
+				System.out.println("Caso 1");
+				
+			}else if (suspensionCaso2!=null) {
+				
+				Date fechaFinCaso2 = suspensionCaso2.getFechaInicio();
+				calendar.setTime(fechaFinCaso2);
+				calendar.add(calendar.DAY_OF_YEAR, -1);
+				periodo.setFechafin(calendar.getTime());				
+				servicePeriodo.guardar(periodo);
+				calendar.setTime(periodo.getFechafin());
+				calendar.add(calendar.DAY_OF_YEAR, 1);
+				fechainicio = (calendar.getTime());
+				System.out.println("Caso 2");
+
+			}else if (suspensionCaso3!=null) {
+				
+				Date fechaFinCaso3 = suspensionCaso3.getFechaFin();
+				calendar.setTime(fechaFinCaso3);
+				calendar.add(calendar.DAY_OF_YEAR, 1);		
+				periodo.setFechainicio(calendar.getTime());
+				servicePeriodo.guardar(periodo);			
+				calendar.setTime(periodo.getFechafin());
+				calendar.add(calendar.DAY_OF_YEAR, 1);
+				fechainicio = (calendar.getTime());
+				System.out.println("Caso 3");
+
+			}else if (suspensionCaso4!=null){
+				
+				calendar.setTime(suspensionCaso4.getFechaInicio());
+				calendar.add(calendar.DAY_OF_YEAR, -1);
+				periodo.setFechafin(calendar.getTime());
+				servicePeriodo.guardar(periodo);							
+				System.out.println("Caso 4 Reinicio");
+				
+			}else if (suspensionCaso5!=null){
+				
+				calendar.setTime(suspensionCaso5.getFechaFin());
+				calendar.add(calendar.DAY_OF_YEAR, 1);
+				periodo.setFechainicio(calendar.getTime());
+				servicePeriodo.guardar(periodo);							
+				System.out.println("Caso 5 Reinicio");
+				
 			}else {
-				do
-		        {
-					Calendar calendarNuevo = Calendar.getInstance();
-					calendarNuevo.setTime(fechaFinUltimoPeriodo);
-					
-					Periodo periodoNuevo = new Periodo();
-					calendarNuevo.add(calendar.DAY_OF_YEAR, 1);
-					periodoNuevo.setFechainicio(calendarNuevo.getTime());
-					calendar.add(calendar.DAY_OF_YEAR, periodoMedida.getDiasPeriodo() - 1);
-					periodoNuevo.setFechafin(calendar.getTime());
-					periodoNuevo.setValtotplanif(new BigDecimal(0));
-					periodoNuevo.setObra(obra);
-					ultimoIdPeriodo++;
-					periodoNuevo.setId(ultimoIdPeriodo);	
-					//System.out.println(periodoNuevo.toString());
-					servicePeriodo.guardar(periodoNuevo);
-					fechaFinUltimoPeriodo = periodoNuevo.getFechafin();
-					ultimoIdPeriodo = periodoNuevo.getId();
-		        }
-		        while (!fechaFinUltimoPeriodo.after(obra.getDatefecfinobra()));
+				System.out.println("Caso 6 Reajustar "+periodo.getFechainicio());
+			}
 				
-				if (fechaFinUltimoPeriodo.after(obra.getDatefecfinobra())) {
-					Periodo per = servicePeriodo.buscarPorId(ultimoIdPeriodo);
-					per.setFechafin(obra.getDatefecfinobra());
-					servicePeriodo.guardar(per);
-				}
+			fechaFinUltimoPeriodo = periodo.getFechafin();
+			ultimoIdPeriodo = periodo.getId();
+					 
+		});	
+		
+		System.out.println("fecha ultimo periodo "+fechaFinUltimoPeriodo);
+
+		if (fechaFinUltimoPeriodo.after(obra.getDatefecfinobra())) {
+		
+			do
+	        {
+				Calendar calendarNuevo = Calendar.getInstance();
+				calendarNuevo.setTime(fechaFinUltimoPeriodo);
 				
-			}	
+				Periodo periodoNuevo = new Periodo();
+				calendarNuevo.add(calendar.DAY_OF_YEAR, 1);
+				periodoNuevo.setFechainicio(calendarNuevo.getTime());
+				calendar.add(calendar.DAY_OF_YEAR, periodoMedida.getDiasPeriodo());
+				periodoNuevo.setFechafin(calendar.getTime());
+				periodoNuevo.setValtotplanif(new BigDecimal(0));
+				periodoNuevo.setObra(obra);
+				ultimoIdPeriodo++;
+				periodoNuevo.setId(ultimoIdPeriodo);	
+				servicePeriodo.guardar(periodoNuevo);
+				fechaFinUltimoPeriodo = periodoNuevo.getFechafin();
+				ultimoIdPeriodo = periodoNuevo.getId();
+	        }
+	        while (!fechaFinUltimoPeriodo.after(obra.getDatefecfinobra()) ||  fechaFinUltimoPeriodo.compareTo(obra.getDatefecfinobra())==0);
 			
 		}
+		
 	}
 	
 	public double diasSuspension(ActividadobraWS actObra, Periodo periodo) {
