@@ -1059,7 +1059,7 @@ public class Obra  implements java.io.Serializable {
     }
 
    
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="obra")
+    @OneToMany(fetch=FetchType.EAGER, mappedBy="obra")
     public Set<Periodo> getPeriodos() {
         return this.periodos;
     }
