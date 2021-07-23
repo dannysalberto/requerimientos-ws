@@ -21,9 +21,9 @@ public class ActividadObraPeriodo {
 
 	@Id
 	@NotNull
-	@SequenceGenerator(name="seq_actividad_obra_periodo_new",sequenceName="seq_actividad_obra_periodo_new",
+	@SequenceGenerator(name="relacionactividadobraperiodo_oidnmid_seq",sequenceName="relacionactividadobraperiodo_oidnmid_seq",
      	allocationSize=1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="seq_actividad_obra_periodo_new")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="relacionactividadobraperiodo_oidnmid_seq")
 	@Column(name="oidnmid")
 	private long id;
 	

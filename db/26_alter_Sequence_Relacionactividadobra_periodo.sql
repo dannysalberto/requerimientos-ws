@@ -1,0 +1,1 @@
+SELECT setval('public.seq_actividad_obra_periodo_new', 95700, true);
