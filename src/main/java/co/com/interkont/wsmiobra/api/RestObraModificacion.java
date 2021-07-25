@@ -430,6 +430,7 @@ public class RestObraModificacion {
 			// TODO: handle exception
 			ResponseGeneric response = new ResponseGeneric();
 			response.setStatus(false);
+			System.out.println(e.getMessage());
 			response.setMessage(e.getMessage());
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.BAD_REQUEST);	
 		}

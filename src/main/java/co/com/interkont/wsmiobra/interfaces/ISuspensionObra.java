@@ -1,6 +1,7 @@
 package co.com.interkont.wsmiobra.interfaces;
 
 import java.util.Date;
+import java.util.List;
 
 import co.com.interkont.wsmiobra.models.SuspensionObra;
 
@@ -22,5 +23,6 @@ public interface ISuspensionObra {
 	/*fecha de fin igual a fecha inicio periodo*/
 	SuspensionObra getPorObraCaso5(Integer idObra, Date fechaInicio);
 
+	List<SuspensionObra> getSuspensiones(Integer idObra);
 
 }

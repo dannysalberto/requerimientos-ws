@@ -59,8 +59,11 @@ public class PeriodoService implements IPeriodo {
 			//System.out.println("periodo borrado "+per);
 		}catch (Exception e) {
 			Periodo periodo = buscarPorId(per);
-			periodo.setValtotplanif(new BigDecimal(0));
-			repository.save(periodo);
+			if (periodo != null) {
+				periodo.setValtotplanif(new BigDecimal(0));
+				repository.save(periodo);	
+			}			
+			
 		}
 	}
 
@@ -84,7 +87,12 @@ public class PeriodoService implements IPeriodo {
 
 	@Override
 	public void eliminarAll(List<Periodo> lstperiodos) {
-		repository.deleteInBatch(lstperiodos);
+		try {
+			repository.deleteInBatch(lstperiodos);
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Override

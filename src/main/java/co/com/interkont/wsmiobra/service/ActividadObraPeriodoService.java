@@ -26,6 +26,12 @@ public class ActividadObraPeriodoService implements IActividadObraPeriodo{
 		// TODO Auto-generated method stub
 		actividadObraPeriodo.forEach((act)->{
 			repository.deleteById(act.getId());
+//			try {
+//				repository.deleteById(act.getId());
+//			}catch (Exception e) {
+//				// TODO: handle exception
+//				System.out.println("Se ha intentado borrar un periodo que no existe o tiene alimentación");
+//			}
 		});
 		//repository.deleteInBatch(actividadObraPeriodo);		
 	}

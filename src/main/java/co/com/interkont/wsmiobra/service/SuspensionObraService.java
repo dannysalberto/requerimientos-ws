@@ -1,6 +1,7 @@
 package co.com.interkont.wsmiobra.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,12 @@ public class SuspensionObraService implements ISuspensionObra{
 	public SuspensionObra getPorObraCaso5(Integer idObra, Date fechaInicio) {
 		// TODO Auto-generated method stub
 		return repository.findByObra_IdAndFechaFin(idObra, fechaInicio);
+	}
+
+	@Override
+	public List<SuspensionObra> getSuspensiones(Integer idObra) {
+		// TODO Auto-generated method stub
+		return repository.findByObra_IdOrderByFechaInicioAsc(idObra);
 	}
 
 }

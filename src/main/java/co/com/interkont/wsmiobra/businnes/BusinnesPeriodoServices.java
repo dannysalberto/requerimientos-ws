@@ -177,8 +177,6 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 		}
 	}
 
-	
-
 	@Override
 	public ResponseGeneric planeacionPorPeriodo(Integer idObra) {
 
@@ -196,7 +194,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 			rspconfirmacion.setMessage(Constantes.ESTADO_OBRA_INCORRECTO);
 			return rspconfirmacion;
 		}	
-		
+
 		/*
 		 * necesitamos crear un registro ActividadObraPeriodo por cada Periodo}
 		 * 
@@ -211,7 +209,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 		List<ActividadobraWS> lstactividadObra = serviceactividadWS.desplegarTodos(obra); 
 	
 		lstactividadObra.forEach((actObra)-> {
-			List<Periodo> lstPeriodos = periodosGenerados;
+			List<Periodo> lstPeriodos = servicePeriodo.ListarPorObra(obra.getId());
 			for (int i = 0; i < lstPeriodos.size(); i++) {			
 				ActividadObraPeriodo actividadObraPeriodo = new ActividadObraPeriodo(); 
 				actividadObraPeriodo.setActividadObra(actObra);
@@ -447,9 +445,11 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 		
 		Calendar calendar = Calendar.getInstance();
 
-		Stream<SuspensionObra> lstSuspensiones = obra.getSuspensionesobra().stream()
+		/*Stream<SuspensionObra> lstSuspensiones = obra.getSuspensionesobra().stream()
 				.sorted(Comparator.comparing(SuspensionObra::getFechaInicio,Comparator.naturalOrder()));	
-
+		*/
+		List<SuspensionObra> lstSuspensiones  = serviceSuspensionObra.getSuspensiones(obra.getId());
+		
 		lstSuspensiones.forEach(suspension->{
 			bReinicializarRangos = false;
 			
@@ -470,15 +470,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 					
 					
 				}
-				/*if (lstPeriodos.get(i).getFechainicio().getTime()>=suspension.getFechaInicio().getTime()
-						&& lstPeriodos.get(i).getFechafin().getTime()<=suspension.getFechaFin().getTime()) {
-
-						servicePeriodo.eliminar(lstPeriodos.get(i).getId());
-						calendar.setTime(suspension.getFechaFin());
-						//lstPeriodos = servicePeriodo.ListarPorObra(obra.getId());
-						System.out.println("caso 1 "+lstPeriodos.get(i).getFechainicio());
-					
-				}else */
+		
 				if (lstPeriodos.get(i).getFechafin().getTime()>=suspension.getFechaInicio().getTime()
 						&& lstPeriodos.get(i).getFechainicio().getTime()<suspension.getFechaInicio().getTime()) {
 					
@@ -513,16 +505,18 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 				servicePeriodo.guardar(lstPeriodos.get(i));
 				
 			}
-			List<Periodo> lstPeriodoBorrar = servicePeriodo.ListarPorObraFecha(obra.getId(), suspension.getFechaInicio(), suspension.getFechaFin());
-			lstPeriodoBorrar.forEach(arg0->{
-				servicePeriodo.eliminar(arg0.getId());
-			});
+			if (lstPeriodos.size()>0) {
+				List<Periodo> lstPeriodoBorrar = servicePeriodo.ListarPorObraFecha(obra.getId(), suspension.getFechaInicio(), suspension.getFechaFin());
+				lstPeriodoBorrar.forEach(arg0->{
+					servicePeriodo.eliminar(arg0.getId());
+				});
+				fechaFinUltimoPeriodo = lstPeriodos.get(lstPeriodos.size()-1).getFechafin();	
+			}
 			
-			fechaFinUltimoPeriodo = lstPeriodos.get(lstPeriodos.size()-1).getFechafin();
 		});
-
 		
-		if (fechaFinUltimoPeriodo.after(obra.getDatefecfinobra())) {
+
+		if (fechaFinUltimoPeriodo!=null && fechaFinUltimoPeriodo.getTime()<=obra.getDatefecfinobra().getTime()) {
 			generarNuevosPeriodos(obra, obra.getDatefecfinobra(), periodoMedida.getDiasPeriodo(), fechaFinUltimoPeriodo);		
 		}
 		
@@ -556,13 +550,16 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 				periodoNuevo.setFechainicio(calendarNuevo.getTime());
 				
 				long diasEntreFechas = (1+ (fechaLimiteGen.getTime()-fechaFinUltimoPeriodo.getTime())/1000/3600/24);
-				periodoMedida = (diasEntreFechas<periodoMedida) ? diasEntreFechas : periodoMedida;
-				periodoMedida = periodoMedida - 1;
-				if (periodoMedida <0) {
-					System.out.println("Menor que cero "+periodoMedida);
-				}
+				periodoMedida = (diasEntreFechas<periodoMedida) ? diasEntreFechas : periodoMedida -1;
+
+				System.out.println("Menor que cero "+periodoMedida);
 				calendarNuevo.add(calendarNuevo.DAY_OF_YEAR, (int) periodoMedida);
 				periodoNuevo.setFechafin(calendarNuevo.getTime());
+				if (periodoNuevo.getFechafin().getTime()>obra.getDatefecfinobra().getTime()){
+					System.out.println("Menriodo mamamamamor que cero "+periodoMedida);
+
+					periodoNuevo.setFechafin(obra.getDatefecfinobra());
+				}	
 				periodoNuevo.setValtotplanif(new BigDecimal(0));
 				periodoNuevo.setObra(obra);
 				ultimoIdPeriodo++;
@@ -570,10 +567,13 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 
 				servicePeriodo.guardar(periodoNuevo);
 				fechaFinUltimoPeriodo = periodoNuevo.getFechafin();
+				
 				fechainicio = periodoNuevo.getFechainicio();
 				System.out.println(periodoNuevo.toString());
 			}
 	        while ((fechaFinUltimoPeriodo.getTime()<fechaLimiteGen.getTime()));
+			
+
 		
 	}
 	

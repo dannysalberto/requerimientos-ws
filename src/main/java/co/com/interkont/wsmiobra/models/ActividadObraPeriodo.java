@@ -14,6 +14,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 
 @Entity
 @Table(name="relacionactividadobraperiodo",schema="public")
@@ -39,6 +42,7 @@ public class ActividadObraPeriodo {
 	
 	@ManyToOne
 	@JoinColumn(name="intidperiodo",columnDefinition="integer NOT NULL")
+    @NotFound(action=NotFoundAction.IGNORE)
 	private Periodo periodo;
 	
 
