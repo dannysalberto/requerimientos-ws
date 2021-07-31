@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import co.com.interkont.wsmiobra.dto.Obra;
+import co.com.interkont.wsmiobra.models.Contrato;
 
 
 @Repository
@@ -31,6 +32,19 @@ public interface ObrasRepository extends JpaRepository<Obra, Integer>{
 			"        GROUP BY rco.intcodigoobra) cto on o.intcodigoobra=cto.intcodigoobra"+
 			" WHERE o.intcodigoobra=?1" , nativeQuery = true)
 	Integer tieneContratoObra(Integer idObra);
+	
+	@Query(value="SELECT cto.intidcontrato,cto.strnumcontrato,cto.valorDisponible,cto.inttipocontrato,"
+			+ "cto.numvlrsumaproyectos,cto.numvlrcontrato,cto.datefechafin FROM contrato cto INNER JOIN relacioncontratoobra rcto"
+			+ " ON cto.intidcontrato=rcto.intidcontrato "
+			+ " WHERE cto.inttipocontrato IS NOT NULL AND "
+			+ " rcto.intcodigoobra=?1" , nativeQuery = true)
+	Contrato ContratoEjecucion(Integer idObra);
+	
+	@Query(value="SELECT cto.datefechafin FROM contrato cto INNER JOIN relacioncontratoobra rcto"
+			+ " ON cto.intidcontrato=rcto.intidcontrato "
+			+ " WHERE cto.inttipocontrato IS NOT NULL AND "
+			+ " rcto.intcodigoobra=?1" , nativeQuery = true)
+	Date FechaContratoEjecucion(Integer idObra);
 	
 	@Query("SELECT MAX(c.datefecha) FROM Alimentacion c where c.intcodigoobra = ?1")
 	Date fechaMaxAlimentacion(Integer idObra);

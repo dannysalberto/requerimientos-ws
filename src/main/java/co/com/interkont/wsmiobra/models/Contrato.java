@@ -1,6 +1,7 @@
 package co.com.interkont.wsmiobra.models;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +40,8 @@ public class Contrato {
 	@Column(name="numvlrcontrato",columnDefinition="NUMERIC(20,6)")
 	private BigDecimal numvlrcontrato;
 	
-	
+	@Column(name="datefechafin")
+	private Date datefechafin;
 
 	public String getNumeroContrato() {
 		return numeroContrato;
@@ -106,6 +108,20 @@ public class Contrato {
 		this.numvlrcontrato = numvlrcontrato;
 	}
 
+	/**
+	 * @return the datefechafin
+	 */
+	public Date getDatefechafin() {
+		return datefechafin;
+	}
+
+	/**
+	 * @param datefechafin the datefechafin to set
+	 */
+	public void setDatefechafin(Date datefechafin) {
+		this.datefechafin = datefechafin;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -113,7 +129,7 @@ public class Contrato {
 	public String toString() {
 		return "Contrato [id=" + id + ", numeroContrato=" + numeroContrato + ", valorDisponible=" + valorDisponible
 				+ ", tipoContrato=" + tipoContrato + ", numvlrsumaproyectos=" + numvlrsumaproyectos
-				+ ", numvlrcontrato=" + numvlrcontrato + "]";
+				+ ", numvlrcontrato=" + numvlrcontrato + ", datefechafin=" + datefechafin + "]";
 	}
 
 	

@@ -321,6 +321,7 @@ public class RestObraModificacion {
 				Obra.setId(obra.getId());
 				Obra.setFechaFin(obra.getDatefecfinobra());
 				Obra.setFechaInicio(obra.getDatefeciniobra());
+				Obra.setFechaFinMaxima(serviceObra.fechaContratoEjecucion(obra.getId()));
 				Object ret = Obra;			
 				response.setObj(ret);
 			}
@@ -328,7 +329,10 @@ public class RestObraModificacion {
 			response.setMessage(Constantes.MODIFICACION_INICIADA_NOTFOUND);
 			
 			return new ResponseEntity<>(response, HttpStatus.OK);	
+		}else {
+			obraModificacion.setFechaFinMaxima(serviceObra.fechaContratoEjecucion(idobra));
 		}
+
 		List<RelacionContratoObra> lstRelacionContratoObra = 
 				serviceRelacionContratoObra.desplegarPorObra(obraModificacion.getObraid());
 
@@ -400,9 +404,16 @@ public class RestObraModificacion {
 			serviceObraModificacion.actualizar(obraModificacion);
 			
 			obra.setIntestadoobra(Constantes.ESTADO_OBRA_EJECUCION);
-			serviceObra.actualizar(obra);
+			obra.setPeriodos(null);
+			try {
+				serviceObra.actualizar(obra);				
+			}catch (Exception e) {
+				// TODO: handle exception
+				System.out.println(e);
+			}
 
 			//vamos a actualizar los datos de contratoObra
+			/*
 			List<RelacionContratoObra> lstRelacionContratoObra = 
 					serviceRelacionContratoObra.desplegarPorObra(obraModificacion.getObraid());
 			
@@ -420,6 +431,8 @@ public class RestObraModificacion {
 								.subtract(obraModificacion.getNumvaltotobra())));
 			serviceContrato.guardar(relaConObra.getContrato());
 			//fin actualización		
+			*/
+			
 			
 			ResponseGeneric response = new ResponseGeneric();
 			response.setStatus(true);

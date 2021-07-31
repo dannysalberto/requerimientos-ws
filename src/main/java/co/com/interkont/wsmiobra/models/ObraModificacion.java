@@ -93,6 +93,10 @@ public class ObraModificacion implements Serializable{
 	@OneToMany(mappedBy="obraModificacion",fetch=FetchType.LAZY)
 	private List<RelacionContratoObra> relacioncontratos = new ArrayList<>();
 	
+	@Transient
+	@JsonProperty(value="fechaFinMaxima")
+	private Date fechaFinMaxima;
+	
 	/**/
 	@Column(name="newdatefecfinobra",columnDefinition="DATE")
 	private Date newfechafin;
@@ -332,5 +336,21 @@ public class ObraModificacion implements Serializable{
 		
 		
 	}
+
+	/**
+	 * @return the fechaFinMaxima
+	 */
+	public Date getFechaFinMaxima() {
+		return fechaFinMaxima;
+	}
+
+	/**
+	 * @param fechaFinMaxima the fechaFinMaxima to set
+	 */
+	public void setFechaFinMaxima(Date fechaFinMaxima) {
+		this.fechaFinMaxima = fechaFinMaxima;
+	}
+	
+	
 
 }

@@ -135,7 +135,9 @@ public class Obra  implements java.io.Serializable {
      private Integer intIdterceroConstructor;
      private Integer intidsubsector;
      //private Set<Actividadobra> actividadobras = new HashSet<Actividadobra>(0);
-     private List<ActividadobraWS> actividadesobras; 	 
+     private List<ActividadobraWS> actividadesobras; 	
+     
+ 	 @Transient
      private Set<Periodo> periodos = new HashSet<Periodo>(0);
      private Set<Obra> obras = new HashSet<Obra>(0);
 

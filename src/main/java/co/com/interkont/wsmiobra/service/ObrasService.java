@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import co.com.interkont.wsmiobra.config.Constantes;
 import co.com.interkont.wsmiobra.dto.Obra;
 import co.com.interkont.wsmiobra.interfaces.IObraWS;
+import co.com.interkont.wsmiobra.models.Contrato;
 import co.com.interkont.wsmiobra.repository.ObrasRepository;
 
 @Service
@@ -97,6 +98,23 @@ public class ObrasService implements IObraWS {
 		}catch (Exception e) {
 			return null;
 			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public Contrato ContratoEjecucion(Integer idObra) {
+		// TODO Auto-generated method stub
+		return obrasRepository.ContratoEjecucion(idObra);
+	}
+
+	@Override
+	public Date fechaContratoEjecucion(Integer idObra) {
+		// TODO Auto-generated method stub
+		try {
+			return obrasRepository.FechaContratoEjecucion(idObra);			
+		}catch (Exception e) {
+			// TODO: handle exception
+			return null;
 		}
 	}
 	

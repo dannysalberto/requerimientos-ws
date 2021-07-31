@@ -58,6 +58,7 @@ public class PeriodoService implements IPeriodo {
 			repository.deleteById(per);
 			//System.out.println("periodo borrado "+per);
 		}catch (Exception e) {
+			System.out.println(e.getMessage());
 			Periodo periodo = buscarPorId(per);
 			if (periodo != null) {
 				periodo.setValtotplanif(new BigDecimal(0));

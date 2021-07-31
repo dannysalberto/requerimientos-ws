@@ -222,7 +222,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 
 		lstactividadObra.forEach((actObra)-> {
 
-			List<Periodo> lstPeriodos = periodosGenerados;
+			List<Periodo> lstPeriodos = servicePeriodo.ListarPorObra(obra.getId());
 			BigDecimal diarioActividad = new BigDecimal(0);
 			double DiasPeriodo = 0;
 			double porcionDiasPeriodo = 0;
@@ -444,7 +444,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 	private void validateSuspension(Obra obra, PeriodoMedida periodoMedida) {
 		
 		Calendar calendar = Calendar.getInstance();
-
+		fechaFinUltimoPeriodo = obra.getDatefeciniobra(); //el ultimo periodo o la fecha de inicio de la obra en caso de no existir periodos
 		/*Stream<SuspensionObra> lstSuspensiones = obra.getSuspensionesobra().stream()
 				.sorted(Comparator.comparing(SuspensionObra::getFechaInicio,Comparator.naturalOrder()));	
 		*/
@@ -515,7 +515,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 			
 		});
 		
-
+		
 		if (fechaFinUltimoPeriodo!=null && fechaFinUltimoPeriodo.getTime()<=obra.getDatefecfinobra().getTime()) {
 			generarNuevosPeriodos(obra, obra.getDatefecfinobra(), periodoMedida.getDiasPeriodo(), fechaFinUltimoPeriodo);		
 		}
@@ -539,7 +539,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 	 */
 	private void generarNuevosPeriodos(Obra obra, Date fechaLimiteGen, long periodoMedida, Date fechaFinUltimoPeriodo) {
 			System.out.println("generarNuevosPeriodos");
-
+			int periodoMedidaAux = (int) periodoMedida;
 			do
 	        {
 				Calendar calendarNuevo = Calendar.getInstance();
@@ -550,10 +550,10 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 				periodoNuevo.setFechainicio(calendarNuevo.getTime());
 				
 				long diasEntreFechas = (1+ (fechaLimiteGen.getTime()-fechaFinUltimoPeriodo.getTime())/1000/3600/24);
-				periodoMedida = (diasEntreFechas<periodoMedida) ? diasEntreFechas : periodoMedida -1;
+				periodoMedidaAux = (int) ((diasEntreFechas<periodoMedida) ? diasEntreFechas : periodoMedida -1);
 
 				System.out.println("Menor que cero "+periodoMedida);
-				calendarNuevo.add(calendarNuevo.DAY_OF_YEAR, (int) periodoMedida);
+				calendarNuevo.add(calendarNuevo.DAY_OF_YEAR, (int) periodoMedidaAux);
 				periodoNuevo.setFechafin(calendarNuevo.getTime());
 				if (periodoNuevo.getFechafin().getTime()>obra.getDatefecfinobra().getTime()){
 					System.out.println("Menriodo mamamamamor que cero "+periodoMedida);

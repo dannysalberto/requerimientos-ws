@@ -14,6 +14,9 @@ public class ObraSoloFechasResponse implements Serializable{
 
 	@JsonProperty(value="fechaFinInicial")
 	private Date fechaFin;
+	
+	@JsonProperty(value="fechaFinMaxima")
+	private Date fechaFinMaxima;
 
 	/**
 	 * @return the id
@@ -55,6 +58,20 @@ public class ObraSoloFechasResponse implements Serializable{
 	 */
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
+	}
+
+	/**
+	 * @return the fechaFinMaxina
+	 */
+	public Date getFechaFinMaxima() {
+		return fechaFinMaxima;
+	}
+
+	/**
+	 * @param fechaFinMaxina the fechaFinMaxina to set
+	 */
+	public void setFechaFinMaxima(Date fechaFinMaxima) {
+		this.fechaFinMaxima = fechaFinMaxima;
 	}
 
 	

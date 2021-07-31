@@ -3,6 +3,7 @@ package co.com.interkont.wsmiobra.interfaces;
 import java.util.Date;
 
 import co.com.interkont.wsmiobra.dto.Obra;
+import co.com.interkont.wsmiobra.models.Contrato;
 
 public interface IObraWS {
 
@@ -14,6 +15,10 @@ public interface IObraWS {
 	Integer cantidadActividades(Integer idObra); //cabecera de totales cronograma Web
 	boolean tieneContratoObra(Integer idObra);
 	Date fechaMaxAlimentacion(Integer idObra);
+	Contrato ContratoEjecucion(Integer idObra);
+	Date fechaContratoEjecucion(Integer idObra);
+
+
 
 
 }
