@@ -2,11 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+	<!-- no agregar lineas en esta sección sin antes validar con script de jenkins -->
 	<groupId>co.com.interkont</groupId>
 	<artifactId>cobra-ws</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<!-- no agregar lineas antes de este comentario sin antes validar con script de jenkins -->
 	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
