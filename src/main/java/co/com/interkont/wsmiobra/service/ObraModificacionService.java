@@ -47,29 +47,40 @@ public class ObraModificacionService implements IObraModificacion{
 	@Override
 	public Double totalPrecioActividades(Integer id) {
 		// TODO Auto-generated method stub
-		Double ret = repo.totalActividades(id);
-		if (ret == null) {
-			return (double) 0;
+		double total = 0;
+		try {
+			total = repo.totalActividades(id);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-		return ret;
+		return total;
+	
 	}
 
 	@Override
 	public Double totalCostoDirecto(Integer id) {
 		// TODO Auto-generated method stub
-		Double ret = repo.totalCostoDirecto(id);
-		if (ret == null) {
-			return (double) 0;
+		
+		double total = 0;
+		try {
+			total = repo.totalCostoDirecto(id);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-		return ret;
+		return total;
+		
 	}
 
 	@Override
 	public Integer cantidadActividades(Integer idObra) {
 		// TODO Auto-generated method stub
-		Integer ret = repo.cantidadActividades(idObra);
-		if (ret == null) {
-			return  0;
+		
+		Integer ret = 0;
+		try {
+			ret = repo.cantidadActividades(idObra);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			// TODO: handle exception
 		}
 		return ret;
 		

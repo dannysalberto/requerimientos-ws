@@ -16,6 +16,6 @@ public interface SuspensionObraRepository extends JpaRepository<SuspensionObra, 
 	SuspensionObra findByObra_IdAndFechaFinGreaterThanAndFechaFinLessThan(Integer idObra, Date FechaIni,Date FechaFin);
 	SuspensionObra findByObra_IdAndFechaInicio(Integer idObra, Date fechaFin);
 	SuspensionObra findByObra_IdAndFechaFin(Integer idObra, Date fechaInicio);
-	List<SuspensionObra> findByObra_IdOrderByFechaInicioAsc(Integer idObra);
+	List<SuspensionObra> findByObra_IdAndFechaFinNotNullOrderByFechaInicioAsc(Integer idObra);
 
 }

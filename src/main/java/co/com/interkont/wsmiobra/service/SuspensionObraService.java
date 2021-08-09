@@ -50,7 +50,7 @@ public class SuspensionObraService implements ISuspensionObra{
 	@Override
 	public List<SuspensionObra> getSuspensiones(Integer idObra) {
 		// TODO Auto-generated method stub
-		return repository.findByObra_IdOrderByFechaInicioAsc(idObra);
+		return repository.findByObra_IdAndFechaFinNotNullOrderByFechaInicioAsc(idObra);
 	}
 
 }
