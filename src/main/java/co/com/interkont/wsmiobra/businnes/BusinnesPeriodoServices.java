@@ -250,6 +250,7 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 			diasTotalActividad = diasSuspension(actObra);
 			diarioActividad = actObra.getValortotalactividadaiu()
 					.divide(new BigDecimal(Math.max(diasTotalActividad,1)),6,RoundingMode.HALF_EVEN);
+
 			for (int i = 0; i < lstPeriodos.size(); i++) {				
 			
 				if (obra.getIntestadoobra() != Constantes.ESTADO_OBRA_SUSPENDIDA) {
@@ -309,42 +310,51 @@ public class BusinnesPeriodoServices implements ICalculosPeriodo{
 					}
 					
 				}
-			
+				
+				
 				porcionDiasPeriodo =  Utils.truncateDecimal((DiasPeriodo * 
 						actObra.getFloatcantplanifao().doubleValue())/Math.max(diasTotalActividad,1), 4).doubleValue();
 				porcionDiasPeriodo = porcionDiasPeriodo > 0 ? porcionDiasPeriodo : 0;
-				if (actObra.getOidactiviobra()==6209) {
-					System.out.println("ATRAPANDO ERROR");
+				DiasPeriodo = (DiasPeriodo < 0) ? 0 : DiasPeriodo;
 
-				}
 				if (obra.getIntestadoobra() == Constantes.ESTADO_OBRA_MODIFICACION) {
 					if (DiasPeriodo>0 || porcionDiasPeriodo==0) {
 						ActividadObraPeriodo actObraPer = 
 								serviceActividadObraPeriodo.buscarPorPeriodoActividad(lstPeriodos.get(i).getId(),
 										actObra.getOidactiviobra());
+						System.out.println(i);
+						System.out.println(porcionDiasPeriodo);
+						System.out.println(acumCantidad);
+						System.out.println(acumvalPlanif);						
+						System.out.println(lstPeriodos.get(i));
+						System.out.println(actObra);
+						System.out.println("====================");
 
-						if ((i==lstPeriodos.size()-1) || (i>0 && porcionDiasPeriodo==0)){
+						
+						if ((i==lstPeriodos.size()-1) || 
+								lstactividadObra.get(lstactividadObra.size()-1).getFechafin().getTime()>=
+								lstPeriodos.get(i).getFechainicio().getTime() &&
+								lstactividadObra.get(lstactividadObra.size()-1).getFechafin().getTime()<=
+								lstPeriodos.get(i).getFechafin().getTime() ){
 							
 							actObraPer.setCantidadPlanif(actObra.getFloatcantplanifao().subtract(acumCantidad));
 							actObraPer.setValPlanif(actObra.getValortotalactividadaiu().subtract(acumvalPlanif));	
-							System.out.println("REGISTRANDO RESTO DE PERIODO");
+							System.out.println("REGISTRANDO RESTO DE PERIODO" + actObraPer.getCantidadPlanif());
 							acumCantidad = actObra.getFloatcantplanifao();
 							acumvalPlanif = actObra.getValortotalactividadaiu();
-							
-						}else {
-							System.out.println(acumvalPlanif.doubleValue());
-							actObraPer.setCantidadPlanif(new BigDecimal(porcionDiasPeriodo));											
-							actObraPer.setValPlanif(diarioActividad.multiply(new BigDecimal(DiasPeriodo)));
-							acumCantidad = acumCantidad.add(new BigDecimal(porcionDiasPeriodo));
-							acumvalPlanif = acumvalPlanif.add(actObraPer.getValPlanif());
+						}else {							
+								actObraPer.setCantidadPlanif(new BigDecimal(porcionDiasPeriodo));											
+								actObraPer.setValPlanif(diarioActividad.multiply(new BigDecimal(DiasPeriodo)));
+								acumCantidad = acumCantidad.add(new BigDecimal(porcionDiasPeriodo));
+								acumvalPlanif = acumvalPlanif.add(actObraPer.getValPlanif());
 						}	
-												
-						serviceActividadObraPeriodo.guardar(actObraPer);							
+						serviceActividadObraPeriodo.guardar(actObraPer);	
+
 						lstPeriodos.get(i).setValtotplanif(
 						lstPeriodos.get(i).getValtotplanif()
 							.add(actObraPer.getValPlanif()));
-						servicePeriodo.guardar(lstPeriodos.get(i));		
-		
+						servicePeriodo.guardar(lstPeriodos.get(i));	
+								
 					}			
 
 				}else {
