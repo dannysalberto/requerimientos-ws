@@ -13,5 +13,7 @@ import co.com.interkont.wsmiobra.models.ActividadobraWS;
 public interface ActividadObraRepositoryWS extends JpaRepository<ActividadobraWS, Integer>{
 
 	List<ActividadobraWS> findByObra(Obra obra);
+	List<ActividadobraWS> findByObraOrderByOidactiviobra(Obra obra);
+
 	
 }

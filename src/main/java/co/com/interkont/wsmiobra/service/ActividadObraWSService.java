@@ -68,6 +68,12 @@ public class ActividadObraWSService implements IActividadObraWS {
 		// TODO Auto-generated method stub
 		return repository.findByObra(obra);
 	}
+
+	@Override
+	public List<ActividadobraWS> desplegarTodosOrdenado(Obra obra) {
+		// TODO Auto-generated method stub
+		return repository.findByObraOrderByOidactiviobra(obra);
+	}
 	
 	
 	

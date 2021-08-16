@@ -8,4 +8,6 @@ public interface ICalculosPeriodo {
 
 	ResponseGeneric planeacionPorPeriodo(Integer idObra);
 
+	ResponseGeneric planeacionPorPeriodoBack(Integer idObra);
+
 }

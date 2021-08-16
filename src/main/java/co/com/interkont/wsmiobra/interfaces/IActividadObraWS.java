@@ -14,6 +14,8 @@ public interface IActividadObraWS {
 	ActividadobraWS buscarPorId(Integer id);
 	List<ActividadobraWS> desplegarTodos(Pageable page);
 	List<ActividadobraWS> desplegarTodos(Obra obra);
+	List<ActividadobraWS> desplegarTodosOrdenado(Obra obra);
+
 
 	/*
 	List<ActividadobraWS> desplegarActividadObra_Obra(Integer idObra);
