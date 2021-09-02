@@ -51,7 +51,7 @@ public interface ObrasRepository extends JpaRepository<Obra, Integer>{
 	
 	@Query(value="SELECT cto.datefechafin FROM contrato cto INNER JOIN relacioncontratoobra rcto"
 			+ " ON cto.intidcontrato=rcto.intidcontrato "
-			+ " WHERE cto.inttipocontrato IS NOT NULL AND "
+			+ " WHERE cto.inttipocontrato > 0 AND "
 			+ " rcto.intcodigoobra=?1" , nativeQuery = true)
 	Date FechaContratoEjecucion(Integer idObra);
 	
