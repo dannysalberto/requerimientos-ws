@@ -159,6 +159,8 @@ public class RestObraModificacion {
 			obraModificacion.setNewfechafin(obra.getDatefecfinobra());
 			obraModificacion.setNewnumvaltotobra(obra.getNumvaltotobra());
 			obraModificacion.setNewplazo(obra.getIntplazoobra());
+			obraModificacion.setUsuariocre(request.getUsuario());
+			obraModificacion.setFechacre(new Date());
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			
 			String fechaMaxAlim = null;
@@ -247,6 +249,8 @@ public class RestObraModificacion {
 			obraMod.setNewplazo(request.getPlazo());	
 			serviceBussinnesObra.ajustarFechaObra(obraMod);
 			obraMod = this.reajustarCalculosModificacion(obraMod.getObraid());
+			obraMod.setUsuarioupd(request.getUsuario());
+			obraMod.setFechaupd(new Date());
 			obraMod = serviceObraModificacion.actualizar(obraMod);
 			return new ResponseEntity<ObraModificacion>(obraMod, HttpStatus.OK);			
 		}else {
@@ -275,6 +279,8 @@ public class RestObraModificacion {
 				e.printStackTrace();
 			}
 			obraMod.setJustificacionModificacion(request.getJustificacionModificacion());
+			obraMod.setUsuarioupd(request.getUsuario());
+			obraMod.setFechaupd(new Date());
 			obraMod = serviceObraModificacion.actualizar(obraMod);
 			//serviceBussinnesObra.ajustarFechaObra(obraMod);
 			return new ResponseEntity<ObraModificacion>(obraMod, HttpStatus.OK);			

@@ -40,6 +40,9 @@ public class Contrato {
 	@Column(name="numvlrcontrato",columnDefinition="NUMERIC(20,6)")
 	private BigDecimal numvlrcontrato;
 	
+	@Column(name="datefechaini")
+	private Date datefechaini;
+	
 	@Column(name="datefechafin")
 	private Date datefechafin;
 
@@ -108,6 +111,23 @@ public class Contrato {
 		this.numvlrcontrato = numvlrcontrato;
 	}
 
+	
+	
+
+	/**
+	 * @return the datefechaini
+	 */
+	public Date getDatefechaini() {
+		return datefechaini;
+	}
+
+	/**
+	 * @param datefechaini the datefechaini to set
+	 */
+	public void setDatefechaini(Date datefechaini) {
+		this.datefechaini = datefechaini;
+	}
+
 	/**
 	 * @return the datefechafin
 	 */
@@ -129,9 +149,11 @@ public class Contrato {
 	public String toString() {
 		return "Contrato [id=" + id + ", numeroContrato=" + numeroContrato + ", valorDisponible=" + valorDisponible
 				+ ", tipoContrato=" + tipoContrato + ", numvlrsumaproyectos=" + numvlrsumaproyectos
-				+ ", numvlrcontrato=" + numvlrcontrato + ", datefechafin=" + datefechafin + "]";
+				+ ", numvlrcontrato=" + numvlrcontrato + ", datefechaini=" + datefechaini + ", datefechafin="
+				+ datefechafin + "]";
 	}
-
+	
+	
 	
 
 	

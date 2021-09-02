@@ -18,6 +18,8 @@ public class ObraModificacionRequest {
 	
 	@NotEmpty(message="No puede dejar el registro sin justificación")
 	private String justificacionModificacion;
+	
+	private String usuario;
 
 	public int getId() {
 		return id;
@@ -43,6 +45,21 @@ public class ObraModificacionRequest {
 		this.justificacionModificacion = justificacionModificacion;
 	}
 
+	/**
+	 * @return the usuario
+	 */
+	public String getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	
 	
 	
 	

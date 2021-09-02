@@ -5,9 +5,6 @@ import co.com.interkont.wsmiobra.models.ResponseGeneric;
 public interface ICalculosPeriodo {
 
 	boolean generarPeriodos(Obra obra);
-
 	ResponseGeneric planeacionPorPeriodo(Integer idObra);
-
-	ResponseGeneric planeacionPorPeriodoBack(Integer idObra);
 
 }

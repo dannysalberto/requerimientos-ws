@@ -18,6 +18,8 @@ public class ObraUpdateRequest {
 	
 	private Integer plazo;
 	
+	private String usuario;
+
  
 	
 	/**
@@ -48,6 +50,20 @@ public class ObraUpdateRequest {
 
 	public void setPlazo(Integer plazo) {
 		this.plazo = plazo;
+	}
+
+	/**
+	 * @return the usuario
+	 */
+	public String getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
 

@@ -18,7 +18,8 @@ public class ActividadObraPeriodoService implements IActividadObraPeriodo{
 	@Override
 	public void guardar(ActividadObraPeriodo actividadObraPeriodo) {
 		// TODO Auto-generated method stub
-		repository.save(actividadObraPeriodo);		
+		repository.save(actividadObraPeriodo);			
+		
 	}
 
 	@Override

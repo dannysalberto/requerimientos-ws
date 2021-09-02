@@ -119,6 +119,19 @@ public class ObraModificacion implements Serializable{
 	@Column(name="fechaminimafin",columnDefinition="DATE")
     private Date fechaMinimaFin;
    
+	
+	@Column(name="usuario_cre",columnDefinition="VARCHAR(30)")
+    private String usuariocre;
+   
+	@Column(name="usuario_upd",columnDefinition="VARCHAR(30)")
+    private String usuarioupd;
+   
+	@Column(name="fecha_cre",columnDefinition="TIMESTAMP")
+    private Date fechacre;
+   
+	@Column(name="fecha_upd",columnDefinition="TIMESTAMP")
+    private Date fechaupd;
+   
 
     public Integer getId() {
 		return id;
@@ -350,6 +363,64 @@ public class ObraModificacion implements Serializable{
 	public void setFechaFinMaxima(Date fechaFinMaxima) {
 		this.fechaFinMaxima = fechaFinMaxima;
 	}
+
+	/**
+	 * @return the usuariocre
+	 */
+	public String getUsuariocre() {
+		return usuariocre;
+	}
+
+	/**
+	 * @param usuariocre the usuariocre to set
+	 */
+	public void setUsuariocre(String usuariocre) {
+		this.usuariocre = usuariocre;
+	}
+
+	/**
+	 * @return the usuarioupd
+	 */
+	public String getUsuarioupd() {
+		return usuarioupd;
+	}
+
+	/**
+	 * @param usuarioupd the usuarioupd to set
+	 */
+	public void setUsuarioupd(String usuarioupd) {
+		this.usuarioupd = usuarioupd;
+	}
+
+	/**
+	 * @return the fechacre
+	 */
+	public Date getFechacre() {
+		return fechacre;
+	}
+
+	/**
+	 * @param fechacre the fechacre to set
+	 */
+	public void setFechacre(Date fechacre) {
+		this.fechacre = fechacre;
+	}
+
+	/**
+	 * @return the fechaupd
+	 */
+	public Date getFechaupd() {
+		return fechaupd;
+	}
+
+	/**
+	 * @param fechaupd the fechaupd to set
+	 */
+	public void setFechaupd(Date fechaupd) {
+		this.fechaupd = fechaupd;
+	}
+	
+	
 	
 	
 
