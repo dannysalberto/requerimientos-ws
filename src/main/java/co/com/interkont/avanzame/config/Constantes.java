@@ -7,6 +7,7 @@ public class Constantes {
 	
 	public static final String NO_EXISTE = "No existe el dato";
 	public static final String NO_EXISTE_SOLICITUD = "Error, la solicitud indicada no existe";
+	public static final String NO_OTORGAR_FPO = "Error, no se puede solicitar prorroga FPO";
 	public static final String ENREVISION = "EN REVISION";
 	public static final String CONCEDIDO = "CONCEDIDO";
 	public static final String NOCONCEDIDO = "NO CONCEDIDO";

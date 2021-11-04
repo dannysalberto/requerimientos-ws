@@ -100,6 +100,11 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 		}
 		ObraFPO obraFPO = serviceObraFPO.buscarPorId(objSolicitud.getObraid());
 		Obra obra = serviceObra.buscarPorId(objSolicitud.getObraid());
+		if (obra.getFechaPuestaOperacion() == null ) {
+			response.setStatus(false);
+			response.setMensaje(Constantes.NO_OTORGAR_FPO);
+			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.BAD_REQUEST);
+		}
 		
 		objSolicitud.setDiasOtorgados(solicitud.getDiasOtorgados());
 		if (objSolicitud.getDiasOtorgados()>0) {
