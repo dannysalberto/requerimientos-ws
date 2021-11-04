@@ -13,9 +13,11 @@ import org.springframework.stereotype.Component;
 
 import co.com.interkont.avanzame.bussines.interfaces.ISolicitudBussines;
 import co.com.interkont.avanzame.config.Constantes;
+import co.com.interkont.avanzame.models.Obra;
 import co.com.interkont.avanzame.models.ObraFPO;
 import co.com.interkont.avanzame.models.SolicitudFPO;
 import co.com.interkont.avanzame.service.ObraFPOJPAServices;
+import co.com.interkont.avanzame.service.ObraJPAServices;
 import co.com.interkont.avanzame.service.SolicitudFPOJPAServices;
 import co.com.interkont.avanzame.api.request.SolicitudFPORequest;
 import co.com.interkont.avanzame.api.request.SolicitudFPOUpdateRequest;
@@ -30,6 +32,9 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 	
 	@Autowired
 	ObraFPOJPAServices serviceObraFPO;
+	
+	@Autowired
+	ObraJPAServices serviceObra;
 	
 	@Override
 	public ResponseEntity<?> solicitudes(int idobra) {
@@ -94,24 +99,37 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.NOT_FOUND);
 		}
 		ObraFPO obraFPO = serviceObraFPO.buscarPorId(objSolicitud.getObraid());
+		Obra obra = serviceObra.buscarPorId(objSolicitud.getObraid());
 		
 		objSolicitud.setDiasOtorgados(solicitud.getDiasOtorgados());
 		if (objSolicitud.getDiasOtorgados()>0) {
-			objSolicitud.setEstado(Constantes.CONCEDIDO);			
+			objSolicitud.setEstado(Constantes.CONCEDIDO);	
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(obraFPO.getFechaPuestaOperacion());
+			calendar.add(calendar.DAY_OF_YEAR, solicitud.getDiasOtorgados()-1);
+			objSolicitud.setFechaNueva(calendar.getTime());
+			
+			obra.setFechaPuestaOperacion(objSolicitud.getFechaNueva());
 		}else {
 			objSolicitud.setEstado(Constantes.NOCONCEDIDO);
 		}
 		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(obraFPO.getFechaPuestaOperacion());
-		if (solicitud.getDiasOtorgados()>0) {
-			calendar.add(calendar.DAY_OF_YEAR, solicitud.getDiasOtorgados()-1);			
-		}
-		objSolicitud.setFechaNueva(calendar.getTime());
 		objSolicitud.setJustificacionFPOOtorgada(solicitud.getJustificacionFPOOtorgada());
 		objSolicitud.setResolucionOtorgante(solicitud.getResolucionOtorgante());
-		
-		return new ResponseEntity<SolicitudFPO>(service.actualizar(objSolicitud), HttpStatus.OK);
+		try {
+			objSolicitud = service.actualizar(objSolicitud);
+			if (objSolicitud != null) {
+				serviceObra.actualizar(obra);
+				return new ResponseEntity<SolicitudFPO>(service.actualizar(objSolicitud), HttpStatus.OK);				
+			}
+
+		}catch (Exception e) {
+			// TODO: handle exception
+			response.setStatus(false);
+			response.setMensaje(e.getMessage().toString());
+			return new ResponseEntity<ResponseGeneric>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return null;
 	}
 
 	@Override
