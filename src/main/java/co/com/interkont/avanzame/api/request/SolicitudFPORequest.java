@@ -1,8 +1,16 @@
 package co.com.interkont.avanzame.api.request;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -41,8 +49,10 @@ public class SolicitudFPORequest {
     
     @ApiModelProperty(value = "Id de obra")
     private Integer obraid;
+    
+    private RadicarDocumentoParamRequest radicarDocumento;
 	
- 
+    
 	/**
 	 * @return the id
 	 */
@@ -170,6 +180,34 @@ public class SolicitudFPORequest {
 	public void setObraid(Integer obraid) {
 		this.obraid = obraid;
 	}
+
+	/**
+	 * @return the radicarDocumento
+	 */
+	public RadicarDocumentoParamRequest getRadicarDocumento() {
+		return radicarDocumento;
+	}
+
+	/**
+	 * @param radicarDocumento the radicarDocumento to set
+	 */
+	public void setRadicarDocumento(RadicarDocumentoParamRequest radicarDocumento) {
+		this.radicarDocumento = radicarDocumento;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "SolicitudFPORequest [id=" + id + ", diasSolicitados=" + diasSolicitados + ", fechaSolicitud="
+				+ fechaSolicitud + ", SolicitudOrigenId=" + SolicitudOrigenId + ", justificacion=" + justificacion
+				+ ", diasOtorgados=" + diasOtorgados + ", resolucionOtorgante=" + resolucionOtorgante + ", obraid="
+				+ obraid + ", radicarDocumento=" + radicarDocumento + "]";
+	}
+
 	
+	
+		
 	
 }

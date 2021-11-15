@@ -1,11 +1,11 @@
 package co.com.interkont.avanzame.api.response;
 
 
-public class ResponseGeneric {
+public class ResponseArgo {
 	
 	private boolean status;
 	
-	private String mensaje;
+	private String content;
 
 	/**
 	 * @return the status
@@ -22,17 +22,20 @@ public class ResponseGeneric {
 	}
 
 	/**
-	 * @return the mensaje
+	 * @return the content
 	 */
-	public String getMensaje() {
-		return mensaje;
+	public String getContent() {
+		return content;
 	}
 
 	/**
-	 * @param mensaje the mensaje to set
+	 * @param content the content to set
 	 */
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
+	public void setContent(String content) {
+		this.content = content;
 	}
+
+	
+	
 	
 }

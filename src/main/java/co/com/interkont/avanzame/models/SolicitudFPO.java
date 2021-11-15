@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import co.com.interkont.avanzame.api.request.RadicarDocumentoParamRequest;
+
 /**
  * @author DannysMuria
  *
@@ -63,6 +65,10 @@ public class SolicitudFPO {
 	private Date fpocompromisoenergia;
 	
 
+	@Column(name="numeroRadicado",columnDefinition="VARCHAR(250)")
+	private String numeroRadicado;
+	
+	
 	/**
 	 * @return the id
 	 */
@@ -232,7 +238,19 @@ public class SolicitudFPO {
 	public void setFpocompromisoenergia(Date fpocompromisoenergia) {
 		this.fpocompromisoenergia = fpocompromisoenergia;
 	}
-	
-	
+
+	/**
+	 * @return the numeroRadicado
+	 */
+	public String getNumeroRadicado() {
+		return numeroRadicado;
+	}
+
+	/**
+	 * @param numeroRadicado the numeroRadicado to set
+	 */
+	public void setNumeroRadicado(String numeroRadicado) {
+		this.numeroRadicado = numeroRadicado;
+	}
 	
 }
