@@ -15,8 +15,6 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import co.com.interkont.avanzame.api.request.RadicarDocumentoParamRequest;
-
 /**
  * @author DannysMuria
  *

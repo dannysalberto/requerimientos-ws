@@ -1,13 +1,10 @@
 package co.com.interkont.avanzame.businnes;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,10 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import co.com.interkont.avanzame.bussines.interfaces.ISolicitudBussines;
@@ -35,7 +28,6 @@ import co.com.interkont.avanzame.models.SolicitudFPO;
 import co.com.interkont.avanzame.service.ObraFPOJPAServices;
 import co.com.interkont.avanzame.service.ObraJPAServices;
 import co.com.interkont.avanzame.service.SolicitudFPOJPAServices;
-import co.com.interkont.avanzame.api.request.RadicarDocumentoParamRequest;
 import co.com.interkont.avanzame.api.request.SolicitudFPORequest;
 import co.com.interkont.avanzame.api.request.SolicitudFPOUpdateRequest;
 import co.com.interkont.avanzame.api.response.ResponseArgo;
@@ -53,10 +45,7 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 	
 	@Autowired
 	ObraJPAServices serviceObra;
-	
-	@Autowired
-	private ObjectMapper objectMapper;
-	
+		
 	@Value("${app.servicioRadicado}")
 	private String urlRadicado;
 	
@@ -91,8 +80,6 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 	public ResponseEntity<?> guardarSolicitud(String solicitud) {
 		// TODO Auto-generated method stub
 		SolicitudFPO objSolicitud = new SolicitudFPO();
-		
-		ObjectMapper mapper = new ObjectMapper();	
 		SolicitudFPORequest solicitudFPO = new Gson().fromJson(solicitud, SolicitudFPORequest.class);
 		
 		objSolicitud.setDiasSolicitados(solicitudFPO.getDiasSolicitados());
@@ -116,15 +103,14 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 			objSolicitud.setSolicitudOrigenId(null);
 		}
 		
-		RestTemplate rst = new RestTemplate();
         String resourceUrl = urlRadicado;
         resourceUrl = resourceUrl + "/documento/radicar"  ;
-        
-        ResponseEntity var = null;
+       
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
         
+        /*datos para el bodyrequest argo*/
         genBody(solicitudFPO, body);
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         
@@ -143,19 +129,17 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, Object> bodyOneDrive = new LinkedMultiValueMap<String, Object>();
         
-        bodyOneDrive.add("file", solicitudFPO.getRadicarDocumento().getBase64Binary());
-        bodyOneDrive.add("clasificaciondoc", 4);
-        bodyOneDrive.add("idtipodocumento", 10);
-        bodyOneDrive.add("iddocumento", objSolicitud.getId());
-        bodyOneDrive.add("nombredocumento", solicitudFPO.getRadicarDocumento().getFileName());
-        bodyOneDrive.add("usuarioid", "4");
+        /*llenamos datos para la bodyrequest*/
+        genBodyOneDrive(objSolicitud, solicitudFPO, bodyOneDrive);
 
         HttpEntity<MultiValueMap<String, Object>> requestEntityOneDrive = 
         		new HttpEntity<>(bodyOneDrive, headersOneDrive);
         
         String resourceUrlOneDrive= urlOneDrive;
         RestTemplate restTemplateOneDrive = new RestTemplate();
-        ResponseEntity<String> respOneDrive = restTemplate
+        
+        @SuppressWarnings("unused")
+		ResponseEntity<String> respOneDrive = restTemplateOneDrive
           .postForEntity(resourceUrlOneDrive, requestEntityOneDrive, String.class);
        
         /**/
@@ -164,11 +148,26 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 	}
 
 	/**
+	 * @param objSolicitud
+	 * @param solicitudFPO
+	 * @param bodyOneDrive
+	 */
+	private void genBodyOneDrive(SolicitudFPO objSolicitud, SolicitudFPORequest solicitudFPO,
+			MultiValueMap<String, Object> bodyOneDrive) {
+		bodyOneDrive.add("file", solicitudFPO.getRadicarDocumento().getBase64Binary());
+        bodyOneDrive.add("clasificaciondoc", 4);
+        bodyOneDrive.add("idtipodocumento", 10);
+        bodyOneDrive.add("iddocumento", objSolicitud.getId());
+        bodyOneDrive.add("nombredocumento", solicitudFPO.getRadicarDocumento().getFileName());
+        bodyOneDrive.add("usuarioid", "4");
+	}
+
+	/**
 	 * @param solicitudFPO
 	 * @param body
 	 */
 	private void genBody(SolicitudFPORequest solicitudFPO, MultiValueMap<String, Object> body) {
-		body.add("anexo", solicitudFPO.getRadicarDocumento().getAnexo());
+		body.add("anexo", "10");
         body.add("camposAdicionales", "");
         body.add("codigoCarpeta", "");
         body.add("codigoDependenciaRadicadora", "100");
@@ -187,7 +186,7 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
         body.add("medio", "1");
         body.add("tipoCarpeta", "0");
         body.add("tipoIdentificacion", "3");
-        body.add("tipoRadicado", "2");
+        body.add("tipoRadicado", "1");
         body.add("tipoRemitente", "1");
         body.add("usuarioDocuActual", "23540024145");
         body.add("usuarioLogin", "INTERKONT");

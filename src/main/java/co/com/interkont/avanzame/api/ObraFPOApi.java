@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.interkont.avanzame.api.request.ObraFPORequest;
-import co.com.interkont.avanzame.api.request.SolicitudFPOUpdateRequest;
 import co.com.interkont.avanzame.api.response.ResponseGeneric;
 import co.com.interkont.avanzame.businnes.BussinnesObraFPOServices;
 import io.swagger.annotations.Api;

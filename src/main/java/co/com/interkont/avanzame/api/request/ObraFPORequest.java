@@ -1,8 +1,6 @@
 package co.com.interkont.avanzame.api.request;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import io.swagger.annotations.ApiModelProperty;
 
 public class ObraFPORequest {
