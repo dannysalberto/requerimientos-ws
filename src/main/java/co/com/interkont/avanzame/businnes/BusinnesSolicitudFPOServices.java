@@ -160,6 +160,8 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
         bodyOneDrive.add("iddocumento", objSolicitud.getId());
         bodyOneDrive.add("nombredocumento", solicitudFPO.getRadicarDocumento().getFileName());
         bodyOneDrive.add("usuarioid", "4");
+        bodyOneDrive.add("publico", "0");
+        bodyOneDrive.add("size", solicitudFPO.getRadicarDocumento().getSize());
 	}
 
 	/**

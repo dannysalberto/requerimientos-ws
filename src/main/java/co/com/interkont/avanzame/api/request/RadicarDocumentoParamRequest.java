@@ -65,6 +65,7 @@ public class RadicarDocumentoParamRequest {
 	
 	public String expediente;
 	
+	public Integer size;
 	
 	
 	public RadicarDocumentoParamRequest() {
@@ -540,6 +541,22 @@ public class RadicarDocumentoParamRequest {
 	 */
 	public void setExpediente(String expediente) {
 		this.expediente = expediente;
+	}
+	
+	
+
+	/**
+	 * @return the size
+	 */
+	public Integer getSize() {
+		return size;
+	}
+
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(Integer size) {
+		this.size = size;
 	}
 
 	/* (non-Javadoc)
