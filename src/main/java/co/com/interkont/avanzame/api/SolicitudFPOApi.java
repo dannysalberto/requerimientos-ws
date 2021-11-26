@@ -2,7 +2,7 @@ package co.com.interkont.avanzame.api;
 
 import java.io.IOException;
 
-
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,11 +51,10 @@ public class SolicitudFPOApi {
 	
 	@ApiOperation(value = "Guardar una solicitud.")
 	@RequestMapping(value = {"/solicitud"}, method = {RequestMethod.POST})
-	public ResponseEntity<?> guardarSolicitud(@RequestBody String SolicitudFPORequest) 
+	public ResponseEntity<?> guardarSolicitud(@RequestBody String SolicitudFPORequest,HttpServletRequest request) 
 			throws JsonParseException, JsonMappingException, IOException {
 	
-		System.out.println(SolicitudFPORequest);
-		return this.serviceSolicitudesFPO.guardarSolicitud(SolicitudFPORequest);				
+		return this.serviceSolicitudesFPO.guardarSolicitud(SolicitudFPORequest,request);				
 	}
 		
 	@ResponseBody

@@ -9,6 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -65,6 +71,10 @@ public class SolicitudFPO {
 
 	@Column(name="numeroRadicado",columnDefinition="VARCHAR(250)")
 	private String numeroRadicado;
+	
+	@OneToOne
+	@JoinColumn(name="id",referencedColumnName="oidsolicitudfpo")
+	private Documento documentoObra;
 	
 	
 	/**
@@ -226,6 +236,7 @@ public class SolicitudFPO {
 	/**
 	 * @return the fpocompromisoenergia
 	 */
+	@JsonFormat(pattern="yyyy-MM-dd" , locale= "es_CO")
 	public Date getFpocompromisoenergia() {
 		return fpocompromisoenergia;
 	}
@@ -249,6 +260,33 @@ public class SolicitudFPO {
 	 */
 	public void setNumeroRadicado(String numeroRadicado) {
 		this.numeroRadicado = numeroRadicado;
+	}
+
+	/**
+	 * @return the documentoObra
+	 */
+	public Documento getDocumentoObra() {
+		return documentoObra;
+	}
+
+	/**
+	 * @param documentoObra the documentoObra to set
+	 */
+	public void setDocumentoObra(Documento documentoObra) {
+		this.documentoObra = documentoObra;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "SolicitudFPO [id=" + id + ", diasSolicitados=" + diasSolicitados + ", fechaSolicitud=" + fechaSolicitud
+				+ ", SolicitudOrigenId=" + SolicitudOrigenId + ", justificacion=" + justificacion + ", estado=" + estado
+				+ ", diasOtorgados=" + diasOtorgados + ", resolucionOtorgante=" + resolucionOtorgante + ", fechaNueva="
+				+ fechaNueva + ", obraid=" + obraid + ", justificacionFPOOtorgada=" + justificacionFPOOtorgada
+				+ ", fpocompromisoenergia=" + fpocompromisoenergia + ", numeroRadicado=" + numeroRadicado
+				+ ", documentoObra=" + documentoObra + "]";
 	}
 	
 }

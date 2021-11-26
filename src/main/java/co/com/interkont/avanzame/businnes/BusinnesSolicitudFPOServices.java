@@ -1,10 +1,13 @@
 package co.com.interkont.avanzame.businnes;
 
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,25 +16,35 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
-import co.com.interkont.avanzame.bussines.interfaces.ISolicitudBussines;
-import co.com.interkont.avanzame.config.Constantes;
-import co.com.interkont.avanzame.models.Obra;
-import co.com.interkont.avanzame.models.ObraFPO;
-import co.com.interkont.avanzame.models.SolicitudFPO;
-import co.com.interkont.avanzame.service.ObraFPOJPAServices;
-import co.com.interkont.avanzame.service.ObraJPAServices;
-import co.com.interkont.avanzame.service.SolicitudFPOJPAServices;
+import co.com.interkont.avanzame.api.request.FileRequest;
 import co.com.interkont.avanzame.api.request.SolicitudFPORequest;
 import co.com.interkont.avanzame.api.request.SolicitudFPOUpdateRequest;
 import co.com.interkont.avanzame.api.response.ResponseArgo;
 import co.com.interkont.avanzame.api.response.ResponseGeneric;
+import co.com.interkont.avanzame.bussines.interfaces.ISolicitudBussines;
+import co.com.interkont.avanzame.config.Constantes;
+import co.com.interkont.avanzame.models.Documento;
+import co.com.interkont.avanzame.models.Obra;
+import co.com.interkont.avanzame.models.ObraFPO;
+import co.com.interkont.avanzame.models.SolicitudFPO;
+import co.com.interkont.avanzame.service.DocumentoService;
+import co.com.interkont.avanzame.service.ObraFPOJPAServices;
+import co.com.interkont.avanzame.service.ObraJPAServices;
+import co.com.interkont.avanzame.service.SolicitudFPOJPAServices;
+import co.com.interkont.avanzame.utils.RandomString;
+
+
 
 
 @Component
@@ -45,6 +58,9 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 	
 	@Autowired
 	ObraJPAServices serviceObra;
+	
+	@Autowired
+	DocumentoService serviceDocumento;
 		
 	@Value("${app.servicioRadicado}")
 	private String urlRadicado;
@@ -77,7 +93,7 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 
 	@Override
 	@Transactional
-	public ResponseEntity<?> guardarSolicitud(String solicitud) {
+	public ResponseEntity<?> guardarSolicitud(String solicitud,HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		SolicitudFPO objSolicitud = new SolicitudFPO();
 		SolicitudFPORequest solicitudFPO = new Gson().fromJson(solicitud, SolicitudFPORequest.class);
@@ -125,28 +141,85 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
         objSolicitud = service.guardar(objSolicitud);
         /**/
 
-        HttpHeaders headersOneDrive = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        MultiValueMap<String, Object> bodyOneDrive = new LinkedMultiValueMap<String, Object>();
+        HttpHeaders headersDrive = new HttpHeaders();
+        headersDrive.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        
+       
+        String JWTtoken = request.getHeader(Constantes.HEADER_AUTHORIZACION_KEY);
+        //JWTtoken = JWTtoken.substring(6);
+        headersDrive.set("Authorization", JWTtoken);
+        MultiValueMap<String, String> bodyDrive = new LinkedMultiValueMap<String, String>();
         
         /*llenamos datos para la bodyrequest*/
-        genBodyOneDrive(objSolicitud, solicitudFPO, bodyOneDrive);
+        //genBodyOneDrive(objSolicitud, solicitudFPO, bodyOneDrive);
+        //genBodyDrive(objSolicitud, solicitudFPO, bodyDrive);
 
-        HttpEntity<MultiValueMap<String, Object>> requestEntityOneDrive = 
-        		new HttpEntity<>(bodyOneDrive, headersOneDrive);
+        FileRequest fileReq = new FileRequest();
+        fileReq.setFileBase64(solicitudFPO.getRadicarDocumento().getBase64Binary());
+        fileReq.setClasificacion("4");
+        fileReq.setIdtipodocumento("10");
+        fileReq.setIddocumento(Integer.toString(objSolicitud.getId()));
+        fileReq.setNombredocumento(solicitudFPO.getRadicarDocumento().getFileName());
+        fileReq.setUsuarioid("4");
         
-        String resourceUrlOneDrive= urlOneDrive;
-        RestTemplate restTemplateOneDrive = new RestTemplate();
+        ObjectMapper mapper = new ObjectMapper();
+        String JSON = null;
+		try {
+			JSON = mapper.writeValueAsString(fileReq);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        //generarRequest(objSolicitud, solicitudFPO, fileReq);
+        
+        HttpEntity<String> requestEntityDrive = 
+        		new HttpEntity<>(JSON, headersDrive);
+        
+        System.out.println(JSON);
+        String resourceUrlDrive= urlOneDrive;
+        RestTemplate restTemplateDrive = new RestTemplate();
+
         
         @SuppressWarnings("unused")
-		ResponseEntity<String> respOneDrive = restTemplateOneDrive
-          .postForEntity(resourceUrlOneDrive, requestEntityOneDrive, String.class);
+		ResponseEntity<String> respOneDrive = restTemplateDrive
+          .postForEntity(resourceUrlDrive, requestEntityDrive, String.class);
        
         /**/
         
 		return new ResponseEntity<SolicitudFPO>(service.guardar(objSolicitud), HttpStatus.OK);
 	}
 
+	/**
+	 * @param objSolicitud
+	 * @param solicitudFPO
+	 * @param fileReq
+	 */
+	private void generarRequest(SolicitudFPO objSolicitud, SolicitudFPORequest solicitudFPO, FileRequest fileReq) {
+		fileReq.setFileBase64(solicitudFPO.getRadicarDocumento().getBase64Binary());
+        fileReq.setClasificacion("4");
+        fileReq.setIdtipodocumento("10");
+        fileReq.setIddocumento(Integer.toString(objSolicitud.getId()));
+        fileReq.setNombredocumento(solicitudFPO.getRadicarDocumento().getFileName());
+        fileReq.setUsuarioid("4");
+	}
+
+	/**
+	 * @param objSolicitud
+	 * @param solicitudFPO
+	 * @param bodyOneDrive
+	 */
+	private void genBodyDrive(SolicitudFPO objSolicitud, SolicitudFPORequest solicitudFPO,
+			MultiValueMap<String, String> bodyOneDrive) {
+		bodyOneDrive.add("file", solicitudFPO.getRadicarDocumento().getBase64Binary());
+        bodyOneDrive.add("clasificaciondoc", "4");
+        bodyOneDrive.add("idtipodocumento", "10");
+        bodyOneDrive.add("iddocumento", Integer.toString(objSolicitud.getId()));
+        bodyOneDrive.add("nombredocumento", solicitudFPO.getRadicarDocumento().getFileName());
+        bodyOneDrive.add("usuarioid", "4");
+	}
+	
+	
 	/**
 	 * @param objSolicitud
 	 * @param solicitudFPO
@@ -251,8 +324,27 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 
 	@Override
 	public ResponseEntity<?> solicitud(int id) {
-		// TODO Auto-generated method stub
-		return new ResponseEntity<SolicitudFPO>(service.buscarPorId(id), HttpStatus.OK);
+
+		SolicitudFPO solicitud = service.buscarPorId(id);
+		Documento documento = serviceDocumento.buscarPorId(id);
+		if (documento!=null) {
+			solicitud.setDocumentoObra(serviceDocumento.buscarPorId(id));
+			generateDownloadID(id, solicitud);			
+		}
+		
+		return new ResponseEntity<SolicitudFPO>(solicitud, HttpStatus.OK);
+	}
+
+	/**
+	 * @param id
+	 * @param solicitud
+	 * @throws IllegalArgumentException
+	 */
+	private void generateDownloadID(int id, SolicitudFPO solicitud) throws IllegalArgumentException {
+	
+	    String generatedString = RandomString.getAlphaNumericString(128);
+		solicitud.getDocumentoObra().setDownloadid(generatedString);
+		service.actualizar(solicitud);
 	}
 
 	@Override
@@ -280,43 +372,10 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 			objSolicitud.setSolicitudOrigenId(null);
 		}
 		
-		//System.out.println(solicitud.getDataMap());
-//		RestTemplate rst = new RestTemplate();
-//        String resourceUrl = "http://172.17.1.86:8093/avanzame-argo-ws";
-//        resourceUrl = resourceUrl + "/documento/radicar"  ;
-//        
-//        ResponseEntity var = null;
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);  
-//        
-//        MultiValueMap<String, Object> body  = solicitud.getDataMap();        
-//        try {
-//			body.add("base64Binary", Base64.getEncoder().encodeToString(solicitud.getFile().getBytes()));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//        body.add("fileName", solicitud.getFile().getName());
-//        body.add("tipoDocumento", 651);
-//        body.add("expediente", "");
-//        
-//        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-//        
-//        RestTemplate restTemplate = new RestTemplate();
-//        ResponseEntity<String> response = restTemplate
-//          .postForEntity(resourceUrl, requestEntity, String.class);
-//        
-//        Gson gson = new Gson();
-//        ResponseGeneric resp = new ResponseGeneric();
-//        resp = gson.fromJson(response.getBody().toString(), ResponseGeneric.class);
-//        
-//       
-//        objSolicitud.setNumeroRadicado(resp.getMensaje());          
-//		
-		
 		return new ResponseEntity<SolicitudFPO>(service.guardar(objSolicitud), HttpStatus.OK);
 
 	}
+
 
 	
 }
