@@ -150,10 +150,6 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
         headersDrive.set("Authorization", JWTtoken);
         MultiValueMap<String, String> bodyDrive = new LinkedMultiValueMap<String, String>();
         
-        /*llenamos datos para la bodyrequest*/
-        //genBodyOneDrive(objSolicitud, solicitudFPO, bodyOneDrive);
-        //genBodyDrive(objSolicitud, solicitudFPO, bodyDrive);
-
         FileRequest fileReq = new FileRequest();
         fileReq.setFileBase64(solicitudFPO.getRadicarDocumento().getBase64Binary());
         fileReq.setClasificacion("4");
