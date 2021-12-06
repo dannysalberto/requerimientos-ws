@@ -20,7 +20,7 @@ public class SolicitudFPORequest {
 	private String fechaSolicitud;
 	
     @ApiModelProperty(value = "Solicitud origen")
-    private Integer SolicitudOrigenId;
+    private Integer solicitudOrigenId;
 	
     @ApiModelProperty(value = "Justificación")
     @NotEmpty(message = "Justificación de la solicitud no puede estar en blanco")
@@ -90,14 +90,14 @@ public class SolicitudFPORequest {
 	 * @return the solicitudOrigenId
 	 */
 	public Integer getSolicitudOrigenId() {
-		return SolicitudOrigenId;
+		return solicitudOrigenId;
 	}
 
 	/**
 	 * @param solicitudOrigenId the solicitudOrigenId to set
 	 */
 	public void setSolicitudOrigenId(Integer solicitudOrigenId) {
-		SolicitudOrigenId = solicitudOrigenId;
+		solicitudOrigenId = solicitudOrigenId;
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class SolicitudFPORequest {
 	@Override
 	public String toString() {
 		return "SolicitudFPORequest [id=" + id + ", diasSolicitados=" + diasSolicitados + ", fechaSolicitud="
-				+ fechaSolicitud + ", SolicitudOrigenId=" + SolicitudOrigenId + ", justificacion=" + justificacion
+				+ fechaSolicitud + ", solicitudOrigenId=" + solicitudOrigenId + ", justificacion=" + justificacion
 				+ ", diasOtorgados=" + diasOtorgados + ", resolucionOtorgante=" + resolucionOtorgante + ", obraid="
 				+ obraid + ", radicarDocumento=" + radicarDocumento + "]";
 	}

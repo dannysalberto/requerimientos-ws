@@ -27,6 +27,12 @@ public class ObraFPO {
 	
 	@Column(name="nombreentidad")
 	private String nombreEntidad;
+	
+	@Column(name="strnombreobra")
+	private String strNombreObra;
+	
+	@Column(name="intcedula")
+	private String intCedula;
 
 	/**
 	 * @return the id
@@ -88,11 +94,38 @@ public class ObraFPO {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
+	/**
+	 * @return the strNombreObra
+	 */
+	public String getStrNombreObra() {
+		return strNombreObra;
+	}
+
+	/**
+	 * @param strNombreObra the strNombreObra to set
+	 */
+	public void setStrNombreObra(String strNombreObra) {
+		this.strNombreObra = strNombreObra;
+	}
+
+	/**
+	 * @return the intCedula
+	 */
+	public String getIntCedula() {
+		return intCedula;
+	}
+
+	/**
+	 * @param intCedula the intCedula to set
+	 */
+	public void setIntCedula(String intCedula) {
+		this.intCedula = intCedula;
+	}
+
 	@Override
 	public String toString() {
 		return "ObraFPO [id=" + id + ", fechaPuestaOperacion=" + fechaPuestaOperacion + ", idTercero=" + idTercero
-				+ ", nombreEntidad=" + nombreEntidad + "]";
-	}
-
-	
+				+ ", nombreEntidad=" + nombreEntidad + ", strNombreObra=" + strNombreObra + ", intCedula=" + intCedula
+				+ "]";
+	}	
 }

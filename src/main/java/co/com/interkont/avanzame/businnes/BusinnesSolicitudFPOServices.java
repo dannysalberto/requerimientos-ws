@@ -127,7 +127,17 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
         
         /*datos para el bodyrequest argo*/
-        genBody(solicitudFPO, body);
+        String intCedula=null;
+        if(obraFPO.getIntCedula()==null)
+        {
+        	intCedula="1";
+        }
+        else
+        {
+        	intCedula=obraFPO.getIntCedula();
+        }
+        
+        genBody(solicitudFPO, body,obraFPO.getNombreEntidad(),obraFPO.getStrNombreObra(),intCedula);
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         
         RestTemplate restTemplate = new RestTemplate();
@@ -157,7 +167,7 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
         fileReq.setIddocumento(Integer.toString(objSolicitud.getId()));
         fileReq.setNombredocumento(solicitudFPO.getRadicarDocumento().getFileName());
         fileReq.setUsuarioid("4");
-        
+        System.out.println(fileReq);
         ObjectMapper mapper = new ObjectMapper();
         String JSON = null;
 		try {
@@ -176,6 +186,9 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
         String resourceUrlDrive= urlOneDrive;
         RestTemplate restTemplateDrive = new RestTemplate();
 
+        System.out.println(resourceUrlDrive);
+        System.out.println(restTemplateDrive);
+        System.out.println(requestEntityDrive);
         
         @SuppressWarnings("unused")
 		ResponseEntity<String> respOneDrive = restTemplateDrive
@@ -237,31 +250,32 @@ public class BusinnesSolicitudFPOServices implements ISolicitudBussines{
 	 * @param solicitudFPO
 	 * @param body
 	 */
-	private void genBody(SolicitudFPORequest solicitudFPO, MultiValueMap<String, Object> body) {
-		body.add("anexo", "10");
+	private void genBody(SolicitudFPORequest solicitudFPO, MultiValueMap<String, Object> body,String nombreTercero,String nombreObra,String intCedula) {
+		body.add("anexo", solicitudFPO.getRadicarDocumento().getAsunto());
         body.add("camposAdicionales", "");
         body.add("codigoCarpeta", "");
         body.add("codigoDependenciaRadicadora", "100");
         body.add("cuentai", "");
-        body.add("destinatarioCCDocumento", "102345210"); //pudieran ser datos del supervisor
-        body.add("destinatarioDireccion", "URB. EL CENTRO MARACAY");
+        body.add("destinatarioCCDocumento", intCedula); //pudieran ser datos del supervisor
+        body.add("destinatarioDireccion", "Calle 43 No. 57 - 31 Bogota, Colombia");
         body.add("destinatarioContinente", "1");
         body.add("destinatarioIdPais", "170");
-        body.add("destinatarioMunicipio", "2");
-        body.add("destinatarioNombre", "DANNYS ALBERTO");
-        body.add("destinatarioPrimerApellido", "MURIA");
-        body.add("destinatarioSegundoApellido", "RODRIGUEZ");
-        body.add("destinatarioTelefono", "+584124579238");
+		body.add("destinatarioCodDepartamento", "11");
+        body.add("destinatarioMunicipio", "001");
+        body.add("destinatarioNombre", nombreTercero);
+        body.add("destinatarioPrimerApellido", " ");
+        body.add("destinatarioSegundoApellido", " ");
+        body.add("destinatarioTelefono", "+57 1 2200300");
         body.add("formularioIdRadicado", "");
         body.add("key", "");
         body.add("medio", "1");
         body.add("tipoCarpeta", "0");
-        body.add("tipoIdentificacion", "3");
+        body.add("tipoIdentificacion", "0");
         body.add("tipoRadicado", "1");
         body.add("tipoRemitente", "1");
         body.add("usuarioDocuActual", "23540024145");
         body.add("usuarioLogin", "INTERKONT");
-        body.add("asunto", solicitudFPO.getRadicarDocumento().getAsunto());
+        body.add("asunto", "Solicitud Prorroga FPO "+nombreObra);
         body.add("base64Binary", solicitudFPO.getRadicarDocumento().getBase64Binary());
         body.add("fileName", solicitudFPO.getRadicarDocumento().getFileName());
         body.add("tipoDocumento", solicitudFPO.getRadicarDocumento().getTipoDocumento());
