@@ -1,12 +1,13 @@
 package co.com.interkont.avanzame.api.response;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class ResponseGeneric {
 	
 	private boolean status;
 	
 	private String mensaje;
-
+	
+	
 	/**
 	 * @return the status
 	 */
@@ -34,5 +35,8 @@ public class ResponseGeneric {
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
+	
+	
+	
 	
 }

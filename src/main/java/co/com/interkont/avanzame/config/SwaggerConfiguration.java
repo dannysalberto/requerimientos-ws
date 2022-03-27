@@ -5,12 +5,15 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import com.google.common.collect.Lists;
 
+import co.com.interkont.avanzame.utils.AppContext;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
@@ -44,7 +47,7 @@ public class SwaggerConfiguration {
    private ApiInfo cobraWSApiInfo() {
 
         return new ApiInfoBuilder()
-                .title("Servicios Avanzame FPO, by Interkont")
+                .title("Microservicios Requerimientos de obra, by Interkont")
                 .version("1.0")
                 .build();
 
@@ -92,4 +95,13 @@ public class SwaggerConfiguration {
 	       return Lists.newArrayList(
 	           new SecurityReference("Ikont", authorizationScopes));
 	   }
+	   
+	   @Bean(name = "appContext")
+	   @Scope(scopeName = "prototype")
+	   public AppContext appContext() {
+	     return new AppContext();
+	   } 
+	   
+	 
+	  
 }

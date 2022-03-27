@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,15 +22,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.com.interkont.avanzame.auth.pojo.JsfUsuarioRequest;
 import co.com.interkont.avanzame.config.Constantes;
+import co.com.interkont.avanzame.utils.AppContext;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
+	@Autowired
+    private AppContext appContext;
+	
 	private AuthenticationManager authenticationManager;
 
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
+	    this.appContext = appContext;
 	}
 
 	@Override

@@ -7,8 +7,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
+import java.util.function.Function;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+
+import co.com.interkont.avanzame.config.Constantes;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 
 public class Utils {
 	
@@ -86,6 +97,51 @@ public class Utils {
 	           return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, BigDecimal.ROUND_CEILING);
 	       }
 	}
+	
+	public static LocalDate getUTCLocalDate() {
+        return LocalDate.now(ZoneId.of("UTC"));
+    }
+
+    public static LocalDateTime getUTCLocalDateTime() {
+        return LocalDateTime.now(ZoneId.of("UTC"));
+    }
+
+    public static LocalDate convertInstantToLocalDate(Instant instant) {
+        return LocalDate.from(instant);
+    }
+
+    public static LocalDateTime convertInstantToLocalDateTime(Instant instant) {
+        return LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+    }
+
+    public static Instant convertLocalDateToInstant(LocalDate date) {
+        return date.atStartOfDay().toInstant(ZoneOffset.UTC);
+    }
+
+    public static Instant convertLocalDateTimeToInstant(LocalDateTime date) {
+        return date.toInstant(ZoneOffset.UTC);
+    }
+
+    public static LocalDate convertDateToLocalDate(Date date) {
+        return Instant.ofEpochMilli(date.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
+
+    public static Date convertLocalDateToDate(LocalDate date) {
+        return java.util.Date
+                .from(date.atStartOfDay().toInstant(ZoneOffset.UTC));
+    }
+    
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+		final Claims claims = extractAllClaims(token);
+		return claimsResolver.apply(claims);
+	}
+    
+    public static Claims extractAllClaims(String token) {
+		return Jwts.parser().setSigningKey(Constantes.SUPER_SECRET_KEY).parseClaimsJws(token).getBody();		
+	}
+	
 	
 
 }

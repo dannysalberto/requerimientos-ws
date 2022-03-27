@@ -88,4 +88,7 @@ public class Constantes {
 	public static final String DATOS_INCORRECTOS = "Parámetros incorrectos";
 	public static final String NO_EXISTE_OBRA = "Dato de obra inválido";
 	public static final String REGISTRO_ELIMINADO = "Registro Eliminado";
+	
+	public static final String REQUERIMIENTOS_DE_OBRA_ACTUALIZADOS_CORRECTAMENTE = "Requerimientos de obra actualizados correctamente";
+
 }

@@ -18,7 +18,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name="documentoobra",schema="public")
-public class Documento  {
+@EntityListeners(AuditingEntityListener.class)
+public class Documento extends BasicAuditoria {
 	
 	@Id
 	@SequenceGenerator(name="documentoobra_oididdoc_seq",sequenceName="documentoobra_oididdoc_seq",
@@ -59,7 +60,7 @@ public class Documento  {
 	
 	@Column(name="oidsolicitudfpo",columnDefinition="INTEGER")
 	private Integer oidsolicitudfpo;
-	
+
 	@Column(name="downloadid",columnDefinition="VARCHAR")
 	private String downloadid;
 
@@ -241,10 +242,10 @@ public class Documento  {
 	}
 
 	/**
-	 * @param string the downloadid to set
+	 * @param downloadid the downloadid to set
 	 */
-	public void setDownloadid(String string) {
-		this.downloadid = string;
+	public void setDownloadid(String downloadid) {
+		this.downloadid = downloadid;
 	}
 
 	
@@ -252,6 +253,7 @@ public class Documento  {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
+	
 	
 	
 

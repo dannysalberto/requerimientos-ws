@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import co.com.interkont.avanzame.auth.pojo.UsuarioDetailsServiceImpl;
 import co.com.interkont.avanzame.config.Constantes;
+import co.com.interkont.avanzame.utils.AppContext;
 import co.com.interkont.avanzame.utils.JWTUtils;
+import co.com.interkont.avanzame.utils.Utils;
 @Component
 public class JWTFilters extends OncePerRequestFilter{
 
@@ -27,6 +30,10 @@ public class JWTFilters extends OncePerRequestFilter{
 	
 	@Autowired
 	UsuarioDetailsServiceImpl userDetailsService;
+	
+	@Autowired
+	private AppContext appContext;
+	
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -39,7 +46,9 @@ public class JWTFilters extends OncePerRequestFilter{
 		
 		if (header != null && header.startsWith(Constantes.TOKEN_BEARER_PREFIX)) {
 			JWTtoken = header.substring(6);
-			usuario = jwtService.extractUsuario(JWTtoken);			
+			usuario = jwtService.extractUsuario(JWTtoken);	
+			appContext.setUsuarioId(Utils.extractAllClaims(JWTtoken).get("usuId").toString());
+
 		}
 		
 		if (usuario != null && SecurityContextHolder.getContext().getAuthentication() == null) {

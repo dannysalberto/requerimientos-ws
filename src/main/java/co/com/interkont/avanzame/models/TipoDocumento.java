@@ -12,16 +12,17 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
-@Table(schema="public",name="obra")
+@Table(schema="public",name="tipodocumento")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Obra {
+public class TipoDocumento {
 	
 	@Id
-	@Column(name="intcodigoobra")
+	@Column(name="inttipodoc")
 	private Integer id;
 	
+	@Column(name="strdesctipodoc")
+	private String nombre;
 
-	
 	/**
 	 * @return the id
 	 */
@@ -36,16 +37,21 @@ public class Obra {
 		this.id = id;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return the nombre
 	 */
-	@Override
-	public String toString() {
-		return "Obra [id=" + id + "]";
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * @param nombre the nombre to set
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 	
 	
 	
-
 	
 }

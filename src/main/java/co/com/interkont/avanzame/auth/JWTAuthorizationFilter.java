@@ -3,24 +3,31 @@ package co.com.interkont.avanzame.auth;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import co.com.interkont.avanzame.config.Constantes;
+import co.com.interkont.avanzame.utils.AppContext;
+import co.com.interkont.avanzame.utils.Utils;
 import io.jsonwebtoken.Jwts;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-
-	public JWTAuthorizationFilter(AuthenticationManager authManager) {
-		super(authManager);
+public class JWTAuthorizationFilter extends BasicAuthenticationFilter {	    
+	
+	@Autowired
+    private AppContext appContext;
+	
+	public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+		super(authenticationManager);
+		this.appContext = appContext;
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -46,7 +53,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 						.parseClaimsJws(token.replace(Constantes.TOKEN_BEARER_PREFIX, ""))
 						.getBody()
 						.getSubject();
-
+			String auth = token.replace(Constantes.TOKEN_BEARER_PREFIX, "");            
 			if (user != null) {
 				return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
 			}
